@@ -9,11 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ciste2dot0">
+        <activity android:name=".VideoActivity"></activity>
         <activity
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_fullscreen"
-            android:theme="@style/Theme.Ciste2dot0.Fullscreen"></activity>
+            android:theme="@style/Theme.Ciste2dot0.Fullscreen" />
         <activity android:name=".Introduction" />
         <activity android:name=".MainActivity">
             <intent-filter>

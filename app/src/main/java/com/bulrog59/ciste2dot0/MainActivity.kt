@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        startActivity(Intent(this, FullscreenActivity::class.java))
+        startActivity(Intent(this, VideoActivity::class.java))
         return super.onTouchEvent(event)
     }
 
