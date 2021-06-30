@@ -17,7 +17,7 @@
             android:label="@string/title_activity_fullscreen"
             android:theme="@style/Theme.Ciste2dot0.Fullscreen" />
         <activity android:name=".Introduction" />
-        <activity android:name=".VideoActivity">
+        <activity android:name=".CisteActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

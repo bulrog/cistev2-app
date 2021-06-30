@@ -4,7 +4,7 @@ import android.net.Uri
 import java.io.File
 
 class Util {
-    val rootFolder:String
+    private val rootFolder:String
 
     constructor(packageName: String) {
         this.rootFolder = StringBuilder ()
