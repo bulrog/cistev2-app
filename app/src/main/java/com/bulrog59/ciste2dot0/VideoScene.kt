@@ -1,24 +1,24 @@
 package com.bulrog59.ciste2dot0
 
-import android.os.Bundle
-import android.os.PersistableBundle
+import android.app.Activity
 import android.widget.MediaController
 import android.widget.VideoView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 
-
-class VideoActivity : AppCompatActivity() {
+class VideoScene(private val videoName:String, private val activity: Activity): LifecycleObserver {
     private lateinit var videoView: VideoView
     private lateinit var mediaController: MediaController
     private var position=0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_video2)
-        videoView =  findViewById(R.id.videoView)
-        mediaController= MediaController(this)
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun createVideo(){
+        activity.setContentView(R.layout.activity_video2)
+        videoView =  activity.findViewById(R.id.videoView)
+        mediaController= MediaController(activity)
         mediaController.setAnchorView(videoView)
-        videoView.setVideoURI (Util(this.packageName).getUri("trial"));
+        videoView.setVideoURI (Util(activity.packageName).getUri("trial"));
         videoView.setMediaController(mediaController)
         videoView.setOnPreparedListener { mediaPlayer ->
             videoView.seekTo(position)
@@ -30,16 +30,14 @@ class VideoActivity : AppCompatActivity() {
             }
         }
     }
-
-    override fun onPause() {
-        super.onPause()
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun pauseVideo() {
         position=videoView.currentPosition
         videoView.pause()
     }
 
-    override fun onResume() {
-        super.onResume()
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun restartVideo(){
         videoView.seekTo(position)
     }
-
 }

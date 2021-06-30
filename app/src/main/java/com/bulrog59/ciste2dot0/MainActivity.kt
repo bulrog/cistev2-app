@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         mediaPlayer!!.isLooping = true // Set looping
 
         setContentView(R.layout.activity_main)
+
     }
 
     override fun onStart() {
