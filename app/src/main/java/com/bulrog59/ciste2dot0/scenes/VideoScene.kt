@@ -1,23 +1,25 @@
-package com.bulrog59.ciste2dot0
+package com.bulrog59.ciste2dot0.scenes
 
 import android.widget.MediaController
 import android.widget.VideoView
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import com.bulrog59.ciste2dot0.CisteActivity
+import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.Util
 
-class VideoScene(private val videoName:String, private val cisteActivity: CisteActivity): LifecycleObserver {
+class VideoScene(private val videoName:String, private val cisteActivity: CisteActivity): Scene {
     private lateinit var videoView: VideoView
     private lateinit var mediaController: MediaController
     private var position=0
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun createVideo(){
-        cisteActivity.setContentView(R.layout.activity_video2)
+        cisteActivity.setContentView(R.layout.view_video)
         videoView =  cisteActivity.findViewById(R.id.videoView)
         mediaController= MediaController(cisteActivity)
         mediaController.setAnchorView(videoView)
-        videoView.setVideoURI (Util(cisteActivity.packageName).getUri("trial"));
+        videoView.setVideoURI (Util(cisteActivity.packageName).getUri(videoName));
         videoView.setMediaController(mediaController)
         videoView.setOnPreparedListener { mediaPlayer ->
             videoView.seekTo(position)

@@ -10,13 +10,11 @@
         android:supportsRtl="true"
         android:screenOrientation="portrait"
         android:theme="@style/Theme.Ciste2dot0">
-        <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_fullscreen"
             android:theme="@style/Theme.Ciste2dot0.Fullscreen" />
-        <activity android:name=".Introduction" />
         <activity android:name=".CisteActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
