@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.scenes
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.media.MediaPlayer
 import android.view.MotionEvent
 import android.view.View
@@ -12,9 +13,7 @@ import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.Util
 
 class PicMusicScene(
-    private val imageName: String,
-    private val musicName: String?,
-    private val loopMusic: Boolean,
+    private val picMusicOption: PicMusicOption,
     private val cisteActivity: CisteActivity,
 ) : Scene {
     private var mediaPlayer: MediaPlayer? = null
@@ -24,25 +23,33 @@ class PicMusicScene(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         val util = Util(cisteActivity.packageName)
-        musicName?.apply {
+        picMusicOption.musicName?.apply {
             mediaPlayer =
                 MediaPlayer.create(cisteActivity, util.getUri(this))
 
         }
-        mediaPlayer?.apply { isLooping = loopMusic }
+        mediaPlayer?.apply { isLooping = picMusicOption.loopMusic }
         cisteActivity.setContentView(R.layout.view_pic_music)
+        cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         cisteActivity.findViewById<ImageView>(R.id.imageView).apply {
-            setImageURI(util.getUri(imageName))
-            setOnTouchListener(TouchScreen(cisteActivity,mediaPlayer))
-            }
+            setImageURI(util.getUri(picMusicOption.imageName))
+            setOnTouchListener(TouchScreen(picMusicOption.nextScene, cisteActivity, mediaPlayer))
         }
+    }
 
 
-    class TouchScreen(private val cisteActivity: CisteActivity, private val mediaPlayer: MediaPlayer?):View.OnTouchListener {
+    class TouchScreen(
+        private val nextScene: Int,
+        private val cisteActivity: CisteActivity,
+        private val mediaPlayer: MediaPlayer?
+    ) : View.OnTouchListener {
 
         override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-            mediaPlayer?.stop()
-            cisteActivity.setScene(1)
+            if (event?.action == MotionEvent.ACTION_DOWN) {
+                mediaPlayer?.stop()
+                cisteActivity.setScene(nextScene)
+
+            }
             return true
         }
     }
