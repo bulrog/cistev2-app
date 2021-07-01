@@ -23,7 +23,7 @@ class PicMusicScene(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         val util = Util(cisteActivity.packageName)
-        picMusicOption.musicName?.apply {
+        picMusicOption.musicName.apply {
             mediaPlayer =
                 MediaPlayer.create(cisteActivity, util.getUri(this))
 

@@ -1,0 +1,28 @@
+{
+  "starting": 1,
+  "scenes": [
+    {
+      "sceneId": 1,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "start_screen",
+        "musicName": "audio",
+        "loopMusic": true,
+        "nextScene": 2
+      }
+    },
+    {
+      "sceneId": 2,
+      "sceneType": "video",
+      "options": {
+        "videoName": "trial",
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 3,
+      "sceneType": "exit",
+      "options": {}
+    }
+  ]
+}
