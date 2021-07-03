@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import org.opencv.android.OpenCVLoader
+import java.lang.IllegalArgumentException
 
 
 class CisteActivity : AppCompatActivity() {
@@ -32,6 +33,7 @@ class CisteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
         loadGameData()
         initOpenCV()
 
@@ -53,13 +55,15 @@ class CisteActivity : AppCompatActivity() {
 
     fun setScene(sceneId: Int) {
         currentScene?.apply { lifecycle.removeObserver(this) }
-        //TODO: to add if multiple matches to throw an error
-        //TODO: to review how to manage error handling on activity level
-        val sceneData=gameData.scenes.find { it.sceneId==sceneId }
-        //TODO: review if null how to manage:
-        when (sceneData!!.sceneType) {
+        val sceneDataMatches=gameData.scenes.filter { it.sceneId==sceneId }
+        if (sceneDataMatches.size>1){
+            throw IllegalArgumentException("for scene $sceneId we have more than one match in the game data $gameData")
+        }
+        val sceneData= sceneDataMatches.getOrNull(0)
+        when (sceneData?.sceneType) {
             SceneType.video -> {
-                //TODO: revioew if get null how to handle it, same for the other one (PicMusicScene):
+//                Integer.parseInt("sjbbdhcbdc");
+                //TODO: review if get null how to handle it, same for the other one (PicMusicScene):
                 val options=mapper.treeToValue<VideoOption>(sceneData.options)
                 currentScene = VideoScene(options!!, this)
             }
@@ -71,6 +75,9 @@ class CisteActivity : AppCompatActivity() {
                 val options=mapper.treeToValue<PicMusicOption>(sceneData.options)
                 currentScene = PicMusicScene(options!!, this)
 
+            }
+            null -> {
+                throw IllegalAccessException("the scene id:$sceneId does not exist in the game data:$gameData")
             }
         }
         lifecycle.addObserver(currentScene!!)

@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_treasure"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ciste2dot0">
-        <activity android:name=".CisteActivity"
+        <activity
+            android:name=".CisteActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
