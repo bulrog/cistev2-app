@@ -15,18 +15,22 @@ import com.fasterxml.jackson.module.kotlin.treeToValue
 
 
 class CisteActivity : AppCompatActivity() {
-    private var currentScene: LifecycleObserver? = null;
+    private var currentScene: LifecycleObserver? = null
     private lateinit var gameData:GameData
     private val mapper=ObjectMapper()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private fun loadGameData(){
         mapper.registerModule(KotlinModule())
         val ios= resources.openRawResource(R.raw.game)
         gameData = mapper.readValue(
             ios,
             GameData::class.java
         )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loadGameData()
         if (currentScene == null) {
             setScene(gameData.starting)
         }
