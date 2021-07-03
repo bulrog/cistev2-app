@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleObserver
 import com.bulrog59.ciste2dot0.gamedata.GameData
+import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.bulrog59.ciste2dot0.scenes.PicMusicOption
 import com.bulrog59.ciste2dot0.scenes.PicMusicScene
 import com.bulrog59.ciste2dot0.scenes.VideoOption
@@ -15,21 +16,19 @@ import com.fasterxml.jackson.module.kotlin.treeToValue
 
 class CisteActivity : AppCompatActivity() {
     private var currentScene: LifecycleObserver? = null;
+    private lateinit var gameData:GameData
+    private val mapper=ObjectMapper()
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        val mapper = ObjectMapper()
         mapper.registerModule(KotlinModule())
         val ios= resources.openRawResource(R.raw.game)
-        //TODO: to be continued:
-        val gameData = mapper.readValue(
+        gameData = mapper.readValue(
             ios,
             GameData::class.java
         )
-        val picMusicOption=mapper.treeToValue<PicMusicOption>(gameData.scenes[0].options)
-
-
         super.onCreate(savedInstanceState)
         if (currentScene == null) {
-            setScene(3)
+            setScene(gameData.starting)
         }
 
 
@@ -37,16 +36,23 @@ class CisteActivity : AppCompatActivity() {
 
     fun setScene(sceneId: Int) {
         currentScene?.apply { lifecycle.removeObserver(this) }
-        when (sceneId) {
-            1 -> {
-                currentScene = VideoScene(VideoOption("trial", 2), this)
+        //TODO: to add if multiple matches to throw an error
+        //TODO: to review how to manage error handling on activity level
+        val sceneData=gameData.scenes.find { it.sceneId==sceneId }
+        //TODO: review if null how to manage:
+        when (sceneData!!.sceneType) {
+            SceneType.video -> {
+                //TODO: revioew if get null how to handle it, same for the other one (PicMusicScene):
+                val options=mapper.treeToValue<VideoOption>(sceneData.options)
+                currentScene = VideoScene(options!!, this)
             }
-            2 -> {
+            SceneType.exit -> {
                 finish()
                 System.exit(0)
             }
-            3 -> {
-                currentScene = PicMusicScene(PicMusicOption("start_screen", "audio", true, 1), this)
+            SceneType.picMusic -> {
+                val options=mapper.treeToValue<PicMusicOption>(sceneData.options)
+                currentScene = PicMusicScene(options!!, this)
 
             }
         }
