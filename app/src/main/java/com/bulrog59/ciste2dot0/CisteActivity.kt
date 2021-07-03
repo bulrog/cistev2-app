@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleObserver
 import com.bulrog59.ciste2dot0.gamedata.GameData
@@ -12,6 +13,7 @@ import com.bulrog59.ciste2dot0.scenes.VideoScene
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue
+import org.opencv.android.OpenCVLoader
 
 
 class CisteActivity : AppCompatActivity() {
@@ -31,11 +33,22 @@ class CisteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loadGameData()
+        initOpenCV()
+
         if (currentScene == null) {
             setScene(gameData.starting)
         }
 
 
+    }
+
+    private fun initOpenCV() {
+        //TODO: manage correctly errors:
+        if (OpenCVLoader.initDebug()) {
+            Log.d("check", "openCV ok")
+        } else {
+            Log.d("check", "openCV not ok")
+        }
     }
 
     fun setScene(sceneId: Int) {
