@@ -62,7 +62,7 @@ class CisteActivity : AppCompatActivity() {
         val sceneData= sceneDataMatches.getOrNull(0)
         when (sceneData?.sceneType) {
             SceneType.video -> {
-//                Integer.parseInt("sjbbdhcbdc");
+                Integer.parseInt("sjbbdhcbdc");
                 //TODO: review if get null how to handle it, same for the other one (PicMusicScene):
                 val options=mapper.treeToValue<VideoOption>(sceneData.options)
                 currentScene = VideoScene(options!!, this)

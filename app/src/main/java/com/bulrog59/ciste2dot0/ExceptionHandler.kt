@@ -6,17 +6,16 @@ import android.os.Build
 import android.os.Process
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.lang.Character.LINE_SEPARATOR
 
 
 class ExceptionHandler(private val myContext: Activity) : Thread.UncaughtExceptionHandler {
+
+    val LINE_SEPARATOR='\n'
 
     override fun uncaughtException(t: Thread, exception: Throwable) {
         val stackTrace = StringWriter()
         exception.printStackTrace(PrintWriter(stackTrace))
         val errorReport = StringBuilder()
-        errorReport.append("************ CAUSE OF ERROR ************\n\n")
-        errorReport.append(stackTrace.toString())
 
         errorReport.append("\n************ DEVICE INFORMATION ***********\n")
         errorReport.append("Brand: ")
@@ -44,6 +43,9 @@ class ExceptionHandler(private val myContext: Activity) : Thread.UncaughtExcepti
         errorReport.append("Incremental: ")
         errorReport.append(Build.VERSION.INCREMENTAL)
         errorReport.append(LINE_SEPARATOR)
+        errorReport.append("************ CAUSE OF ERROR ************\n\n")
+        errorReport.append(stackTrace.toString())
+
 
         val intent = Intent(myContext, CrashActivity::class.java)
         intent.putExtra("error", errorReport.toString())
