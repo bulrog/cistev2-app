@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Process
+import com.bulrog59.ciste2dot0.CrashActivity.Companion.ERROR
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -48,7 +49,7 @@ class ExceptionHandler(private val myContext: Activity) : Thread.UncaughtExcepti
 
 
         val intent = Intent(myContext, CrashActivity::class.java)
-        intent.putExtra("error", errorReport.toString())
+        intent.putExtra(ERROR, errorReport.toString())
         myContext.startActivity(intent)
 
         Process.killProcess(Process.myPid())
