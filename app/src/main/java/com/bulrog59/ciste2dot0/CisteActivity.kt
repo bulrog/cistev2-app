@@ -1,15 +1,19 @@
 package com.bulrog59.ciste2dot0
 
+import android.Manifest
 import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleObserver
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
+import com.bulrog59.ciste2dot0.scenes.DetectorScene
 import com.bulrog59.ciste2dot0.scenes.PicMusicScene
 import com.bulrog59.ciste2dot0.scenes.VideoScene
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -23,6 +27,31 @@ class CisteActivity : AppCompatActivity() {
     private lateinit var gameData: GameData
     private val mapper = ObjectMapper()
 
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(
+            baseContext, it
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (!allPermissionsGranted()) {
+
+
+                Toast.makeText(
+                    this,
+                    "Permissions not granted by the user.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                finish()
+            }
+        }
+    }
+
     private fun loadGameData() {
         mapper.registerModule(KotlinModule())
         val ios = resources.openRawResource(R.raw.game)
@@ -32,14 +61,24 @@ class CisteActivity : AppCompatActivity() {
         )
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
+        reviewPermissions()
         loadGameData()
         initOpenCV()
 
         if (currentScene == null) {
             setScene(gameData.starting)
+        }
+    }
+
+    private fun reviewPermissions() {
+        if (!allPermissionsGranted()) {
+            ActivityCompat.requestPermissions(
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+            )
         }
     }
 
@@ -88,11 +127,18 @@ class CisteActivity : AppCompatActivity() {
                 currentScene = loadScene(::PicMusicScene, mapper, sceneData, this)
 
             }
+            SceneType.detector -> {
+                currentScene = loadScene(::DetectorScene, mapper, sceneData, this)
+            }
             null -> {
                 throw IllegalAccessException("the scene id:$sceneId does not exist in the game data:$gameData")
             }
         }
         lifecycle.addObserver(currentScene!!)
+    }
 
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 }

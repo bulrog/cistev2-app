@@ -1,5 +1,5 @@
 {
-  "starting": 1,
+  "starting": 4,
   "scenes": [
     {
       "sceneId": 1,
@@ -23,6 +23,15 @@
       "sceneId": 3,
       "sceneType": "exit",
       "options": {}
+    },
+    {
+      "sceneId": 4,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "start_screen": 3
+        }
+      }
     }
   ]
 }

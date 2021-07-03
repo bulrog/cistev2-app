@@ -19,7 +19,6 @@ class PicMusicScene(
     private var mediaPlayer: MediaPlayer? = null
     private var position = 0
 
-    @SuppressLint("ClickableViewAccessibility")
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         val util = Util(cisteActivity.packageName)
