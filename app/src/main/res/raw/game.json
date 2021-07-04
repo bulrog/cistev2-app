@@ -29,7 +29,7 @@
       "sceneType": "detector",
       "options": {
         "pic2Scene": {
-          "start_screen": 3
+          "detector": 1
         }
       }
     }

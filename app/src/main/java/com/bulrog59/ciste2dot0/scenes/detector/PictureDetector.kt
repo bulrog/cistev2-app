@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
+import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
 import org.opencv.android.Utils
 import org.opencv.core.Core
@@ -15,11 +16,13 @@ import org.opencv.core.MatOfByte
 import org.opencv.imgcodecs.Imgcodecs
 
 class PictureDetector(
-    private val textToUpdate: TextView,
-    private val context: AppCompatActivity
+    detectorOption: DetectorOption,
+    private val cisteActivity: CisteActivity
 ) : ImageAnalysis.Analyzer {
     var capture: Boolean = false
-    val featureMatching = FeatureMatching()
+    val featureMatching = FeatureMatching(detectorOption,cisteActivity)
+
+
 
     @SuppressLint("UnsafeOptInUsageError")
     fun getPicture(imageProxy: ImageProxy): Mat {
@@ -50,17 +53,21 @@ class PictureDetector(
 
 
         val img = getPicture(imageProxy)
-        if (capture) {
+        val result=featureMatching.featureMatching(img)
+        /*if (capture) {
             val objectWithKp=featureMatching.setImageObject(img)
             capture=false
             val bmp = Bitmap.createBitmap(objectWithKp.cols(), objectWithKp.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(objectWithKp, bmp);
-            context.runOnUiThread {
-                context.findViewById<ImageView>(R.id.imageMinion).setImageBitmap(bmp)
+            cisteActivity.runOnUiThread {
+                cisteActivity.findViewById<ImageView>(R.id.imageMinion).setImageBitmap(bmp)
             }
 
         } else {
-            featureMatching.featureMatching(img, textToUpdate)
+            featureMatching.featureMatching(img, cisteActivity.findViewById(R.id.maximumFound))
+        }*/
+        if (result>0){
+            cisteActivity.setScene(result)
         }
 
         imageProxy.close()

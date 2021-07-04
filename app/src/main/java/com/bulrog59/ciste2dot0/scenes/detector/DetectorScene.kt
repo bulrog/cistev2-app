@@ -1,7 +1,6 @@
 package com.bulrog59.ciste2dot0.scenes.detector
 
 import android.widget.Button
-import android.widget.TextView
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -24,7 +23,7 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
         cameraExecutor = Executors.newSingleThreadExecutor()
         val cameraProviderFuture = ProcessCameraProvider.getInstance(cisteActivity)
 
-        cameraProviderFuture.addListener(Runnable {
+        cameraProviderFuture.addListener( {
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
             val preview = Preview.Builder()
@@ -33,8 +32,7 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
                     it.setSurfaceProvider(cisteActivity.findViewById<PreviewView>(R.id.viewFinder).surfaceProvider)
                 }
 
-            val textToUpdate = cisteActivity.findViewById<TextView>(R.id.maximumFound)
-            val picDetector = PictureDetector(textToUpdate, cisteActivity)
+            val picDetector = PictureDetector(detectorOption,cisteActivity)
             // Set up the listener for take photo button
             cisteActivity.findViewById<Button>(R.id.camera_capture_button)
                 .setOnClickListener { picDetector.takePhoto() }
