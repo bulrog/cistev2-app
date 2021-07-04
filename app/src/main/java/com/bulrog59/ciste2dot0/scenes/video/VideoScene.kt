@@ -1,4 +1,4 @@
-package com.bulrog59.ciste2dot0.scenes
+package com.bulrog59.ciste2dot0.scenes.video
 
 import android.content.pm.ActivityInfo
 import android.widget.MediaController
@@ -8,8 +8,10 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.Util
+import com.bulrog59.ciste2dot0.scenes.Scene
 
-class VideoScene(private val videoOption: VideoOption, private val cisteActivity: CisteActivity): Scene {
+class VideoScene(private val videoOption: VideoOption, private val cisteActivity: CisteActivity):
+    Scene {
     private lateinit var videoView: VideoView
     private lateinit var mediaController: MediaController
     private var position=0

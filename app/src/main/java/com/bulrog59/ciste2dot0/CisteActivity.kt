@@ -13,9 +13,9 @@ import androidx.lifecycle.LifecycleObserver
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
-import com.bulrog59.ciste2dot0.scenes.DetectorScene
-import com.bulrog59.ciste2dot0.scenes.PicMusicScene
-import com.bulrog59.ciste2dot0.scenes.VideoScene
+import com.bulrog59.ciste2dot0.scenes.detector.DetectorScene
+import com.bulrog59.ciste2dot0.scenes.pic.PicMusicScene
+import com.bulrog59.ciste2dot0.scenes.video.VideoScene
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue

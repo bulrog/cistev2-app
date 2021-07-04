@@ -1,6 +1,5 @@
-package com.bulrog59.ciste2dot0.scenes
+package com.bulrog59.ciste2dot0.scenes.pic
 
-import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.media.MediaPlayer
 import android.view.MotionEvent
@@ -11,6 +10,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.Util
+import com.bulrog59.ciste2dot0.scenes.Scene
 
 class PicMusicScene(
     private val picMusicOption: PicMusicOption,
