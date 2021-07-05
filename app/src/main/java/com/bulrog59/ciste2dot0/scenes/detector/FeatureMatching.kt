@@ -74,7 +74,7 @@ class FeatureMatching {
     private fun matchOnEntry(
         detectorImage: DetectorReference,
         detectorRef: DetectorReference
-    ): Boolean {
+    ): Int {
         val matcher = DescriptorMatcher.create(DescriptorMatcher.FLANNBASED)
         val knnMatches: List<MatOfDMatch> = ArrayList()
         matcher.knnMatch(
@@ -96,20 +96,7 @@ class FeatureMatching {
         //TODO: review when multiple pictures as score will move fast:
 
 
-        updateUI = listOfGoodMatches.size < 100
-
-        if (updateUI) {
-            //TODO: also make app crash when switch scene as this one still update in parallel
-            cisteActivity.runOnUiThread {
-                cisteActivity.findViewById<TextView>(R.id.maximumFound)
-                    .setText("Matching:${listOfGoodMatches.size}")
-            }
-            return false
-        }
-
-        return true
-
-
+        return listOfGoodMatches.size
     }
 
     fun featureMatching(
@@ -119,9 +106,22 @@ class FeatureMatching {
         val descriptorsScene = Mat()
         sift.detectAndCompute(imgScene, Mat(), keypointsScene, descriptorsScene)
         val detectorReference = DetectorReference(imgScene, keypointsScene, descriptorsScene)
+        var max = 0
         for ((d, s) in pic2Scene) {
-            if (matchOnEntry(detectorReference, d)) {
+            val actual = matchOnEntry(detectorReference, d)
+            if (actual > max) {
+                max = actual
+            }
+            if (max > 100) {
+                //avoid crash of app due to shutdown of scene while other one is loading:
+                updateUI = false
                 return s
+            }
+        }
+        if (updateUI) {
+            cisteActivity.runOnUiThread {
+                cisteActivity.findViewById<TextView>(R.id.maximumFound)
+                    .setText("Matching:${max}")
             }
         }
         return -1
