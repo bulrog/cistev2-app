@@ -10,6 +10,7 @@ import org.opencv.core.*
 import org.opencv.features2d.*
 import org.opencv.imgcodecs.Imgcodecs
 import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -17,6 +18,7 @@ class FeatureMatching {
     private val pic2Scene = HashMap<DetectorReference, Int>()
     private val sift = SIFT.create()
     private lateinit var cisteActivity: CisteActivity
+    private var updateUI = true
 
 
     inline fun <reified T : Class<*>> T.getId(resourceName: String): Int {
@@ -43,6 +45,10 @@ class FeatureMatching {
             val keypointsObject = MatOfKeyPoint()
             val descriptorsObject = Mat()
             sift.detectAndCompute(img, Mat(), keypointsObject, descriptorsObject)
+            if (keypointsObject.height() == 0) {
+                throw IllegalStateException("the picture:${it.key} does not have key points found so it cannot be used")
+            }
+
             pic2Scene.put(DetectorReference(img, keypointsObject, descriptorsObject), it.value)
         }
 
@@ -88,17 +94,20 @@ class FeatureMatching {
             }
         }
         //TODO: review when multiple pictures as score will move fast:
-        //TODO: also make app crash when switch scene as this one still update in parallel
-//        cisteActivity.runOnUiThread {
-//            cisteActivity.findViewById<TextView>(R.id.maximumFound).setText("Matching:${listOfGoodMatches.size}")
 
-//        }
 
-        if (listOfGoodMatches.size > 100) {
-            return true
+        updateUI = listOfGoodMatches.size < 100
+
+        if (updateUI) {
+            //TODO: also make app crash when switch scene as this one still update in parallel
+            cisteActivity.runOnUiThread {
+                cisteActivity.findViewById<TextView>(R.id.maximumFound)
+                    .setText("Matching:${listOfGoodMatches.size}")
+            }
+            return false
         }
 
-        return false
+        return true
 
 
     }
@@ -116,12 +125,6 @@ class FeatureMatching {
             }
         }
         return -1
-
-
-        //TODO: to review
-        /*if (keypointsObject.height() == 0) {
-            return
-        }*/
 
 
     }
