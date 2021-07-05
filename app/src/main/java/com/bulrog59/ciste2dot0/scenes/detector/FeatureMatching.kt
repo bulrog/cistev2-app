@@ -9,20 +9,30 @@ import com.bulrog59.ciste2dot0.Util
 import org.opencv.core.*
 import org.opencv.features2d.*
 import org.opencv.imgcodecs.Imgcodecs
+import java.lang.IllegalArgumentException
 import java.util.*
 import kotlin.collections.ArrayList
 
 class FeatureMatching {
     private val pic2Scene = HashMap<DetectorReference, Int>()
     private val sift = SIFT.create()
-    private lateinit var cisteActivity:CisteActivity
+    private lateinit var cisteActivity: CisteActivity
 
+
+    inline fun <reified T : Class<*>> T.getId(resourceName: String): Int {
+        return try {
+            val idField = getDeclaredField(resourceName)
+            idField.getInt(idField)
+        } catch (e: Exception) {
+            throw IllegalArgumentException("the picture to match with name $resourceName does not exist!")
+        }
+
+    }
 
     constructor(detectorOption: DetectorOption, cisteActivity: CisteActivity) {
         detectorOption.pic2Scene.map {
-            //TODO: replace resource name with string from app:
-            this.cisteActivity=cisteActivity
-            val ios=cisteActivity.resources.openRawResource(R.raw.detector)
+            this.cisteActivity = cisteActivity
+            val ios = cisteActivity.resources.openRawResource(R.raw::class.java.getId(it.key))
             val targetArray = ByteArray(ios.available())
 
             ios.read(targetArray)
@@ -55,10 +65,18 @@ class FeatureMatching {
 
     }*/
 
-    private fun matchOnEntry(detectorImage: DetectorReference,detectorRef: DetectorReference):Boolean{
+    private fun matchOnEntry(
+        detectorImage: DetectorReference,
+        detectorRef: DetectorReference
+    ): Boolean {
         val matcher = DescriptorMatcher.create(DescriptorMatcher.FLANNBASED)
         val knnMatches: List<MatOfDMatch> = ArrayList()
-        matcher.knnMatch(detectorImage.descriptorsObject, detectorRef.descriptorsObject, knnMatches, 2)
+        matcher.knnMatch(
+            detectorImage.descriptorsObject,
+            detectorRef.descriptorsObject,
+            knnMatches,
+            2
+        )
         val ratioThresh = 0.75f
         val listOfGoodMatches: MutableList<DMatch> = ArrayList()
         for (i in knnMatches.indices) {
@@ -76,7 +94,7 @@ class FeatureMatching {
 
 //        }
 
-        if (listOfGoodMatches.size>100){
+        if (listOfGoodMatches.size > 100) {
             return true
         }
 
@@ -91,9 +109,9 @@ class FeatureMatching {
         val keypointsScene = MatOfKeyPoint()
         val descriptorsScene = Mat()
         sift.detectAndCompute(imgScene, Mat(), keypointsScene, descriptorsScene)
-        val detectorReference=DetectorReference(imgScene,keypointsScene,descriptorsScene)
-        for ((d,s) in pic2Scene){
-            if (matchOnEntry(detectorReference,d)){
+        val detectorReference = DetectorReference(imgScene, keypointsScene, descriptorsScene)
+        for ((d, s) in pic2Scene) {
+            if (matchOnEntry(detectorReference, d)) {
                 return s
             }
         }
