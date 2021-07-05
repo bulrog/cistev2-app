@@ -12,8 +12,10 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.scenes.Scene
+import java.lang.IllegalStateException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: CisteActivity) : Scene {
 
@@ -23,7 +25,7 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
         cameraExecutor = Executors.newSingleThreadExecutor()
         val cameraProviderFuture = ProcessCameraProvider.getInstance(cisteActivity)
 
-        cameraProviderFuture.addListener( {
+        cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
             val preview = Preview.Builder()
@@ -32,7 +34,7 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
                     it.setSurfaceProvider(cisteActivity.findViewById<PreviewView>(R.id.viewFinder).surfaceProvider)
                 }
 
-            val picDetector = PictureDetector(detectorOption,cisteActivity)
+            val picDetector = PictureDetector(detectorOption, cisteActivity, this)
             // Set up the listener for take photo button
             cisteActivity.findViewById<Button>(R.id.camera_capture_button)
                 .setOnClickListener { picDetector.takePhoto() }
@@ -63,6 +65,16 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
         cisteActivity.setContentView(R.layout.view_camera)
         startCamera()
 
+    }
+
+    fun stopAndSetScene(sceneID: Int) {
+        cameraExecutor.shutdown()
+        if (cameraExecutor.awaitTermination(2, TimeUnit.SECONDS)) {
+            System.out.println("task completed");
+        } else {
+            throw IllegalStateException("cannot shutdown the camera executor, please inform the developer")
+        }
+        cisteActivity.setScene(sceneID)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

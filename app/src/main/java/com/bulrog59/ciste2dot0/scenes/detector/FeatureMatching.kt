@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.scenes.detector
 
-import android.os.Environment
+import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
@@ -14,13 +15,19 @@ import kotlin.collections.ArrayList
 class FeatureMatching {
     private val pic2Scene = HashMap<DetectorReference, Int>()
     private val sift = SIFT.create()
+    private lateinit var cisteActivity:CisteActivity
 
 
     constructor(detectorOption: DetectorOption, cisteActivity: CisteActivity) {
         detectorOption.pic2Scene.map {
-            //TODO: cannot read the image so to review the read raw resource:
-            cisteActivity.resources.openRawResource(R.raw.detector)
-            val img = Imgcodecs.imread(Util(cisteActivity.packageName).getUri(it.key).toString(),Imgcodecs.IMREAD_COLOR)
+            //TODO: replace resource name with string from app:
+            this.cisteActivity=cisteActivity
+            val ios=cisteActivity.resources.openRawResource(R.raw.detector)
+            val targetArray = ByteArray(ios.available())
+
+            ios.read(targetArray)
+            ios.close()
+            val img = Imgcodecs.imdecode(MatOfByte(*targetArray), Imgcodecs.IMREAD_UNCHANGED)
 
 
             val keypointsObject = MatOfKeyPoint()
@@ -62,6 +69,13 @@ class FeatureMatching {
                 }
             }
         }
+        //TODO: review when multiple pictures as score will move fast:
+        //TODO: also make app crash when switch scene as this one still update in parallel
+//        cisteActivity.runOnUiThread {
+//            cisteActivity.findViewById<TextView>(R.id.maximumFound).setText("Matching:${listOfGoodMatches.size}")
+
+//        }
+
         if (listOfGoodMatches.size>100){
             return true
         }

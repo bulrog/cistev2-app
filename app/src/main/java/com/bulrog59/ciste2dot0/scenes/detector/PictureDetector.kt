@@ -14,16 +14,18 @@ import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.MatOfByte
 import org.opencv.imgcodecs.Imgcodecs
+import java.util.concurrent.ExecutorService
 
 class PictureDetector(
     detectorOption: DetectorOption,
-    private val cisteActivity: CisteActivity
+    private val cisteActivity: CisteActivity,
+    private val detectorScene: DetectorScene
 ) : ImageAnalysis.Analyzer {
-    var capture: Boolean = false
-    val featureMatching = FeatureMatching(detectorOption,cisteActivity)
+    private var capture: Boolean = false
+    private val featureMatching = FeatureMatching(detectorOption,cisteActivity)
 
 
-
+    //TODO: review how to remove this lint:
     @SuppressLint("UnsafeOptInUsageError")
     fun getPicture(imageProxy: ImageProxy): Mat {
         //TODO: review how to manage if format is not ok:
@@ -51,7 +53,6 @@ class PictureDetector(
 
     override fun analyze(imageProxy: ImageProxy) {
 
-
         val img = getPicture(imageProxy)
         val result=featureMatching.featureMatching(img)
         /*if (capture) {
@@ -67,7 +68,10 @@ class PictureDetector(
             featureMatching.featureMatching(img, cisteActivity.findViewById(R.id.maximumFound))
         }*/
         if (result>0){
-            cisteActivity.setScene(result)
+            cisteActivity.runOnUiThread {
+                detectorScene.stopAndSetScene(result)
+            }
+
         }
 
         imageProxy.close()
