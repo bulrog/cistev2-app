@@ -3,6 +3,7 @@ package com.bulrog59.ciste2dot0.scenes.detector
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.Environment
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -59,11 +60,15 @@ class PictureDetector(
         if (capture) {
             capture = false
             val fileName = UUID.randomUUID().toString()
-            Imgcodecs.imwrite(cisteActivity.filesDir.resolve(fileName + ".jpg").absolutePath, img)
+            //TODO: review as deprecated:
+            val dir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + "/"
+
+            Imgcodecs.imwrite("$dir$fileName.jpg", img)
             val out = Mat()
             val kpSize = featureMatching.giveImageWithKp(img, out)
             Imgcodecs.imwrite(
-                cisteActivity.filesDir.resolve(fileName + "_" + kpSize + "KP.jpg").absolutePath,
+                "$dir$fileName"+"_"+"$kpSize.jpg",
                 out
             )
         }
