@@ -24,7 +24,7 @@ class PictureDetector(
     private val detectorScene: DetectorScene
 ) : ImageAnalysis.Analyzer {
     private var capture: Boolean = false
-    private val featureMatching = FeatureMatching(detectorOption,cisteActivity)
+    private val featureMatching = FeatureMatching(detectorOption, cisteActivity)
 
 
     //TODO: review how to remove this lint:
@@ -48,35 +48,27 @@ class PictureDetector(
 
     fun takePhoto() {
         if (detectorOption.allow_capture)
-        capture = true
+            capture = true
     }
-
-
 
 
     override fun analyze(imageProxy: ImageProxy) {
 
         val img = getPicture(imageProxy)
-        val result=featureMatching.featureMatching(img)
-        if (capture){
-            val bmp = Bitmap.createBitmap(img.cols(), img.rows(), Bitmap.Config.ARGB_8888);
-            //TODO: get file name and then use imwrite:
-//            Imgcodecs.imwrite(cisteActivity.openFileOutput(UUID.randomUUID().toString()+".jpg", Context.MODE_PRIVATE), img)
-
+        val result = featureMatching.featureMatching(img)
+        if (capture) {
+            capture = false
+            val fileName = UUID.randomUUID().toString()
+            Imgcodecs.imwrite(cisteActivity.filesDir.resolve(fileName + ".jpg").absolutePath, img)
+            val out = Mat()
+            val kpSize = featureMatching.giveImageWithKp(img, out)
+            Imgcodecs.imwrite(
+                cisteActivity.filesDir.resolve(fileName + "_" + kpSize + "KP.jpg").absolutePath,
+                out
+            )
         }
-        /*if (capture) {
-            val objectWithKp=featureMatching.setImageObject(img)
-            capture=false
-            val bmp = Bitmap.createBitmap(objectWithKp.cols(), objectWithKp.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(objectWithKp, bmp);
-            cisteActivity.runOnUiThread {
-                cisteActivity.findViewById<ImageView>(R.id.imageMinion).setImageBitmap(bmp)
-            }
 
-        } else {
-            featureMatching.featureMatching(img, cisteActivity.findViewById(R.id.maximumFound))
-        }*/
-        if (result>0){
+        if (result > 0) {
             cisteActivity.runOnUiThread {
                 detectorScene.stopAndSetScene(result)
             }

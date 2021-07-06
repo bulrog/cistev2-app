@@ -52,21 +52,12 @@ class FeatureMatching {
     }
 
 
-    /*fun setImageObject(image: Mat): Mat {
-        val downloadFolder =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + "/"
-
-        imgObject = image
-        sift.detectAndCompute(imgObject, Mat(), keypointsObject, descriptorsObject)
-        val out = Mat()
-        Features2d.drawKeypoints(imgObject, keypointsObject, out)
-        val fileName = downloadFolder + UUID.randomUUID().toString() + "_" + keypointsObject.size()
-        Imgcodecs.imwrite("$fileName.KP.jpg", out)
-
-        Imgcodecs.imwrite("$fileName.jpg", imgObject)
-        return out
-
-    }*/
+    fun giveImageWithKp(img: Mat, out: Mat): Int {
+        val kp = MatOfKeyPoint()
+        sift.detectAndCompute(img, Mat(), kp, Mat())
+        Features2d.drawKeypoints(img, kp, out)
+        return kp.height()
+    }
 
     private fun matchOnEntry(
         detectorImage: PictureDescriptors,
@@ -93,6 +84,7 @@ class FeatureMatching {
 
         return listOfGoodMatches.size
     }
+
 
     fun featureMatching(
         imgScene: Mat
