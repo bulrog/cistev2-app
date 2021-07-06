@@ -30,7 +30,8 @@
       "options": {
         "pic2Scene": {
           "detector": 1
-        }
+        },
+        "allow_capture": true
       }
     }
   ]

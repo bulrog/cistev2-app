@@ -1,11 +1,8 @@
 package com.bulrog59.ciste2dot0.scenes.detector
 
-import android.util.Log
-import android.widget.ImageView
 import android.widget.TextView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
-import com.bulrog59.ciste2dot0.Util
 import org.opencv.core.*
 import org.opencv.features2d.*
 import org.opencv.imgcodecs.Imgcodecs
@@ -15,7 +12,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class FeatureMatching {
-    private val pic2Scene = HashMap<DetectorReference, Int>()
+    private val pic2Scene = HashMap<PictureDescriptors, Int>()
     private val sift = SIFT.create()
     private lateinit var cisteActivity: CisteActivity
     private var updateUI = true
@@ -49,7 +46,7 @@ class FeatureMatching {
                 throw IllegalStateException("the picture:${it.key} does not have key points found so it cannot be used")
             }
 
-            pic2Scene.put(DetectorReference(img, keypointsObject, descriptorsObject), it.value)
+            pic2Scene.put(PictureDescriptors(img, keypointsObject, descriptorsObject), it.value)
         }
 
     }
@@ -72,8 +69,8 @@ class FeatureMatching {
     }*/
 
     private fun matchOnEntry(
-        detectorImage: DetectorReference,
-        detectorRef: DetectorReference
+        detectorImage: PictureDescriptors,
+        detectorRef: PictureDescriptors
     ): Int {
         val matcher = DescriptorMatcher.create(DescriptorMatcher.FLANNBASED)
         val knnMatches: List<MatOfDMatch> = ArrayList()
@@ -93,8 +90,6 @@ class FeatureMatching {
                 }
             }
         }
-        //TODO: review when multiple pictures as score will move fast:
-
 
         return listOfGoodMatches.size
     }
@@ -105,7 +100,7 @@ class FeatureMatching {
         val keypointsScene = MatOfKeyPoint()
         val descriptorsScene = Mat()
         sift.detectAndCompute(imgScene, Mat(), keypointsScene, descriptorsScene)
-        val detectorReference = DetectorReference(imgScene, keypointsScene, descriptorsScene)
+        val detectorReference = PictureDescriptors(imgScene, keypointsScene, descriptorsScene)
         var max = 0
         for ((d, s) in pic2Scene) {
             val actual = matchOnEntry(detectorReference, d)

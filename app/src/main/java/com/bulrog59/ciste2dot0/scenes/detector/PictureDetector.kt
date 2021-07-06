@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.scenes.detector
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,10 +15,11 @@ import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.MatOfByte
 import org.opencv.imgcodecs.Imgcodecs
+import java.util.*
 import java.util.concurrent.ExecutorService
 
 class PictureDetector(
-    detectorOption: DetectorOption,
+    private val detectorOption: DetectorOption,
     private val cisteActivity: CisteActivity,
     private val detectorScene: DetectorScene
 ) : ImageAnalysis.Analyzer {
@@ -45,6 +47,7 @@ class PictureDetector(
     }
 
     fun takePhoto() {
+        if (detectorOption.allow_capture)
         capture = true
     }
 
@@ -55,6 +58,12 @@ class PictureDetector(
 
         val img = getPicture(imageProxy)
         val result=featureMatching.featureMatching(img)
+        if (capture){
+            val bmp = Bitmap.createBitmap(img.cols(), img.rows(), Bitmap.Config.ARGB_8888);
+            //TODO: get file name and then use imwrite:
+//            Imgcodecs.imwrite(cisteActivity.openFileOutput(UUID.randomUUID().toString()+".jpg", Context.MODE_PRIVATE), img)
+
+        }
         /*if (capture) {
             val objectWithKp=featureMatching.setImageObject(img)
             capture=false

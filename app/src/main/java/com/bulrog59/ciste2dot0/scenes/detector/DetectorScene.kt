@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0.scenes.detector
 
+import android.view.View
 import android.widget.Button
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -36,8 +37,13 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
 
             val picDetector = PictureDetector(detectorOption, cisteActivity, this)
             // Set up the listener for take photo button
-            cisteActivity.findViewById<Button>(R.id.camera_capture_button)
-                .setOnClickListener { picDetector.takePhoto() }
+            val button = cisteActivity.findViewById<Button>(R.id.camera_capture_button)
+            if (detectorOption.allow_capture) {
+                button.setOnClickListener { picDetector.takePhoto() }
+
+            } else {
+                button.visibility = View.INVISIBLE
+            }
 
             val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
