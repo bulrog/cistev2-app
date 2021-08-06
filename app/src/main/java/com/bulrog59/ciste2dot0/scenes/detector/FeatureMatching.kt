@@ -6,10 +6,10 @@ import com.bulrog59.ciste2dot0.R
 import org.opencv.core.*
 import org.opencv.features2d.*
 import org.opencv.imgcodecs.Imgcodecs
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
+import org.opencv.imgproc.Imgproc
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class FeatureMatching {
     private val pic2Scene = HashMap<PictureDescriptors, Int>()
@@ -41,7 +41,7 @@ class FeatureMatching {
 
             val keypointsObject = MatOfKeyPoint()
             val descriptorsObject = Mat()
-            sift.detectAndCompute(img, Mat(), keypointsObject, descriptorsObject)
+            sift.detectAndCompute(equalizeImage(img), Mat(), keypointsObject, descriptorsObject)
             if (keypointsObject.height() == 0) {
                 throw IllegalStateException("the picture:${it.key} does not have key points found so it cannot be used")
             }
@@ -52,11 +52,21 @@ class FeatureMatching {
     }
 
 
-    fun giveImageWithKp(img: Mat, out: Mat): Int {
+
+    fun giveImageKpAmount(img: Mat, out: Mat): Int {
         val kp = MatOfKeyPoint()
-        sift.detectAndCompute(img, Mat(), kp, Mat())
+        sift.detectAndCompute(equalizeImage(img), Mat(), kp, Mat())
         Features2d.drawKeypoints(img, kp, out)
         return kp.height()
+    }
+
+    fun equalizeImage(img: Mat) :Mat {
+         val clahe = Imgproc.createCLAHE()
+        val destImage = Mat(img.height(), img.width(), CvType.CV_8UC4)
+        val imgGray=Mat()
+        Imgproc.cvtColor(img,imgGray,Imgproc.COLOR_BGR2GRAY)
+        clahe.apply(imgGray,destImage)
+        return destImage
     }
 
     private fun matchOnEntry(
@@ -91,7 +101,7 @@ class FeatureMatching {
     ): Int {
         val keypointsScene = MatOfKeyPoint()
         val descriptorsScene = Mat()
-        sift.detectAndCompute(imgScene, Mat(), keypointsScene, descriptorsScene)
+        sift.detectAndCompute(equalizeImage(imgScene), Mat(), keypointsScene, descriptorsScene)
         val detectorReference = PictureDescriptors(imgScene, keypointsScene, descriptorsScene)
         var max = 0
         for ((d, s) in pic2Scene) {

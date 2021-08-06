@@ -29,9 +29,9 @@
       "sceneType": "detector",
       "options": {
         "pic2Scene": {
-          "detector": 1
+          "detector_pic": 1
         },
-        "allow_capture": true
+        "allow_capture": false
       }
     }
   ]

@@ -1,23 +1,15 @@
 package com.bulrog59.ciste2dot0.scenes.detector
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Bitmap
 import android.os.Environment
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.bulrog59.ciste2dot0.CisteActivity
-import com.bulrog59.ciste2dot0.R
-import org.opencv.android.Utils
 import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.MatOfByte
 import org.opencv.imgcodecs.Imgcodecs
 import java.util.*
-import java.util.concurrent.ExecutorService
 
 class PictureDetector(
     private val detectorOption: DetectorOption,
@@ -66,11 +58,14 @@ class PictureDetector(
 
             Imgcodecs.imwrite("$dir$fileName.jpg", img)
             val out = Mat()
-            val kpSize = featureMatching.giveImageWithKp(img, out)
+            val kpSize = featureMatching.giveImageKpAmount(img, out)
+
             Imgcodecs.imwrite(
                 "$dir$fileName"+"_"+"$kpSize.jpg",
                 out
             )
+
+            Imgcodecs.imwrite("$dir$fileName"+"_equalize.jpg",featureMatching.equalizeImage(img))
         }
 
         if (result > 0) {
