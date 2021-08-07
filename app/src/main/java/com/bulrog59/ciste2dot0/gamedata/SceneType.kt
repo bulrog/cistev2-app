@@ -6,5 +6,6 @@ enum class SceneType {
     exit,
     detector,
     getItem,
-    ruleEngine
+    ruleEngine,
+    debug
 }

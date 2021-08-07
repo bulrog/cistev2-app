@@ -1,6 +1,11 @@
 {
-  "starting": 1,
+  "starting": 0,
   "scenes": [
+    {
+      "sceneId": 0,
+      "sceneType": "debug",
+      "options": {}
+    },
     {
       "sceneId": 1,
       "sceneType": "video",
@@ -59,7 +64,9 @@
           {
             "ruleKey": "all",
             "itemIds": [
-              1000,1001,1002
+              1000,
+              1001,
+              1002
             ],
             "nextScene": 100
           }

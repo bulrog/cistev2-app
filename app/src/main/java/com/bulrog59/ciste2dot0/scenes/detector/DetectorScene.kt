@@ -22,6 +22,8 @@ import java.util.concurrent.TimeUnit
 class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: CisteActivity) : Scene {
 
     private lateinit var cameraExecutor: ExecutorService
+    private lateinit var picDetector: PictureDetector
+
 
     private fun startCamera() {
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -36,7 +38,7 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
                     it.setSurfaceProvider(cisteActivity.findViewById<PreviewView>(R.id.viewFinder).surfaceProvider)
                 }
 
-            val picDetector = PictureDetector(detectorOption, cisteActivity, this)
+            picDetector = PictureDetector(detectorOption, cisteActivity, this)
             // Set up the listener for take photo button
             val button = cisteActivity.findViewById<Button>(R.id.camera_capture_button)
             if (detectorOption.allow_capture) {
@@ -86,7 +88,7 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun shutdown() {
+    override fun shutdown() {
         cameraExecutor.shutdown()
     }
 

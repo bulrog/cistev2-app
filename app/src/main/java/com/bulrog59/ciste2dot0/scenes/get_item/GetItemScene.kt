@@ -11,6 +11,10 @@ class GetItemScene(
 ) :
     Scene {
 
+    override fun shutdown() {
+
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun addItemToInventory() {
         cisteActivity.inventory.addItem(getItemOptions.item)

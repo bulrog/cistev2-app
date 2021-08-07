@@ -16,8 +16,6 @@ class FeatureMatching {
     private val pic2Scene = HashMap<PictureDescriptors, Int>()
     private val sift = SIFT.create()
     private lateinit var cisteActivity: CisteActivity
-    private var updateUI = true
-
 
     inline fun <reified T : Class<*>> T.getId(resourceName: String): Int {
         return try {
@@ -111,22 +109,17 @@ class FeatureMatching {
                 max = actual
             }
             if (max > 100) {
-                //avoid crash of app due to shutdown of scene while other one is loading:
-                updateUI = false
                 return s
             }
         }
-        if (updateUI) {
             cisteActivity.runOnUiThread {
                 var valueProgress=max
                 if (valueProgress>100){
                     valueProgress=100
                 }
-                cisteActivity.findViewById<ProgressBar>(R.id.detectorValue).progress = valueProgress
-                cisteActivity.findViewById<TextView>(R.id.maximumFound)
-                    .setText("Matching:${max}")
+                cisteActivity.findViewById<ProgressBar>(R.id.detectorValue)?.progress = valueProgress
+                cisteActivity.findViewById<TextView>(R.id.maximumFound)?.text="Matching:${max}"
             }
-        }
         return -1
 
 

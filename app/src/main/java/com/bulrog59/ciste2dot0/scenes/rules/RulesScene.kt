@@ -8,6 +8,10 @@ import com.bulrog59.ciste2dot0.scenes.Scene
 class RulesScene(private val rulesOptions: RulesOptions, private val cisteActivity: CisteActivity) :
     Scene {
 
+    override fun shutdown() {
+
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun verifyRules() {
         for (rule in rulesOptions.rules){

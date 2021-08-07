@@ -19,6 +19,10 @@ class PicMusicScene(
     private var mediaPlayer: MediaPlayer? = null
     private var position = 0
 
+    override fun shutdown() {
+        mediaPlayer?.stop()
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         val util = Util(cisteActivity.packageName)

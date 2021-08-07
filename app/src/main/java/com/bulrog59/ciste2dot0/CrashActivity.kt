@@ -20,9 +20,9 @@ class CrashActivity : AppCompatActivity() {
             finish()
             System.exit(0)
         }
-        findViewById<TextView>(R.id.errorDetails).apply {
-            setText(intent.getStringExtra(ERROR))
-            setMovementMethod(ScrollingMovementMethod())
+        findViewById<TextView>(R.id.debugData).apply {
+            text = intent.getStringExtra(ERROR)
+            movementMethod = ScrollingMovementMethod()
         }
 
     }

@@ -34,7 +34,9 @@ class VideoScene(private val videoOption: VideoOption, private val cisteActivity
                 mediaController.setAnchorView(videoView)
             }
 
-            mediaPlayer.setOnCompletionListener { cisteActivity.setScene(videoOption.nextScene) }
+            mediaPlayer.setOnCompletionListener {
+                shutdown()
+                cisteActivity.setScene(videoOption.nextScene) }
         }
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -46,5 +48,9 @@ class VideoScene(private val videoOption: VideoOption, private val cisteActivity
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun restartVideo(){
         videoView.seekTo(position)
+    }
+
+    override fun shutdown() {
+        videoView.stopPlayback()
     }
 }

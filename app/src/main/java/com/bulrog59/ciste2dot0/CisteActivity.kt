@@ -14,6 +14,8 @@ import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Inventory
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
+import com.bulrog59.ciste2dot0.scenes.Scene
+import com.bulrog59.ciste2dot0.scenes.debug.DebugScene
 import com.bulrog59.ciste2dot0.scenes.detector.DetectorScene
 import com.bulrog59.ciste2dot0.scenes.get_item.GetItemScene
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicScene
@@ -26,7 +28,7 @@ import org.opencv.android.OpenCVLoader
 
 
 class CisteActivity : AppCompatActivity() {
-    private var currentScene: LifecycleObserver? = null
+    private var currentScene: Scene? = null
     private lateinit var gameData: GameData
     private val mapper = ObjectMapper()
     val inventory = Inventory()
@@ -65,6 +67,18 @@ class CisteActivity : AppCompatActivity() {
         )
     }
 
+    fun gameDataToString(): String {
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(gameData)
+    }
+
+    fun inventoryToString(): String {
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(inventory)
+    }
+
+
+    override fun onBackPressed() {
+        setScene(0)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +127,10 @@ class CisteActivity : AppCompatActivity() {
     }
 
     fun setScene(sceneId: Int) {
-        currentScene?.apply { lifecycle.removeObserver(this) }
+        currentScene?.apply {
+            lifecycle.removeObserver(this)
+            shutdown()
+        }
         val sceneDataMatches = gameData.scenes.filter { it.sceneId == sceneId }
         if (sceneDataMatches.size > 1) {
             throw IllegalArgumentException("for scene $sceneId we have more than one match in the game data $gameData")
@@ -140,10 +157,14 @@ class CisteActivity : AppCompatActivity() {
             SceneType.ruleEngine -> {
                 currentScene = loadScene(::RulesScene, mapper, sceneData, this)
             }
+            SceneType.debug -> {
+                currentScene = loadScene(::DebugScene, mapper, sceneData, this)
+            }
             null -> {
                 throw IllegalAccessException("the scene id:$sceneId does not exist in the game data:$gameData")
             }
         }
+
         lifecycle.addObserver(currentScene!!)
     }
 
