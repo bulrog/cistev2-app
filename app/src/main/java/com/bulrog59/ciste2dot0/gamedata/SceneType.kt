@@ -4,5 +4,7 @@ enum class SceneType {
     picMusic,
     video,
     exit,
-    detector
+    detector,
+    getItem,
+    ruleEngine
 }

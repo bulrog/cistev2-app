@@ -11,10 +11,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleObserver
 import com.bulrog59.ciste2dot0.gamedata.GameData
+import com.bulrog59.ciste2dot0.gamedata.Inventory
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.bulrog59.ciste2dot0.scenes.detector.DetectorScene
+import com.bulrog59.ciste2dot0.scenes.get_item.GetItemScene
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicScene
+import com.bulrog59.ciste2dot0.scenes.rules.RulesScene
 import com.bulrog59.ciste2dot0.scenes.video.VideoScene
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -26,6 +29,7 @@ class CisteActivity : AppCompatActivity() {
     private var currentScene: LifecycleObserver? = null
     private lateinit var gameData: GameData
     private val mapper = ObjectMapper()
+    val inventory = Inventory()
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
@@ -129,6 +133,12 @@ class CisteActivity : AppCompatActivity() {
             }
             SceneType.detector -> {
                 currentScene = loadScene(::DetectorScene, mapper, sceneData, this)
+            }
+            SceneType.getItem -> {
+                currentScene = loadScene(::GetItemScene, mapper, sceneData, this)
+            }
+            SceneType.ruleEngine -> {
+                currentScene = loadScene(::RulesScene, mapper, sceneData, this)
             }
             null -> {
                 throw IllegalAccessException("the scene id:$sceneId does not exist in the game data:$gameData")

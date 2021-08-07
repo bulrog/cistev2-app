@@ -1,37 +1,63 @@
 {
-  "starting": 4,
+  "starting": 1,
   "scenes": [
     {
-      "sceneId": 1,
+      "sceneId": 100,
       "sceneType": "picMusic",
       "options": {
         "imageName": "start_screen",
         "musicName": "audio",
         "loopMusic": true,
+        "nextScene": 101
+      }
+    },
+    {
+      "sceneId": 1,
+      "sceneType": "video",
+      "options": {
+        "videoName": "trial",
         "nextScene": 2
       }
     },
     {
-      "sceneId": 2,
-      "sceneType": "video",
-      "options": {
-        "videoName": "trial",
-        "nextScene": 3
-      }
-    },
-    {
-      "sceneId": 3,
+      "sceneId": 101,
       "sceneType": "exit",
       "options": {}
     },
     {
-      "sceneId": 4,
+      "sceneId": 2,
       "sceneType": "detector",
       "options": {
         "pic2Scene": {
-          "detector_pic": 1
+          "detector_pic": 10
         },
-        "allow_capture": false
+        "allow_capture": true
+      }
+    },
+    {
+      "sceneId": 10,
+      "sceneType": "getItem",
+      "options": {
+        "item": {
+          "id": 1000
+        },
+        "nextScene": 99
+      }
+    },
+    {
+      "sceneId": 99,
+      "sceneType": "ruleEngine",
+      "options": {
+        "rules": [
+          {
+            "ruleKey": "all",
+            "itemIds": [
+              1000
+            ],
+            "nextScene": 100
+          }
+        ],
+        "defaultScene": 2
       }
     }
   ]
