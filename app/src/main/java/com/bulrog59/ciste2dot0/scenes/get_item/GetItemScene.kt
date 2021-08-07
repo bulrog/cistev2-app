@@ -13,10 +13,7 @@ class GetItemScene(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun addItemToInventory() {
-        val itemId=getItemOptions.item.id
-        if (!cisteActivity.inventory.contains(listOf(itemId))){
-            cisteActivity.inventory.addItem(getItemOptions.item)
-        }
+        cisteActivity.inventory.addItem(getItemOptions.item)
         cisteActivity.setScene(getItemOptions.nextScene)
     }
 }

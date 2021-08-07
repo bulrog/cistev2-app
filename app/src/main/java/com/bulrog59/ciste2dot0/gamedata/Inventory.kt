@@ -3,10 +3,10 @@ package com.bulrog59.ciste2dot0.gamedata
 import java.util.*
 
 class Inventory {
-    private val items = mutableListOf<Item>()
+    private val items = mutableSetOf<Item>()
 
     fun addItem(item: Item) {
-        items.add(item)
+            items.add(item)
     }
 
     fun contains(ids: List<Int>):Boolean{
@@ -17,7 +17,7 @@ class Inventory {
         val itemIds=items.map { it.id }
         Collections.sort(itemIds)
         Collections.sort(ids)
-        return ids.equals(itemIds)
+        return ids == itemIds
     }
 
 

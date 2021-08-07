@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0.scenes.detector
 
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
@@ -117,6 +118,11 @@ class FeatureMatching {
         }
         if (updateUI) {
             cisteActivity.runOnUiThread {
+                var valueProgress=max
+                if (valueProgress>100){
+                    valueProgress=100
+                }
+                cisteActivity.findViewById<ProgressBar>(R.id.detectorValue).progress = valueProgress
                 cisteActivity.findViewById<TextView>(R.id.maximumFound)
                     .setText("Matching:${max}")
             }

@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0.scenes.detector
 
+import android.content.pm.ActivityInfo
 import android.view.View
 import android.widget.Button
 import androidx.camera.core.CameraSelector
@@ -69,6 +70,7 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         cisteActivity.setContentView(R.layout.view_camera)
+        cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         startCamera()
 
     }
