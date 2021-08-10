@@ -10,7 +10,7 @@
       "sceneId": 1,
       "sceneType": "video",
       "options": {
-        "videoName": "trial",
+        "videoName": "intro",
         "nextScene": 2
       }
     },
@@ -88,6 +88,15 @@
       "sceneId": 101,
       "sceneType": "exit",
       "options": {}
+    },
+    {
+      "sceneId": 1000,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+        },
+        "allow_capture": true
+      }
     }
   ]
 }

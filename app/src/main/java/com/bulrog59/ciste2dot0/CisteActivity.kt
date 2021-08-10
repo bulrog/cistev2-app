@@ -72,7 +72,7 @@ class CisteActivity : AppCompatActivity() {
     }
 
     fun inventoryToString(): String {
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(inventory)
+        return inventory.toString()
     }
 
 

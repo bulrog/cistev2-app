@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 class FeatureMatching {
     private val pic2Scene = HashMap<PictureDescriptors, Int>()
     private val sift = SIFT.create()
-    private lateinit var cisteActivity: CisteActivity
+    private val cisteActivity: CisteActivity
 
     inline fun <reified T : Class<*>> T.getId(resourceName: String): Int {
         return try {
@@ -28,8 +28,9 @@ class FeatureMatching {
     }
 
     constructor(detectorOption: DetectorOption, cisteActivity: CisteActivity) {
+        this.cisteActivity = cisteActivity
         detectorOption.pic2Scene.map {
-            this.cisteActivity = cisteActivity
+
             val ios = cisteActivity.resources.openRawResource(R.raw::class.java.getId(it.key))
             val targetArray = ByteArray(ios.available())
 

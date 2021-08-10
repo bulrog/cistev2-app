@@ -20,5 +20,9 @@ class Inventory {
         return ids == itemIds
     }
 
+    override fun toString():String{
+        return items.toString()
+    }
+
 
 }
