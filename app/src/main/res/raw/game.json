@@ -1,10 +1,21 @@
 {
   "starting": 0,
+
   "scenes": [
     {
-      "sceneId": 0,
+      "sceneId": -99,
       "sceneType": "debug",
       "options": {}
+    },
+    {
+      "sceneId": 0,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "splash_screen",
+        "musicName": "beetlejuice_theme",
+        "loopMusic": true,
+        "nextScene": 1
+      }
     },
     {
       "sceneId": 1,
