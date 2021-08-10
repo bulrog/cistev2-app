@@ -73,6 +73,24 @@
         "item": {
           "id": 1001
         },
+        "nextScene": 21
+      }
+    },
+    {
+      "sceneId": 21,
+      "sceneType": "video",
+      "options": {
+        "videoName": "gun_morphing",
+        "nextScene": 22
+      }
+    },
+    {
+      "sceneId": 22,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "gun_chappelle",
+        "musicName": "gun_voice",
+        "loopMusic": false,
         "nextScene": 99
       }
     },
@@ -83,6 +101,24 @@
         "item": {
           "id": 1002
         },
+        "nextScene": 31
+      }
+    },
+    {
+      "sceneId": 31,
+      "sceneType": "video",
+      "options": {
+        "videoName": "rempart_morphing",
+        "nextScene": 32
+      }
+    },
+    {
+      "sceneId": 32,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "rempart_baril",
+        "musicName": "baril_voice",
+        "loopMusic": false,
         "nextScene": 99
       }
     },
