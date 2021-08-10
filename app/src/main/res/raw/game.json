@@ -30,9 +30,10 @@
       "sceneType": "detector",
       "options": {
         "pic2Scene": {
-          "cuisine": 10,
-          "peinture_enfants": 20,
-          "photo_mur": 30
+          "vierge": 10,
+          "chappelle": 20,
+          "rempart": 30,
+          "foch": 40
         },
         "allow_capture": false
       }
@@ -44,6 +45,24 @@
         "item": {
           "id": 1000
         },
+        "nextScene": 11
+      }
+    },
+    {
+      "sceneId": 11,
+      "sceneType": "video",
+      "options": {
+        "videoName": "battery_morphing",
+        "nextScene": 12
+      }
+    },
+    {
+      "sceneId": 12,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "vierge_battery",
+        "musicName": "battery_voice",
+        "loopMusic": false,
         "nextScene": 99
       }
     },
@@ -68,6 +87,16 @@
       }
     },
     {
+      "sceneId": 40,
+      "sceneType": "getItem",
+      "options": {
+        "item": {
+          "id": 1003
+        },
+        "nextScene": 99
+      }
+    },
+    {
       "sceneId": 99,
       "sceneType": "ruleEngine",
       "options": {
@@ -77,7 +106,8 @@
             "itemIds": [
               1000,
               1001,
-              1002
+              1002,
+              1003
             ],
             "nextScene": 100
           }
