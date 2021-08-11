@@ -14,22 +14,25 @@ class RulesScene(private val rulesOptions: RulesOptions, private val cisteActivi
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun verifyRules() {
-        for (rule in rulesOptions.rules){
-            var nextScene=rulesOptions.defaultScene
-            when(rule.ruleKey){
-                RuleKey.contains-> {
-                   if (cisteActivity.inventory.contains(rule.itemIds)){
-                    nextScene=rule.nextScene
-                   }
+        var nextScene = rulesOptions.defaultScene
+        for (rule in rulesOptions.rules) {
+            when (rule.ruleKey) {
+                RuleKey.contains -> {
+                    if (cisteActivity.inventory.contains(rule.itemIds)) {
+                        nextScene = rule.nextScene
+                        break
+                    }
                 }
                 RuleKey.all -> {
-                    if (cisteActivity.inventory.all(rule.itemIds)){
-                        nextScene=rule.nextScene
+                    if (cisteActivity.inventory.all(rule.itemIds)) {
+                        nextScene = rule.nextScene
+                        break
                     }
                 }
             }
-            cisteActivity.setScene(nextScene)
+
         }
+        cisteActivity.setScene(nextScene)
     }
 
 

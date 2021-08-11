@@ -129,6 +129,14 @@
         "item": {
           "id": 1003
         },
+        "nextScene": 41
+      }
+    },
+    {
+      "sceneId": 41,
+      "sceneType": "video",
+      "options": {
+        "videoName": "jail_free",
         "nextScene": 99
       }
     },
@@ -146,6 +154,13 @@
               1003
             ],
             "nextScene": 100
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              1003
+            ],
+            "nextScene": 101
           }
         ],
         "defaultScene": 2
@@ -158,11 +173,21 @@
         "imageName": "start_screen",
         "musicName": "audio",
         "loopMusic": true,
-        "nextScene": 101
+        "nextScene": 102
       }
     },
     {
       "sceneId": 101,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "alien_pic",
+        "musicName": "manque_pieces",
+        "loopMusic": false,
+        "nextScene": 2
+      }
+    },
+    {
+      "sceneId": 102,
       "sceneType": "exit",
       "options": {}
     },
