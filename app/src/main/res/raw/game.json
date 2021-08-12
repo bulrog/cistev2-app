@@ -168,11 +168,9 @@
     },
     {
       "sceneId": 100,
-      "sceneType": "picMusic",
+      "sceneType": "video",
       "options": {
-        "imageName": "start_screen",
-        "musicName": "audio",
-        "loopMusic": true,
+        "videoName": "fin",
         "nextScene": 102
       }
     },
