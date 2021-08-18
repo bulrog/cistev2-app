@@ -20,8 +20,7 @@ class InventoryScene(val cisteActivity: CisteActivity, val inventory: Inventory)
     fun setup(){
         cisteActivity.setContentView(R.layout.inventory)
         val recyclerView=cisteActivity.findViewById<RecyclerView>(R.id.inventory)
-        recyclerView.adapter=InventoryAdapter(inventory, Util(cisteActivity.packageName))
-        recyclerView.layoutManager=LinearLayoutManager(cisteActivity)
-        recyclerView.addItemDecoration(DividerItemDecoration(cisteActivity,DividerItemDecoration.VERTICAL))
+        recyclerView.adapter=InventoryAdapter(inventory, cisteActivity)
+        recyclerView.layoutManager=StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }
 }

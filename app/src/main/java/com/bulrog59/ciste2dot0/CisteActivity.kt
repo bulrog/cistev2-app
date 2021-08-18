@@ -105,7 +105,7 @@ class CisteActivity : AppCompatActivity() {
             val builder: AlertDialog.Builder = AlertDialog.Builder(this)
             builder.setMessage("OpenCV is required to run this application and is not supported on this device!")
                 .setCancelable(false)
-                .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+                .setPositiveButton("OK", DialogInterface.OnClickListener { _, _ ->
                     finish()
                     System.exit(10)
                 }).create().show()
