@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp"
+    android:orientation="horizontal"
+    android:paddingTop="30dp"
     android:paddingBottom="10dp">
 
-    <TextView
-        android:id="@+id/itemName"
+    <ImageView
+        android:id="@+id/itemIcon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/itemDescription"
+        android:layout_width="54dp"
+        android:layout_height="108dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        />
+
+
 </LinearLayout>
