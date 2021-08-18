@@ -7,5 +7,6 @@ enum class SceneType {
     detector,
     getItem,
     ruleEngine,
-    debug
+    debug,
+    inventory
 }

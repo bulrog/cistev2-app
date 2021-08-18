@@ -197,6 +197,12 @@
         },
         "allow_capture": true
       }
+    },
+    {
+      "sceneId": 2000,
+      "sceneType": "inventory",
+      "options": {
+      }
     }
   ]
 }

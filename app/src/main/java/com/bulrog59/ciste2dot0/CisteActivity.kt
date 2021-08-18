@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleObserver
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Inventory
 import com.bulrog59.ciste2dot0.gamedata.SceneData
@@ -18,6 +17,7 @@ import com.bulrog59.ciste2dot0.scenes.Scene
 import com.bulrog59.ciste2dot0.scenes.debug.DebugScene
 import com.bulrog59.ciste2dot0.scenes.detector.DetectorScene
 import com.bulrog59.ciste2dot0.scenes.get_item.GetItemScene
+import com.bulrog59.ciste2dot0.scenes.inventory.InventoryScene
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicScene
 import com.bulrog59.ciste2dot0.scenes.rules.RulesScene
 import com.bulrog59.ciste2dot0.scenes.video.VideoScene
@@ -159,6 +159,9 @@ class CisteActivity : AppCompatActivity() {
             }
             SceneType.debug -> {
                 currentScene = loadScene(::DebugScene, mapper, sceneData, this)
+            }
+            SceneType.inventory -> {
+                currentScene=InventoryScene(this,inventory)
             }
             null -> {
                 throw IllegalAccessException("the scene id:$sceneId does not exist in the game data:$gameData")
