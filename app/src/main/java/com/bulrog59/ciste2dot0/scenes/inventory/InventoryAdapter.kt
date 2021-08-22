@@ -5,18 +5,34 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.Util
 import com.bulrog59.ciste2dot0.gamedata.Inventory
+import com.bulrog59.ciste2dot0.gamedata.Item
+import java.lang.IllegalStateException
 
-class InventoryAdapter(private val inventory: Inventory, private val cisteActivity: CisteActivity) :
+class InventoryAdapter(
+    private val inventoryOptions: InventoryOptions,
+    cisteActivity: CisteActivity,
+    inventory: Inventory
+) :
     RecyclerView.Adapter<InventoryAdapter.ViewHolder>() {
+    private val cisteActivity: CisteActivity
+    private val util: Util
+    private var firstObject: Item? = null
+    private val inventoryCopy: Inventory
 
-    val util=Util(cisteActivity.packageName)
-    var firstObject:Int?=null
+    init {
+        this.cisteActivity = cisteActivity
+        util = Util(cisteActivity.packageName)
+        inventoryCopy = inventory.copy()
+    }
+
+    fun matchOneId(combination: Combination, id: Int): Boolean {
+        return combination.id1 == id || combination.id2 == id
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
@@ -28,19 +44,50 @@ class InventoryAdapter(private val inventory: Inventory, private val cisteActivi
         }
 
         override fun onClick(v: View?) {
-            if (firstObject==null){
-                val item=inventory.getItem(adapterPosition)
-                cisteActivity.findViewById<TextView>(R.id.inventory_message).text="Please select the other item to use with:"
-                //TODO: if select an item then should remove it from the list (=> need to get a copy of the item list)
-                val itemSelected=cisteActivity.findViewById<ImageView>(R.id.itemSelected)
-                itemSelected.visibility=View.VISIBLE
-                itemSelected.setImageURI(util.getUri(item.picture))
-                firstObject=item.id
+            if (firstObject == null) {
+                setFirstObject()
+            } else {
+                resolveAction()
+
             }
-            else {
-                //TODO: add trigger of another scene
-                Toast.makeText(cisteActivity,"you use the item:",Toast.LENGTH_LONG)
+        }
+
+        private fun setFirstObject() {
+            val item = inventoryCopy.getItem(adapterPosition)
+            cisteActivity.findViewById<TextView>(R.id.inventory_message)
+                .setText(R.string.second_object_use_message)
+            val itemSelected = cisteActivity.findViewById<ImageView>(R.id.itemSelected)
+            itemSelected.visibility = View.VISIBLE
+            itemSelected.setImageURI(util.getUri(item.picture))
+            firstObject = item
+            inventoryCopy.removeItem(item.id)
+            notifyItemRemoved(adapterPosition)
+        }
+
+        private fun resolveAction() {
+            val secondObject = inventoryCopy.getItem(adapterPosition)
+            val matchingCombinations =
+                inventoryOptions.combinations.filter { matchOneId(it, firstObject!!.id) }
+                    .filter { matchOneId(it, secondObject.id) }
+            if (matchingCombinations.size > 1) {
+                throw IllegalStateException("found 2 matching combinations:${matchingCombinations} when use object: ${firstObject} with ${secondObject}, this is not allowed. Please fix the game settings.")
             }
+
+            if (!matchingCombinations.isEmpty()) {
+                cisteActivity.setScene(matchingCombinations.first().nextScene)
+                return
+            }
+
+            cisteActivity.findViewById<TextView>(R.id.inventory_message)
+                .apply { setText(R.string.invalid_combination) }
+
+
+            cisteActivity.findViewById<ImageView>(R.id.itemSelected)
+                .apply { visibility = View.GONE }
+            inventoryCopy.addItem(firstObject!!)
+            notifyDataSetChanged()
+            firstObject = null
+
         }
     }
 
@@ -52,12 +99,12 @@ class InventoryAdapter(private val inventory: Inventory, private val cisteActivi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = inventory.getItem(position)
+        val item = inventoryCopy.getItem(position)
         holder.itemName.text = item.name
         holder.itemIcon.setImageURI(util.getUri(item.picture))
     }
 
     override fun getItemCount(): Int {
-        return inventory.size()
+        return inventoryCopy.size
     }
 }

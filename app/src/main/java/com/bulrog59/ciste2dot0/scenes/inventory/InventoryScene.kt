@@ -9,7 +9,11 @@ import com.bulrog59.ciste2dot0.Util
 import com.bulrog59.ciste2dot0.gamedata.Inventory
 import com.bulrog59.ciste2dot0.scenes.Scene
 
-class InventoryScene(val cisteActivity: CisteActivity, val inventory: Inventory) : Scene{
+class InventoryScene(
+    private val inventoryOptions: InventoryOptions,
+    private val cisteActivity: CisteActivity,
+    private val inventory: Inventory
+) : Scene {
 
 
     override fun shutdown() {
@@ -17,10 +21,11 @@ class InventoryScene(val cisteActivity: CisteActivity, val inventory: Inventory)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun setup(){
+    fun setup() {
         cisteActivity.setContentView(R.layout.inventory)
-        val recyclerView=cisteActivity.findViewById<RecyclerView>(R.id.inventory)
-        recyclerView.adapter=InventoryAdapter(inventory, cisteActivity)
-        recyclerView.layoutManager=StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        val recyclerView = cisteActivity.findViewById<RecyclerView>(R.id.inventory)
+        recyclerView.adapter = InventoryAdapter(inventoryOptions, cisteActivity, inventory)
+        recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }
 }

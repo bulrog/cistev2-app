@@ -6,4 +6,6 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="inventory_title">Inventory</string>
     <string name="inventory_message_default">Select an item to use</string>
+    <string name="second_object_use_message">Please select the other item to use with:</string>
+    <string name="invalid_combination">That does not make sense!</string>
 </resources>

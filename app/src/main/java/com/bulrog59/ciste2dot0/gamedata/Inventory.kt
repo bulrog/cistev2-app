@@ -5,6 +5,8 @@ import java.util.*
 class Inventory {
     private val items = mutableListOf<Item>()
 
+    val size get() = items.size
+
     fun addItem(item: Item) {
         if (items.map { it.id }.filter { it == item.id }.isEmpty()) {
             items.add(item)
@@ -30,8 +32,14 @@ class Inventory {
         return items.get(position)
     }
 
-    fun size():Int {
-        return items.size
+    fun removeItem(id: Int) {
+        items.removeAt(items.map { it.id }.indexOf(id))
+    }
+
+    fun copy(): Inventory {
+        val inventory=Inventory()
+        items.forEach{inventory.addItem(it)}
+        return inventory
     }
 
 

@@ -210,6 +210,16 @@
       "sceneId": 2000,
       "sceneType": "inventory",
       "options": {
+        "combinations": [{
+          "id1": 1000,
+          "id2": 1001,
+          "nextScene": 2
+        },
+          {
+            "id1": 1000,
+            "id2": 1001,
+            "nextScene": 1
+          }]
       }
     }
   ]

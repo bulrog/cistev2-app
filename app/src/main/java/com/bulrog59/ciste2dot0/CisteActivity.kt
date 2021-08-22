@@ -161,7 +161,7 @@ class CisteActivity : AppCompatActivity() {
                 currentScene = loadScene(::DebugScene, mapper, sceneData, this)
             }
             SceneType.inventory -> {
-                currentScene=InventoryScene(this,inventory)
+                currentScene=InventoryScene(retrieveOption(mapper,sceneData),this,inventory)
             }
             null -> {
                 throw IllegalAccessException("the scene id:$sceneId does not exist in the game data:$gameData")
