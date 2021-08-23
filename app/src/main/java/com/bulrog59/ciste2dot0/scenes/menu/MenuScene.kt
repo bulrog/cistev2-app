@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0.scenes.menu
 
+import android.content.pm.ActivityInfo
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ class MenuScene(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         cisteActivity.setContentView(R.layout.menu)
+        cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         val recyclerView = cisteActivity.findViewById<RecyclerView>(R.id.menu)
         recyclerView.adapter = MenuAdapter(menuOptions, cisteActivity)
         recyclerView.layoutManager = LinearLayoutManager(cisteActivity)

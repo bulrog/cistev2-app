@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0.scenes.inventory
 
+import android.content.pm.ActivityInfo
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.*
@@ -23,6 +24,7 @@ class InventoryScene(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         cisteActivity.setContentView(R.layout.inventory)
+        cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         val recyclerView = cisteActivity.findViewById<RecyclerView>(R.id.inventory)
         recyclerView.adapter = InventoryAdapter(inventoryOptions, cisteActivity, inventory)
         recyclerView.layoutManager =
