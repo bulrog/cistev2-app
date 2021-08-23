@@ -78,7 +78,7 @@ class CisteActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-        setScene(DEBUG_SCENE)
+        setScene(gameData.backButtonScene)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -178,6 +178,5 @@ class CisteActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        private const val DEBUG_SCENE = -99
     }
 }

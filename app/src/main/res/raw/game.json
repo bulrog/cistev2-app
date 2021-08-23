@@ -1,8 +1,9 @@
 {
   "starting": 0,
+  "backButtonScene": 3000,
   "scenes": [
     {
-      "sceneId": -99,
+      "sceneId": 12345,
       "sceneType": "debug",
       "options": {}
     },
@@ -224,12 +225,16 @@
       "options": {
         "menuItems": [
           {
-            "buttonText": "to scene 2",
-            "nextScene": 2
+            "buttonText": "EXIT",
+            "nextScene": 102
           },
           {
-            "buttonText": " to scene 2000",
+            "buttonText": "INVENTORY",
             "nextScene": 2000
+          },
+          {
+            "buttonText": "DEBUG",
+            "nextScene": 12345
           }
         ]
       }
