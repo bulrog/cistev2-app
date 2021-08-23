@@ -15,20 +15,13 @@ import java.lang.IllegalStateException
 
 class InventoryAdapter(
     private val inventoryOptions: InventoryOptions,
-    cisteActivity: CisteActivity,
+    private val cisteActivity: CisteActivity,
     inventory: Inventory
 ) :
     RecyclerView.Adapter<InventoryAdapter.ViewHolder>() {
-    private val cisteActivity: CisteActivity
-    private val util: Util
+    private val util: Util = Util(cisteActivity.packageName)
     private var firstObject: Item? = null
-    private val inventoryCopy: Inventory
-
-    init {
-        this.cisteActivity = cisteActivity
-        util = Util(cisteActivity.packageName)
-        inventoryCopy = inventory.copy()
-    }
+    private val inventoryCopy: Inventory = inventory.copy()
 
     fun matchOneId(combination: Combination, id: Int): Boolean {
         return combination.id1 == id || combination.id2 == id
@@ -94,7 +87,7 @@ class InventoryAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val itemView = inflater.inflate(R.layout.item, parent, false)
+        val itemView = inflater.inflate(R.layout.inventory_row, parent, false)
         return ViewHolder(itemView)
     }
 

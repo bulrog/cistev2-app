@@ -18,6 +18,7 @@ import com.bulrog59.ciste2dot0.scenes.debug.DebugScene
 import com.bulrog59.ciste2dot0.scenes.detector.DetectorScene
 import com.bulrog59.ciste2dot0.scenes.get_item.GetItemScene
 import com.bulrog59.ciste2dot0.scenes.inventory.InventoryScene
+import com.bulrog59.ciste2dot0.scenes.menu.MenuScene
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicScene
 import com.bulrog59.ciste2dot0.scenes.rules.RulesScene
 import com.bulrog59.ciste2dot0.scenes.video.VideoScene
@@ -162,6 +163,9 @@ class CisteActivity : AppCompatActivity() {
             }
             SceneType.inventory -> {
                 currentScene=InventoryScene(retrieveOption(mapper,sceneData),this,inventory)
+            }
+            SceneType.menu-> {
+                currentScene = loadScene(::MenuScene, mapper, sceneData, this)
             }
             null -> {
                 throw IllegalAccessException("the scene id:$sceneId does not exist in the game data:$gameData")

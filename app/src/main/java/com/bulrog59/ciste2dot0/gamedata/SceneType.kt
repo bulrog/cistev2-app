@@ -8,5 +8,6 @@ enum class SceneType {
     getItem,
     ruleEngine,
     debug,
-    inventory
+    inventory,
+    menu
 }

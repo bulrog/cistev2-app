@@ -1,6 +1,5 @@
 {
   "starting": 0,
-
   "scenes": [
     {
       "sceneId": -99,
@@ -210,16 +209,29 @@
       "sceneId": 2000,
       "sceneType": "inventory",
       "options": {
-        "combinations": [{
-          "id1": 1000,
-          "id2": 1001,
-          "nextScene": 2
-        },
+        "combinations": [
           {
             "id1": 1000,
             "id2": 1001,
-            "nextScene": 1
-          }]
+            "nextScene": 2
+          }
+        ]
+      }
+    },
+    {
+      "sceneId": 3000,
+      "sceneType": "menu",
+      "options": {
+        "menuItems": [
+          {
+            "buttonText": "to scene 2",
+            "nextScene": 2
+          },
+          {
+            "buttonText": " to scene 2000",
+            "nextScene": 2000
+          }
+        ]
       }
     }
   ]
