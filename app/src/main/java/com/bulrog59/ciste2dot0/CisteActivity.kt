@@ -16,7 +16,7 @@ import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.bulrog59.ciste2dot0.scenes.Scene
 import com.bulrog59.ciste2dot0.scenes.debug.DebugScene
 import com.bulrog59.ciste2dot0.scenes.detector.DetectorScene
-import com.bulrog59.ciste2dot0.scenes.get_item.GetItemScene
+import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryScene
 import com.bulrog59.ciste2dot0.scenes.inventory.InventoryScene
 import com.bulrog59.ciste2dot0.scenes.menu.MenuScene
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicScene
@@ -31,7 +31,7 @@ import org.opencv.android.OpenCVLoader
 class CisteActivity : AppCompatActivity() {
     private var currentScene: Scene? = null
     private lateinit var gameData: GameData
-    private val mapper = ObjectMapper()
+    val mapper = ObjectMapper()
     val inventory = Inventory()
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -113,18 +113,16 @@ class CisteActivity : AppCompatActivity() {
         }
     }
 
-    inline fun <reified T> retrieveOption(mapper: ObjectMapper, sceneData: SceneData): T {
+    inline fun <reified T> retrieveOption(sceneData: SceneData): T {
         return mapper.treeToValue<T>(sceneData.options)
             ?: throw IllegalArgumentException("options is null and cannot for a video type for the scene: $sceneData")
     }
 
     inline fun <reified U, T> loadScene(
         createScene: (U, CisteActivity) -> T,
-        mapper: ObjectMapper,
-        sceneData: SceneData,
-        cisteActivity: CisteActivity
+        sceneData: SceneData
     ): T {
-        return createScene(retrieveOption(mapper, sceneData), cisteActivity)
+        return createScene(retrieveOption(sceneData), this)
     }
 
     fun setScene(sceneId: Int) {
@@ -139,33 +137,33 @@ class CisteActivity : AppCompatActivity() {
         val sceneData = sceneDataMatches.getOrNull(0)
         when (sceneData?.sceneType) {
             SceneType.video -> {
-                currentScene = loadScene(::VideoScene, mapper, sceneData, this)
+                currentScene = loadScene(::VideoScene, sceneData)
             }
             SceneType.exit -> {
                 finish()
                 System.exit(0)
             }
             SceneType.picMusic -> {
-                currentScene = loadScene(::PicMusicScene, mapper, sceneData, this)
+                currentScene = loadScene(::PicMusicScene, sceneData)
 
             }
             SceneType.detector -> {
-                currentScene = loadScene(::DetectorScene, mapper, sceneData, this)
+                currentScene = loadScene(::DetectorScene, sceneData)
             }
-            SceneType.getItem -> {
-                currentScene = loadScene(::GetItemScene, mapper, sceneData, this)
+            SceneType.updateInventory -> {
+                currentScene = loadScene(::UpdateInventoryScene, sceneData)
             }
             SceneType.ruleEngine -> {
-                currentScene = loadScene(::RulesScene, mapper, sceneData, this)
+                currentScene = loadScene(::RulesScene, sceneData)
             }
             SceneType.debug -> {
-                currentScene = loadScene(::DebugScene, mapper, sceneData, this)
+                currentScene = loadScene(::DebugScene, sceneData)
             }
             SceneType.inventory -> {
-                currentScene=InventoryScene(retrieveOption(mapper,sceneData),this,inventory)
+                currentScene = loadScene(::InventoryScene, sceneData)
             }
-            SceneType.menu-> {
-                currentScene = loadScene(::MenuScene, mapper, sceneData, this)
+            SceneType.menu -> {
+                currentScene = loadScene(::MenuScene, sceneData)
             }
             null -> {
                 throw IllegalAccessException("the scene id:$sceneId does not exist in the game data:$gameData")

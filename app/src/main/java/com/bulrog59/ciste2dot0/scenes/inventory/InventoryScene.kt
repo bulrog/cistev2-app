@@ -12,8 +12,7 @@ import com.bulrog59.ciste2dot0.scenes.Scene
 
 class InventoryScene(
     private val inventoryOptions: InventoryOptions,
-    private val cisteActivity: CisteActivity,
-    private val inventory: Inventory
+    private val cisteActivity: CisteActivity
 ) : Scene {
 
 
@@ -26,7 +25,7 @@ class InventoryScene(
         cisteActivity.setContentView(R.layout.inventory)
         cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         val recyclerView = cisteActivity.findViewById<RecyclerView>(R.id.inventory)
-        recyclerView.adapter = InventoryAdapter(inventoryOptions, cisteActivity, inventory)
+        recyclerView.adapter = InventoryAdapter(inventoryOptions, cisteActivity)
         recyclerView.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }

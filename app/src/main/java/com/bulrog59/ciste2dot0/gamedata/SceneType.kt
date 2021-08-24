@@ -5,7 +5,7 @@ enum class SceneType {
     video,
     exit,
     detector,
-    getItem,
+    updateInventory,
     ruleEngine,
     debug,
     inventory,
