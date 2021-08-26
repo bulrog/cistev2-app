@@ -32,3 +32,18 @@ Then take from ndk folder the shared lib and put it in the same folder (merge wi
 When starting in debug mode the console will show:
 
     D/check: openCV ok
+
+#How to setup download of data from firestore:
+
+Create a project in firebase and generate as mentioned the key to access the project. For the sake of the development just change the security rules on the store to allow everrybody to download data (as anyway I have a free account so if abuse then no issue for me). Here the rule I set:
+
+    rules_version = '2';
+    service firebase.storage {
+      match /b/{bucket}/o {
+        match /{allPaths=**} {
+        allow read;
+          
+        }
+      }
+    }
+ 
