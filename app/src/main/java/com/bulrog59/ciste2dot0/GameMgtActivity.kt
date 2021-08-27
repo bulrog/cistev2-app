@@ -1,14 +1,17 @@
 package com.bulrog59.ciste2dot0
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bulrog59.ciste2dot0.game.management.GameListAdapter
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 class GameMgtActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    fun loadFileFireStore(){
         println("trying firestore")
         val storage = Firebase.storage
         val referenceData =
@@ -19,5 +22,18 @@ class GameMgtActivity : AppCompatActivity() {
             .addOnFailureListener {
                 println("something went wrong") }
         println("done")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        setContentView(R.layout.game_management)
+        val recyclerView = findViewById<RecyclerView>(R.id.games_list)
+        recyclerView.adapter = GameListAdapter()
+        recyclerView.layoutManager =LinearLayoutManager(this)
+
+
+
     }
 }
