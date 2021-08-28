@@ -2,6 +2,7 @@ package com.bulrog59.ciste2dot0.game.management
 
 import android.content.Context
 import android.content.Intent
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,17 +44,23 @@ class GameListAdapter(private val context: Context) :
 
     }
 
+    private fun loadGame(id:UUID?){
+        gameDataLoader.loadGame(id)
+
+    }
+
     override fun onBindViewHolder(holder: GameListAdapter.ViewHolder, position: Int) {
         val game = games[position]
         holder.gameName.text = game.name
         if (game.id == null) {
-            holder.deleteButton.isEnabled = false
+            holder.deleteButton.visibility = View.INVISIBLE
         }
         if (game.id == null || gameDataLoader.gameIsAvailable(game.id)) {
             holder.loadStartButton.setText(R.string.start_game_button)
             holder.loadStartButton.setOnClickListener { startGame(game.id) }
         } else {
             holder.loadStartButton.setText(R.string.load_game_button)
+            holder.loadStartButton.setOnClickListener { loadGame(game.id) }
             holder.deleteButton.isEnabled = false
         }
     }

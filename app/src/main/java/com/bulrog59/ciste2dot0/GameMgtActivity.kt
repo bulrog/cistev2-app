@@ -13,30 +13,6 @@ import java.io.File
 
 class GameMgtActivity : AppCompatActivity() {
 
-    fun loadFileFireStore(){
-        println("trying firestore")
-        val storage = Firebase.storage
-        val referenceData =
-            storage.getReferenceFromUrl("https://firebasestorage.googleapis.com/v0/b/cistes2dot0.appspot.com/o/test.txt?alt=media&token=5cd75cda-78a6-4385-8591-10398423ac42")
-        referenceData.getBytes(1000)
-            .addOnSuccessListener {
-                println("here is the downloaded data:${String(it)}") }
-            .addOnFailureListener {
-                println("something went wrong") }
-        println("done")
-    }
-
-    fun createFile(){
-        val filename = "myfile"
-        val fileContents = "Hello world2!"
-        println(File(filesDir.absolutePath+"/"+filename).readText())
-        openFileOutput(filename, Context.MODE_PRIVATE).use {
-            it.write(fileContents.toByteArray())
-        }
-        println(File(filesDir.absolutePath+"/"+filename).readText())
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
