@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0
 
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.game.management.GameListAdapter
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import java.io.File
 
 class GameMgtActivity : AppCompatActivity() {
 
@@ -24,16 +26,25 @@ class GameMgtActivity : AppCompatActivity() {
         println("done")
     }
 
+    fun createFile(){
+        val filename = "myfile"
+        val fileContents = "Hello world2!"
+        println(File(filesDir.absolutePath+"/"+filename).readText())
+        openFileOutput(filename, Context.MODE_PRIVATE).use {
+            it.write(fileContents.toByteArray())
+        }
+        println(File(filesDir.absolutePath+"/"+filename).readText())
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         setContentView(R.layout.game_management)
         val recyclerView = findViewById<RecyclerView>(R.id.games_list)
-        recyclerView.adapter = GameListAdapter()
+        recyclerView.adapter = GameListAdapter(this)
         recyclerView.layoutManager =LinearLayoutManager(this)
-
-
 
     }
 }
