@@ -38,7 +38,7 @@ class GameListAdapter(private val context: Context) :
 
     private fun startGame(id: UUID?) {
         val intent = Intent(context, CisteActivity::class.java)
-        intent.putExtra(CisteActivity.GAME_ID, id)
+        intent.putExtra(CisteActivity.GAME_ID, id?.toString())
         context.startActivity(intent)
 
     }

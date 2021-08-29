@@ -28,7 +28,6 @@ import com.fasterxml.jackson.module.kotlin.treeToValue
 import org.opencv.android.OpenCVLoader
 import java.io.File
 import java.io.FileInputStream
-import java.util.*
 
 
 class CisteActivity : AppCompatActivity() {
@@ -88,7 +87,6 @@ class CisteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //TODO: issue when uuid passed as get a null (probably because cannot pass the uuid)
         util=Util(this.packageName, intent.getStringExtra(GAME_ID),filesDir)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
         reviewPermissions()
@@ -183,6 +181,6 @@ class CisteActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        public val GAME_ID="game_id"
+        val GAME_ID="game_id"
     }
 }

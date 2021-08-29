@@ -63,7 +63,7 @@ class GameDataManager(context: Context) {
     }
 
     companion object {
-        private val FOLDER_FOR_GAME_DATA = "/gameData/"
+        val FOLDER_FOR_GAME_DATA = "/gameData/"
         private val URL_FIRESTORE =
             "https://firebasestorage.googleapis.com/v0/b/cistes2dot0.appspot.com/o/"
     }
