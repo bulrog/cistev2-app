@@ -8,6 +8,8 @@ import org.opencv.core.*
 import org.opencv.features2d.*
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
+import java.io.File
+import java.io.FileInputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,7 +33,14 @@ class FeatureMatching {
         this.cisteActivity = cisteActivity
         detectorOption.pic2Scene.map {
 
-            val ios = cisteActivity.resources.openRawResource(R.raw::class.java.getId(it.key))
+
+            val ios = if (cisteActivity.gameId==null){
+                cisteActivity.resources.openRawResource(R.raw::class.java.getId(it.key))
+            }
+            else{
+                FileInputStream(File(cisteActivity.fileFinder.getUri(it.key).toString()))
+            }
+
             val targetArray = ByteArray(ios.available())
 
             ios.read(targetArray)

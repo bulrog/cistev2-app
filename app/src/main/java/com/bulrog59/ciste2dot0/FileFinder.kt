@@ -23,7 +23,7 @@ class FileFinder(packageName: String, id: String?, localFolder: File) {
     }
 
     private fun findFileWithName(name:String):String {
-        val matchingFiles=File(rootFolder).listFiles().filter { it.name.startsWith("$name") }
+        val matchingFiles=File(rootFolder).listFiles().filter { it.name.startsWith("$name.") }
         if (matchingFiles.size!=1){
             throw IllegalStateException("cannot find a unique file in the folder$rootFolder for name:$name")
         }
