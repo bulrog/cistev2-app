@@ -48,6 +48,8 @@ class GameListAdapter(private val context: Context) :
         holder.loadStartButton.setText(R.string.load_game_button)
         holder.loadStartButton.setOnClickListener {
             gameDataLoader.loadGame(game.id) { loadedGameButtons(holder,game) }
+            holder.loadStartButton.isEnabled=false
+            holder.loadStartButton.setText(R.string.busy_game_button)
         }
         //TODO: need to change buttons to progress}
         holder.deleteButton.isEnabled = false
@@ -56,6 +58,7 @@ class GameListAdapter(private val context: Context) :
     private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
         holder.loadStartButton.setText(R.string.start_game_button)
         holder.deleteButton.isEnabled = true
+        holder.loadStartButton.isEnabled=true
         holder.deleteButton.setOnClickListener {
             gameDataLoader.eraseLocalGame(game.id)
             downloadGameButtons(holder, game)
