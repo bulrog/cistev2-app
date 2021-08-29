@@ -26,6 +26,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import org.opencv.android.OpenCVLoader
+import java.io.File
+import java.io.FileInputStream
 import java.util.*
 
 
@@ -63,7 +65,8 @@ class CisteActivity : AppCompatActivity() {
 
     private fun loadGameData() {
         mapper.registerModule(KotlinModule())
-        val ios = resources.openRawResource(R.raw.game)
+        val ios = FileInputStream(
+            File(util.getUri("game.json").toString()))
         gameData = mapper.readValue(
             ios,
             GameData::class.java
@@ -85,6 +88,7 @@ class CisteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //TODO: issue when uuid passed as get a null (probably because cannot pass the uuid)
         util=Util(this.packageName, intent.getStringExtra(GAME_ID),filesDir)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
         reviewPermissions()
