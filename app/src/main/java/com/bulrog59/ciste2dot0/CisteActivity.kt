@@ -33,9 +33,10 @@ import java.io.FileInputStream
 class CisteActivity : AppCompatActivity() {
     private var currentScene: Scene? = null
     private lateinit var gameData: GameData
-    lateinit var util: Util
+    lateinit var fileFinder: FileFinder
     val mapper = ObjectMapper()
     val inventory = Inventory()
+    var gameId: String?=null
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
@@ -64,8 +65,14 @@ class CisteActivity : AppCompatActivity() {
 
     private fun loadGameData() {
         mapper.registerModule(KotlinModule())
-        val ios = FileInputStream(
-            File(util.getUri("game.json").toString()))
+
+        val ios = if (gameId != null) {
+            FileInputStream(
+                File(fileFinder.getUri("game").toString())
+            )
+        } else {
+            resources.openRawResource(R.raw.game)
+        }
         gameData = mapper.readValue(
             ios,
             GameData::class.java
@@ -87,7 +94,8 @@ class CisteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        util=Util(this.packageName, intent.getStringExtra(GAME_ID),filesDir)
+        gameId= intent.getStringExtra(GAME_ID)
+        fileFinder = FileFinder(this.packageName, gameId, filesDir)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
         reviewPermissions()
         loadGameData()
@@ -181,6 +189,6 @@ class CisteActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        val GAME_ID="game_id"
+        val GAME_ID = "game_id"
     }
 }

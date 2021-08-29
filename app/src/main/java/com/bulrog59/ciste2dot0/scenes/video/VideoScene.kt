@@ -7,7 +7,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
-import com.bulrog59.ciste2dot0.Util
 import com.bulrog59.ciste2dot0.scenes.Scene
 
 class VideoScene(private val videoOption: VideoOption, private val cisteActivity: CisteActivity):
@@ -23,7 +22,7 @@ class VideoScene(private val videoOption: VideoOption, private val cisteActivity
         videoView =  cisteActivity.findViewById(R.id.videoView)
         mediaController= MediaController(cisteActivity)
         mediaController.setAnchorView(videoView)
-        videoView.setVideoURI (cisteActivity.util.getUri(videoOption.videoName));
+        videoView.setVideoURI (cisteActivity.fileFinder.getUri(videoOption.videoName));
         videoView.setMediaController(mediaController)
         videoView.setOnPreparedListener { mediaPlayer ->
             videoView.seekTo(position)

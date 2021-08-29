@@ -1,7 +1,17 @@
 {
-  "starting": 1,
+  "starting": 0,
   "backButtonScene": 2,
   "scenes": [
+    {
+      "sceneId": 0,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "splash_screen",
+        "musicName": "beetlejuice_theme",
+        "loopMusic": true,
+        "nextScene": 1
+      }
+    },
     {
       "sceneId": 1,
       "sceneType": "debug",
@@ -12,5 +22,6 @@
       "sceneType": "exit",
       "options": {}
     }
+
   ]
 }

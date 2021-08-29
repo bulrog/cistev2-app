@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
-import com.bulrog59.ciste2dot0.Util
 import com.bulrog59.ciste2dot0.gamedata.Inventory
 import com.bulrog59.ciste2dot0.gamedata.Item
 import java.lang.IllegalStateException
@@ -49,7 +48,7 @@ class InventoryAdapter(
                 .setText(R.string.second_object_use_message)
             val itemSelected = cisteActivity.findViewById<ImageView>(R.id.itemSelected)
             itemSelected.visibility = View.VISIBLE
-            itemSelected.setImageURI(cisteActivity.util.getUri(item.picture))
+            itemSelected.setImageURI(cisteActivity.fileFinder.getUri(item.picture))
             firstObject = item
             inventoryCopy.removeItem(item.id)
             notifyItemRemoved(adapterPosition)
@@ -92,7 +91,7 @@ class InventoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = inventoryCopy.getItem(position)
         holder.itemName.text = item.name
-        holder.itemIcon.setImageURI(cisteActivity.util.getUri(item.picture))
+        holder.itemIcon.setImageURI(cisteActivity.fileFinder.getUri(item.picture))
     }
 
     override fun getItemCount(): Int {

@@ -9,7 +9,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
-import com.bulrog59.ciste2dot0.Util
 import com.bulrog59.ciste2dot0.scenes.Scene
 
 class PicMusicScene(
@@ -27,14 +26,14 @@ class PicMusicScene(
     fun setup() {
         picMusicOption.musicName.apply {
             mediaPlayer =
-                MediaPlayer.create(cisteActivity, cisteActivity.util.getUri(this))
+                MediaPlayer.create(cisteActivity, cisteActivity.fileFinder.getUri(this))
 
         }
         mediaPlayer?.apply { isLooping = picMusicOption.loopMusic }
         cisteActivity.setContentView(R.layout.view_pic_music)
         cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         cisteActivity.findViewById<ImageView>(R.id.imageView).apply {
-            setImageURI(cisteActivity.util.getUri(picMusicOption.imageName))
+            setImageURI(cisteActivity.fileFinder.getUri(picMusicOption.imageName))
             setOnTouchListener(TouchScreen(picMusicOption.nextScene, cisteActivity, mediaPlayer))
         }
     }

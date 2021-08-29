@@ -6,8 +6,6 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.*
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
-import com.bulrog59.ciste2dot0.Util
-import com.bulrog59.ciste2dot0.gamedata.Inventory
 import com.bulrog59.ciste2dot0.scenes.Scene
 
 class InventoryScene(
