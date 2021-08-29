@@ -44,9 +44,27 @@ class GameListAdapter(private val context: Context) :
 
     }
 
-    private fun loadGame(id:UUID?){
+    private fun loadGame(id: UUID?) {
         gameDataLoader.loadGame(id)
 
+    }
+
+    private fun downloadGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
+        holder.loadStartButton.setText(R.string.load_game_button)
+        holder.loadStartButton.setOnClickListener {
+            loadGame(game.id)
+            //TODO: need to change buttons to progress}
+            holder.deleteButton.isEnabled = false
+        }
+    }
+
+    private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
+        holder.loadStartButton.setText(R.string.start_game_button)
+        holder.deleteButton.setOnClickListener {
+            gameDataLoader.eraseLocalGame(game.id)
+            downloadGameButtons(holder, game)
+        }
+        holder.loadStartButton.setOnClickListener { startGame(game.id) }
     }
 
     override fun onBindViewHolder(holder: GameListAdapter.ViewHolder, position: Int) {
@@ -56,12 +74,10 @@ class GameListAdapter(private val context: Context) :
             holder.deleteButton.visibility = View.INVISIBLE
         }
         if (game.id == null || gameDataLoader.gameIsAvailable(game.id)) {
-            holder.loadStartButton.setText(R.string.start_game_button)
-            holder.loadStartButton.setOnClickListener { startGame(game.id) }
+            loadedGameButtons(holder, game)
+
         } else {
-            holder.loadStartButton.setText(R.string.load_game_button)
-            holder.loadStartButton.setOnClickListener { loadGame(game.id) }
-            holder.deleteButton.isEnabled = false
+            downloadGameButtons(holder, game)
         }
     }
 

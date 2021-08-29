@@ -1,8 +1,6 @@
 package com.bulrog59.ciste2dot0.game.management
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
@@ -30,13 +28,30 @@ class GameDataLoader(private val context: Context) {
 
     }
 
+    private fun deleteRecursive(fileOrDirectory: File) {
+        if (fileOrDirectory.isDirectory) for (child in fileOrDirectory.listFiles()) deleteRecursive(
+            child
+        )
+        fileOrDirectory.delete()
+    }
+
+    fun eraseLocalGame(id:UUID?){
+        if (id==null|| !gameIsAvailable(id)){
+            return
+        }
+
+        deleteRecursive(File("$folderGame$id"))
+
+    }
+
     private fun loadFileFireStore(id: UUID) {
+        val localZipFile=File("$folderGame$id.zip")
         val referenceData =
             storage.getReferenceFromUrl("$URL_FIRESTORE$id.zip")
-        referenceData.getFile(File("$folderGame$id.zip"))
+        referenceData.getFile(localZipFile)
             .addOnSuccessListener {
-                //TODO: unzip the file in a folder
-                println("the file is downloaded, now need to unzip it")
+                UnzipUtils.unzip(localZipFile,"$folderGame$id")
+                localZipFile.delete()
             }
             .addOnFailureListener {
                 //TODO: add toast message and put download button back
