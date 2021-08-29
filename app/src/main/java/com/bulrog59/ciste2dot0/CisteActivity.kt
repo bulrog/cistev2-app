@@ -26,11 +26,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import org.opencv.android.OpenCVLoader
+import java.util.*
 
 
 class CisteActivity : AppCompatActivity() {
     private var currentScene: Scene? = null
     private lateinit var gameData: GameData
+    lateinit var util: Util
     val mapper = ObjectMapper()
     val inventory = Inventory()
 
@@ -83,6 +85,7 @@ class CisteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        util=Util(this.packageName, intent.getStringExtra(GAME_ID),filesDir)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
         reviewPermissions()
         loadGameData()
@@ -176,5 +179,6 @@ class CisteActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        public val GAME_ID="game_id"
     }
 }

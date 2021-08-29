@@ -18,7 +18,6 @@ class InventoryAdapter(
     private val cisteActivity: CisteActivity
 ) :
     RecyclerView.Adapter<InventoryAdapter.ViewHolder>() {
-    private val util: Util = Util(cisteActivity.packageName)
     private var firstObject: Item? = null
     private val inventoryCopy: Inventory = cisteActivity.inventory.copy()
 
@@ -50,7 +49,7 @@ class InventoryAdapter(
                 .setText(R.string.second_object_use_message)
             val itemSelected = cisteActivity.findViewById<ImageView>(R.id.itemSelected)
             itemSelected.visibility = View.VISIBLE
-            itemSelected.setImageURI(util.getUri(item.picture))
+            itemSelected.setImageURI(cisteActivity.util.getUri(item.picture))
             firstObject = item
             inventoryCopy.removeItem(item.id)
             notifyItemRemoved(adapterPosition)
@@ -93,7 +92,7 @@ class InventoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = inventoryCopy.getItem(position)
         holder.itemName.text = item.name
-        holder.itemIcon.setImageURI(util.getUri(item.picture))
+        holder.itemIcon.setImageURI(cisteActivity.util.getUri(item.picture))
     }
 
     override fun getItemCount(): Int {

@@ -25,17 +25,16 @@ class PicMusicScene(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
-        val util = Util(cisteActivity.packageName)
         picMusicOption.musicName.apply {
             mediaPlayer =
-                MediaPlayer.create(cisteActivity, util.getUri(this))
+                MediaPlayer.create(cisteActivity, cisteActivity.util.getUri(this))
 
         }
         mediaPlayer?.apply { isLooping = picMusicOption.loopMusic }
         cisteActivity.setContentView(R.layout.view_pic_music)
         cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         cisteActivity.findViewById<ImageView>(R.id.imageView).apply {
-            setImageURI(util.getUri(picMusicOption.imageName))
+            setImageURI(cisteActivity.util.getUri(picMusicOption.imageName))
             setOnTouchListener(TouchScreen(picMusicOption.nextScene, cisteActivity, mediaPlayer))
         }
     }

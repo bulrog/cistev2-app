@@ -2,7 +2,6 @@ package com.bulrog59.ciste2dot0.game.management
 
 import android.content.Context
 import android.content.Intent
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +9,18 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.CisteActivity
-import com.bulrog59.ciste2dot0.CrashActivity
 import com.bulrog59.ciste2dot0.R
 import java.util.*
+
 
 class GameListAdapter(private val context: Context) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
     private val games: List<Game> = listOf(
-        Game("Alien rescue", null),
-        Game("Lutchi s'est echappé!", UUID.fromString("d2194327-184f-4270-ba2b-001b610186a6"))
+        Game("Alien rescue", UUID.fromString("d2194327-184f-4270-ba2b-001b610186a6")),
+        Game("Lutchi s'est echappé!", null)
     )
 
-    private val gameDataLoader = GameDataLoader(context)
+    private val gameDataLoader = GameDataManager(context)
 
 
     inner class ViewHolder(gameDetail: View) : RecyclerView.ViewHolder(gameDetail) {
@@ -39,26 +38,31 @@ class GameListAdapter(private val context: Context) :
 
     private fun startGame(id: UUID?) {
         val intent = Intent(context, CisteActivity::class.java)
-        intent.putExtra("GAME_ID", id)
+        intent.putExtra(CisteActivity.GAME_ID, id)
         context.startActivity(intent)
 
     }
 
+
     private fun downloadGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
         holder.loadStartButton.setText(R.string.load_game_button)
         holder.loadStartButton.setOnClickListener {
-            gameDataLoader.loadGame(game.id) { loadedGameButtons(holder,game) }
-            holder.loadStartButton.isEnabled=false
+            gameDataLoader.loadGame(game.id,
+                { transfer, total ->
+                    val loadingMessage = context.resources.getString(R.string.busy_game_button)
+                    holder.loadStartButton.text =
+                        "$loadingMessage (" + "%.1f".format(transfer * 100.0f / total) + "%)"
+                }) { loadedGameButtons(holder, game) }
+            holder.loadStartButton.isEnabled = false
             holder.loadStartButton.setText(R.string.busy_game_button)
         }
-        //TODO: need to change buttons to progress}
         holder.deleteButton.isEnabled = false
     }
 
     private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
         holder.loadStartButton.setText(R.string.start_game_button)
         holder.deleteButton.isEnabled = true
-        holder.loadStartButton.isEnabled=true
+        holder.loadStartButton.isEnabled = true
         holder.deleteButton.setOnClickListener {
             gameDataLoader.eraseLocalGame(game.id)
             downloadGameButtons(holder, game)

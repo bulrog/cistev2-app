@@ -7,7 +7,7 @@ import java.io.File
 import java.nio.file.Files
 import java.util.*
 
-class GameDataLoader(private val context: Context) {
+class GameDataManager(context: Context) {
     private val folderGame = context.filesDir.absolutePath + FOLDER_FOR_GAME_DATA
     private val storage = Firebase.storage
 
@@ -17,14 +17,14 @@ class GameDataLoader(private val context: Context) {
         return folderForGameData.exists() && folderForGameData.isDirectory
     }
 
-    fun loadGame(id: UUID?,onSuccessAction:()-> Unit) {
+    fun loadGame(id: UUID?,callOnProgress: (transferBytes:Long, totalBytes: Long)-> Unit,onSuccessAction:()-> Unit) {
         if (id == null || gameIsAvailable(id)) {
             return
         }
         if (!File(folderGame).exists()){
             Files.createDirectory(File(folderGame).toPath())
         }
-        loadFileFireStore(id,onSuccessAction)
+        loadFileFireStore(id,callOnProgress,onSuccessAction)
 
     }
 
@@ -44,7 +44,7 @@ class GameDataLoader(private val context: Context) {
 
     }
 
-    private fun loadFileFireStore(id: UUID, callOnSuccess:()-> Unit) {
+    private fun loadFileFireStore(id: UUID, callOnProgress: (transferBytes:Long, totalBytes: Long)-> Unit,callOnSuccess:()-> Unit) {
         val localZipFile=File("$folderGame$id.zip")
         val referenceData =
             storage.getReferenceFromUrl("$URL_FIRESTORE$id.zip")
@@ -54,6 +54,8 @@ class GameDataLoader(private val context: Context) {
                 localZipFile.delete()
                 callOnSuccess()
             }
+            .addOnProgressListener {
+                callOnProgress(it.bytesTransferred,it.totalByteCount) }
             .addOnFailureListener {
                 //TODO: add toast message and put download button back
                 println("something went wrong")

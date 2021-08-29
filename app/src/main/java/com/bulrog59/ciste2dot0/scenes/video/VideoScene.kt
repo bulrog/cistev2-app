@@ -23,7 +23,7 @@ class VideoScene(private val videoOption: VideoOption, private val cisteActivity
         videoView =  cisteActivity.findViewById(R.id.videoView)
         mediaController= MediaController(cisteActivity)
         mediaController.setAnchorView(videoView)
-        videoView.setVideoURI (Util(cisteActivity.packageName).getUri(videoOption.videoName));
+        videoView.setVideoURI (cisteActivity.util.getUri(videoOption.videoName));
         videoView.setMediaController(mediaController)
         videoView.setOnPreparedListener { mediaPlayer ->
             videoView.seekTo(position)
