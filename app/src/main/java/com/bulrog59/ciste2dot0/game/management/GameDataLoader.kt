@@ -17,14 +17,14 @@ class GameDataLoader(private val context: Context) {
         return folderForGameData.exists() && folderForGameData.isDirectory
     }
 
-    fun loadGame(id: UUID?) {
+    fun loadGame(id: UUID?,onSuccessAction:()-> Unit) {
         if (id == null || gameIsAvailable(id)) {
             return
         }
         if (!File(folderGame).exists()){
             Files.createDirectory(File(folderGame).toPath())
         }
-        loadFileFireStore(id)
+        loadFileFireStore(id,onSuccessAction)
 
     }
 
@@ -44,7 +44,7 @@ class GameDataLoader(private val context: Context) {
 
     }
 
-    private fun loadFileFireStore(id: UUID) {
+    private fun loadFileFireStore(id: UUID, callOnSuccess:()-> Unit) {
         val localZipFile=File("$folderGame$id.zip")
         val referenceData =
             storage.getReferenceFromUrl("$URL_FIRESTORE$id.zip")
@@ -52,6 +52,7 @@ class GameDataLoader(private val context: Context) {
             .addOnSuccessListener {
                 UnzipUtils.unzip(localZipFile,"$folderGame$id")
                 localZipFile.delete()
+                callOnSuccess()
             }
             .addOnFailureListener {
                 //TODO: add toast message and put download button back
