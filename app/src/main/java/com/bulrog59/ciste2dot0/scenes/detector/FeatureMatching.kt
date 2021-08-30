@@ -8,8 +8,6 @@ import org.opencv.core.*
 import org.opencv.features2d.*
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
-import java.io.File
-import java.io.FileInputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -19,27 +17,14 @@ class FeatureMatching {
     private val sift = SIFT.create()
     private val cisteActivity: CisteActivity
 
-    inline fun <reified T : Class<*>> T.getId(resourceName: String): Int {
-        return try {
-            val idField = getDeclaredField(resourceName)
-            idField.getInt(idField)
-        } catch (e: Exception) {
-            throw IllegalArgumentException("the picture to match with name $resourceName does not exist!")
-        }
 
-    }
 
     constructor(detectorOption: DetectorOption, cisteActivity: CisteActivity) {
         this.cisteActivity = cisteActivity
         detectorOption.pic2Scene.map {
 
 
-            val ios = if (cisteActivity.gameId==null){
-                cisteActivity.resources.openRawResource(R.raw::class.java.getId(it.key))
-            }
-            else{
-                FileInputStream(File(cisteActivity.fileFinder.getUri(it.key).toString()))
-            }
+            val ios = cisteActivity.resourceFinder.getStreamFromUri(it.key)
 
             val targetArray = ByteArray(ios.available())
 

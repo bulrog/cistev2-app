@@ -26,14 +26,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import org.opencv.android.OpenCVLoader
-import java.io.File
-import java.io.FileInputStream
 
 
 class CisteActivity : AppCompatActivity() {
     private var currentScene: Scene? = null
     private lateinit var gameData: GameData
-    lateinit var fileFinder: FileFinder
+    lateinit var resourceFinder: ResourceFinder
     val mapper = ObjectMapper()
     val inventory = Inventory()
     var gameId: String?=null
@@ -66,13 +64,8 @@ class CisteActivity : AppCompatActivity() {
     private fun loadGameData() {
         mapper.registerModule(KotlinModule())
 
-        val ios = if (gameId != null) {
-            FileInputStream(
-                File(fileFinder.getUri("game").toString())
-            )
-        } else {
-            resources.openRawResource(R.raw.game)
-        }
+        val ios = resourceFinder.getStreamFromUri(GAME_RESOURCE_NAME)
+
         gameData = mapper.readValue(
             ios,
             GameData::class.java
@@ -95,7 +88,7 @@ class CisteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         gameId= intent.getStringExtra(GAME_ID)
-        fileFinder = FileFinder(this.packageName, gameId, filesDir)
+        resourceFinder = ResourceFinder(this, gameId, filesDir)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
         reviewPermissions()
         loadGameData()
@@ -190,5 +183,6 @@ class CisteActivity : AppCompatActivity() {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         val GAME_ID = "game_id"
+        val GAME_RESOURCE_NAME="game"
     }
 }

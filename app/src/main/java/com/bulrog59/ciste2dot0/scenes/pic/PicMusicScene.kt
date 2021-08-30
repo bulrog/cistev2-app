@@ -26,14 +26,14 @@ class PicMusicScene(
     fun setup() {
         picMusicOption.musicName.apply {
             mediaPlayer =
-                MediaPlayer.create(cisteActivity, cisteActivity.fileFinder.getUri(this))
+                MediaPlayer.create(cisteActivity, cisteActivity.resourceFinder.getUri(this))
 
         }
         mediaPlayer?.apply { isLooping = picMusicOption.loopMusic }
         cisteActivity.setContentView(R.layout.view_pic_music)
         cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         cisteActivity.findViewById<ImageView>(R.id.imageView).apply {
-            setImageURI(cisteActivity.fileFinder.getUri(picMusicOption.imageName))
+            setImageURI(cisteActivity.resourceFinder.getUri(picMusicOption.imageName))
             setOnTouchListener(TouchScreen(picMusicOption.nextScene, cisteActivity, mediaPlayer))
         }
     }
