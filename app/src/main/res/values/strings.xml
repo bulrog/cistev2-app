@@ -13,4 +13,7 @@
     <string name="load_game_button">Download</string>
     <string name="start_game_button">Start</string>
     <string name="busy_game_button">Loading...</string>
+    <string name="confirmation">Yes</string>
+    <string name="denial">No</string>
+    <string name="delete_game_message">Are you sure you want to delete this game?</string>
 </resources>

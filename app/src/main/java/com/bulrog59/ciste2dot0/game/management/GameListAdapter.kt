@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0.game.management
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -59,15 +60,32 @@ class GameListAdapter(private val context: Context) :
         holder.deleteButton.isEnabled = false
     }
 
+
     private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
         holder.loadStartButton.setText(R.string.start_game_button)
         holder.deleteButton.isEnabled = true
         holder.loadStartButton.isEnabled = true
         holder.deleteButton.setOnClickListener {
-            gameDataLoader.eraseLocalGame(game.id)
-            downloadGameButtons(holder, game)
+            deletionWithConfirmation(game, holder)
         }
         holder.loadStartButton.setOnClickListener { startGame(game.id) }
+    }
+
+    private fun deletionWithConfirmation(
+        game: Game,
+        holder: ViewHolder
+    ) {
+        AlertDialog.Builder(context)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setMessage(context.resources.getString(R.string.delete_game_message))
+            .setPositiveButton(
+                context.resources.getString(R.string.confirmation)
+            ) { _, _ ->
+                gameDataLoader.eraseLocalGame(game.id)
+                downloadGameButtons(holder, game)
+            }
+            .setNegativeButton(context.resources.getString(R.string.denial), null)
+            .show()
     }
 
     override fun onBindViewHolder(holder: GameListAdapter.ViewHolder, position: Int) {
