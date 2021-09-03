@@ -113,7 +113,7 @@ class FeatureMatching {
                     valueProgress=100
                 }
                 cisteActivity.findViewById<ProgressBar>(R.id.detectorValue)?.progress = valueProgress
-                cisteActivity.findViewById<TextView>(R.id.maximumFound)?.text="Matching:${max}"
+                cisteActivity.findViewById<TextView>(R.id.maximumFound)?.text="${cisteActivity.resources.getText(R.string.matching_text)}:${max}"
             }
         return -1
 

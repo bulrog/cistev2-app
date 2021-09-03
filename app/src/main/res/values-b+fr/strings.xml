@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ciste 2.0</string>
+    <string name="start_screen_description">Touchez pour demarrer</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="inventory_title">Inventaire</string>
+    <string name="inventory_message_default">Selectionnez un item à utiliser</string>
+    <string name="second_object_use_message">Selectionnez l\'autre item à utiliser avec</string>
+    <string name="invalid_combination">Ça n\'a aucun sens!</string>
+    <string name="game_menu">Selectionnez un jeu à jouer</string>
+    <string name="delete_game_button">Effacer</string>
+    <string name="load_game_button">Telecharger</string>
+    <string name="start_game_button">Start</string>
+    <string name="busy_game_button">Chargement...</string>
+    <string name="confirmation">Oui</string>
+    <string name="denial">Non</string>
+    <string name="delete_game_message">Êtes vous sur de vouloir effacer ce jeu?</string>
+    <string name="matching_text">Similitude</string>
+</resources>
