@@ -22,6 +22,9 @@ class GameListAdapter(private val context: Context) :
     )
 
     private val gameDataLoader = GameDataManager(context)
+    init {
+        GameSearch().getGames()
+    }
 
 
     inner class ViewHolder(gameDetail: View) : RecyclerView.ViewHolder(gameDetail) {
