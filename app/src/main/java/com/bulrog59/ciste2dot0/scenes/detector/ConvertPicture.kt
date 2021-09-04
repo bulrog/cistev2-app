@@ -3,6 +3,7 @@ package com.bulrog59.ciste2dot0.scenes.detector
 import android.graphics.ImageFormat
 import android.graphics.YuvImage
 import android.media.Image
+import androidx.camera.core.ImageProxy
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 
@@ -14,12 +15,12 @@ class ConvertPicture {
         return out.toByteArray()
     }
 
-    fun YUV420toNV21(image: Image): ByteArray {
-        val crop: android.graphics.Rect = image.getCropRect()
-        val format: Int = image.getFormat()
+    fun YUV420toNV21(imageProxy: ImageProxy): ByteArray {
+        val crop: android.graphics.Rect = imageProxy.cropRect
+        val format: Int = imageProxy.format
         val width: Int = crop.width()
         val height: Int = crop.height()
-        val planes: Array<Image.Plane> = image.getPlanes()
+        val planes: Array<ImageProxy.PlaneProxy> = imageProxy.getPlanes()
         val data = ByteArray(width * height * ImageFormat.getBitsPerPixel(format) / 8)
         val rowData = ByteArray(planes[0].getRowStride())
         var channelOffset = 0
