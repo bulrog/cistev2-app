@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
@@ -19,14 +20,14 @@ class GameListAdapter(private val context: Context) :
     private var games: List<Game> = listOf()
 
     private val gameDataLoader = GameDataManager(context)
+
     init {
-        GameSearch().getGames { games=it
+        GameSearch().getGames {
+            games = it
             notifyDataSetChanged()
         }
 
     }
-
-
 
 
     inner class ViewHolder(gameDetail: View) : RecyclerView.ViewHolder(gameDetail) {
@@ -52,13 +53,22 @@ class GameListAdapter(private val context: Context) :
 
     private fun downloadGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
         holder.loadStartButton.setText(R.string.load_game_button)
+        holder.loadStartButton.isEnabled = true
         holder.loadStartButton.setOnClickListener {
             gameDataLoader.loadGame(game.id,
                 { transfer, total ->
                     val loadingMessage = context.resources.getString(R.string.busy_game_button)
                     holder.loadStartButton.text =
                         "$loadingMessage (" + "%.1f".format(transfer * 100.0f / total) + "%)"
-                }) { loadedGameButtons(holder, game) }
+                }, { e ->
+                    Toast.makeText(
+                        context,
+                        "${context.getText(R.string.error_downloading_game)}:${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    downloadGameButtons(holder, game)
+                }
+            ) { loadedGameButtons(holder, game) }
             holder.loadStartButton.isEnabled = false
             holder.loadStartButton.setText(R.string.busy_game_button)
         }

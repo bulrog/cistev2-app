@@ -17,4 +17,5 @@
     <string name="denial">No</string>
     <string name="delete_game_message">Are you sure you want to delete this game?</string>
     <string name="matching_text">Matching</string>
+    <string name="error_downloading_game">Error to download the game</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.bulrog59.ciste2dot0.game.management
 
 import android.content.Context
+import android.widget.Toast
+import com.bulrog59.ciste2dot0.R
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
@@ -17,16 +19,23 @@ class GameDataManager(context: Context) {
         return folderForGameData.exists() && folderForGameData.isDirectory
     }
 
-    fun loadGame(id: UUID?,callOnProgress: (transferBytes:Long, totalBytes: Long)-> Unit,onSuccessAction:()-> Unit) {
+    fun loadGame(
+        id: UUID?,
+        callOnProgress: (transferBytes: Long, totalBytes: Long) -> Unit,
+        callOnFailure: (e: Exception) -> Unit,
+        onSuccessAction: () -> Unit
+    ) {
         if (id == null || gameIsAvailable(id)) {
             return
         }
-        if (!File(folderGame).exists()){
+        if (!File(folderGame).exists()) {
             Files.createDirectory(File(folderGame).toPath())
         }
-        loadFileFireStore(id,callOnProgress,onSuccessAction)
+        loadFileFireStore(id, callOnProgress, callOnFailure ,onSuccessAction)
 
     }
+
+
 
     private fun deleteRecursive(fileOrDirectory: File) {
         if (fileOrDirectory.isDirectory) for (child in fileOrDirectory.listFiles()) deleteRecursive(
@@ -35,8 +44,8 @@ class GameDataManager(context: Context) {
         fileOrDirectory.delete()
     }
 
-    fun eraseLocalGame(id:UUID?){
-        if (id==null|| !gameIsAvailable(id)){
+    fun eraseLocalGame(id: UUID?) {
+        if (id == null || !gameIsAvailable(id)) {
             return
         }
 
@@ -44,21 +53,26 @@ class GameDataManager(context: Context) {
 
     }
 
-    private fun loadFileFireStore(id: UUID, callOnProgress: (transferBytes:Long, totalBytes: Long)-> Unit,callOnSuccess:()-> Unit) {
-        val localZipFile=File("$folderGame$id.zip")
+    private fun loadFileFireStore(
+        id: UUID,
+        callOnProgress: (transferBytes: Long, totalBytes: Long) -> Unit,
+        callOnFailure: (e: Exception) -> Unit,
+        callOnSuccess: () -> Unit
+    ) {
+        val localZipFile = File("$folderGame$id.zip")
         val referenceData =
             storage.getReferenceFromUrl("$URL_FIRESTORE$id.zip")
         referenceData.getFile(localZipFile)
             .addOnSuccessListener {
-                UnzipUtils.unzip(localZipFile,"$folderGame$id")
+                UnzipUtils.unzip(localZipFile, "$folderGame$id")
                 localZipFile.delete()
                 callOnSuccess()
             }
             .addOnProgressListener {
-                callOnProgress(it.bytesTransferred,it.totalByteCount) }
+                callOnProgress(it.bytesTransferred, it.totalByteCount)
+            }
             .addOnFailureListener {
-                //TODO: add toast message and put download button back
-                println("something went wrong")
+                callOnFailure(it)
             }
     }
 
