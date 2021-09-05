@@ -22,7 +22,13 @@ class GameListAdapter(private val context: Context) :
     private val gameDataLoader = GameDataManager(context)
 
     init {
-        GameSearch().getGames {
+        GameSearch().getGames({
+            Toast.makeText(
+                context,
+                "${context.getText(R.string.error_searching_game)}:${it.message}",
+                Toast.LENGTH_LONG
+            ).show()
+        }) {
             games = it
             notifyDataSetChanged()
         }

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="error_downloading_game">Erreur pour telecharger le jeu</string>
+    <string name="error_searching_game">Erreur pendant la recherche</string>
 </resources>

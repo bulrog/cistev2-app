@@ -23,7 +23,7 @@ class GameSearch {
         return Game(name, id)
     }
 
-    fun getGames(onSuccess:(List<Game>)-> Unit) {
+    fun getGames(onFailure:(e:Exception)-> Unit,onSuccess:(List<Game>)-> Unit) {
         val games = mutableListOf<Game>()
         db.collection("games")
             .get()
@@ -32,8 +32,7 @@ class GameSearch {
                 onSuccess(games)
             }
             .addOnFailureListener { exception ->
-                //TODO: add Toast with errors
-                println("Error getting documents.$exception")
+                onFailure(exception)
             }
     }
 
