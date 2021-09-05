@@ -16,15 +16,17 @@ import java.util.*
 
 class GameListAdapter(private val context: Context) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
-    private val games: List<Game> = listOf(
-        Game("Alien rescue", UUID.fromString("d2194327-184f-4270-ba2b-001b610186a6")),
-        Game("Lutchi s'est echappé!", null)
-    )
+    private var games: List<Game> = listOf()
 
     private val gameDataLoader = GameDataManager(context)
     init {
-        GameSearch().getGames()
+        GameSearch().getGames { games=it
+            notifyDataSetChanged()
+        }
+
     }
+
+
 
 
     inner class ViewHolder(gameDetail: View) : RecyclerView.ViewHolder(gameDetail) {
