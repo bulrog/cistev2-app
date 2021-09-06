@@ -1,12 +1,13 @@
 package com.bulrog59.ciste2dot0.game.management
 
+import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -15,17 +16,17 @@ import com.bulrog59.ciste2dot0.R
 import java.util.*
 
 
-class GameListAdapter(private val context: Context) :
+class GameListAdapter(private val cisteActivitiy: Activity) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
     private var games: List<Game> = listOf()
 
-    private val gameDataLoader = GameDataManager(context)
+    private val gameDataLoader = GameDataManager(cisteActivitiy)
 
     init {
         GameSearch().getGames({
             Toast.makeText(
-                context,
-                "${context.getText(R.string.error_searching_game)}:${it.message}",
+                cisteActivitiy,
+                "${cisteActivitiy.getText(R.string.error_searching_game)}:${it.message}",
                 Toast.LENGTH_LONG
             ).show()
         }) {
@@ -40,6 +41,7 @@ class GameListAdapter(private val context: Context) :
         val gameName = gameDetail.findViewById<TextView>(R.id.game_name)
         val loadStartButton = gameDetail.findViewById<Button>(R.id.load_start_game)
         val deleteButton = gameDetail.findViewById<Button>(R.id.delete)
+        val detailButton= gameDetail.findViewById<ImageButton>(R.id.detail_button)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameListAdapter.ViewHolder {
@@ -50,9 +52,9 @@ class GameListAdapter(private val context: Context) :
     }
 
     private fun startGame(id: UUID?) {
-        val intent = Intent(context, CisteActivity::class.java)
+        val intent = Intent(cisteActivitiy, CisteActivity::class.java)
         intent.putExtra(CisteActivity.GAME_ID, id?.toString())
-        context.startActivity(intent)
+        cisteActivitiy.startActivity(intent)
 
     }
 
@@ -63,13 +65,13 @@ class GameListAdapter(private val context: Context) :
         holder.loadStartButton.setOnClickListener {
             gameDataLoader.loadGame(game.id,
                 { transfer, total ->
-                    val loadingMessage = context.resources.getString(R.string.busy_game_button)
+                    val loadingMessage = cisteActivitiy.resources.getString(R.string.busy_game_button)
                     holder.loadStartButton.text =
                         "$loadingMessage (" + "%.1f".format(transfer * 100.0f / total) + "%)"
                 }, { e ->
                     Toast.makeText(
-                        context,
-                        "${context.getText(R.string.error_downloading_game)}:${e.message}",
+                        cisteActivitiy,
+                        "${cisteActivitiy.getText(R.string.error_downloading_game)}:${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                     downloadGameButtons(holder, game)
@@ -96,16 +98,16 @@ class GameListAdapter(private val context: Context) :
         game: Game,
         holder: ViewHolder
     ) {
-        AlertDialog.Builder(context)
+        AlertDialog.Builder(cisteActivitiy)
             .setIcon(android.R.drawable.ic_dialog_alert)
-            .setMessage(context.resources.getString(R.string.delete_game_message))
+            .setMessage(cisteActivitiy.resources.getString(R.string.delete_game_message))
             .setPositiveButton(
-                context.resources.getString(R.string.confirmation)
+                cisteActivitiy.resources.getString(R.string.confirmation)
             ) { _, _ ->
                 gameDataLoader.eraseLocalGame(game.id)
                 downloadGameButtons(holder, game)
             }
-            .setNegativeButton(context.resources.getString(R.string.denial), null)
+            .setNegativeButton(cisteActivitiy.resources.getString(R.string.denial), null)
             .show()
     }
 
@@ -120,6 +122,13 @@ class GameListAdapter(private val context: Context) :
 
         } else {
             downloadGameButtons(holder, game)
+        }
+        holder.detailButton.setOnClickListener {
+
+            val detailText=cisteActivitiy.findViewById<TextView>(R.id.game_details)
+            detailText.visibility=View.VISIBLE
+            detailText.text=game.gameDetails()
+            detailText.setOnClickListener { it.visibility=View.GONE }
         }
     }
 

@@ -20,10 +20,17 @@ class GameSearch {
         } else {
             UUID.fromString(uuidAsString)
         }
-        return Game(name, id)
+        return Game(
+            name=name,
+            id=id,
+            description = document.getString("description"),
+            location = document.getString("location")!!,
+            language = document.getString("language"),
+            sizeInMB = document.getLong("sizeInMB")
+        )
     }
 
-    fun getGames(onFailure:(e:Exception)-> Unit,onSuccess:(List<Game>)-> Unit) {
+    fun getGames(onFailure: (e: Exception) -> Unit, onSuccess: (List<Game>) -> Unit) {
         val games = mutableListOf<Game>()
         db.collection("games")
             .get()
