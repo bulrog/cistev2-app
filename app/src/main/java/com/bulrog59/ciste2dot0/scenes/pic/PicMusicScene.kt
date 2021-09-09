@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import com.bulrog59.ciste2dot0.CisteActivity
@@ -22,6 +23,10 @@ class PicMusicScene(
         mediaPlayer?.stop()
     }
 
+    private fun getTouchEvent(): TouchScreen {
+        return TouchScreen(picMusicOption.nextScene, cisteActivity, mediaPlayer)
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         picMusicOption.musicName.apply {
@@ -34,7 +39,13 @@ class PicMusicScene(
         cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         cisteActivity.findViewById<ImageView>(R.id.imageView).apply {
             setImageURI(cisteActivity.resourceFinder.getUri(picMusicOption.imageName))
-            setOnTouchListener(TouchScreen(picMusicOption.nextScene, cisteActivity, mediaPlayer))
+            setOnTouchListener(getTouchEvent())
+
+        }
+        picMusicOption.optionalText?.apply {
+            val text = cisteActivity.findViewById<TextView>(R.id.text_pic)
+            text.visibility = View.VISIBLE
+            text.text = this
         }
     }
 

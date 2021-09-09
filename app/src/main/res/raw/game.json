@@ -9,7 +9,8 @@
         "imageName": "splash_screen",
         "musicName": "beetlejuice_theme",
         "loopMusic": true,
-        "nextScene": 1
+        "nextScene": 1,
+        "optionalText": "some text to show!! And here made it long so it goes beyond one line!!!!!"
       }
     },
     {

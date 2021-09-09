@@ -20,6 +20,7 @@ class GameSearch {
         } else {
             UUID.fromString(uuidAsString)
         }
+
         return Game(
             name=name,
             id=id,
