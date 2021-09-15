@@ -1,28 +1,61 @@
 {
-  "starting": 0,
-  "backButtonScene": 2,
+  "starting": 1,
+  "backButtonScene": 0,
   "scenes": [
     {
       "sceneId": 0,
-      "sceneType": "picMusic",
-      "options": {
-        "imageName": "splash_screen",
-        "musicName": "beetlejuice_theme",
-        "loopMusic": true,
-        "nextScene": 1,
-        "optionalText": "some text to show!! And here made it long so it goes beyond one line!!!!!"
-      }
-    },
-    {
-      "sceneId": 1,
       "sceneType": "debug",
       "options": {}
     },
     {
+      "sceneId": 1,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "cassel_insolite",
+        "musicName": "beetlejuice_theme",
+        "loopMusic": true,
+        "nextScene": 2
+      }
+    },
+    {
       "sceneId": 2,
+      "sceneType": "menu",
+      "options": {
+        "menuItems": [
+          {
+            "buttonText": "indice",
+            "nextScene": 3
+          },
+          {
+            "buttonText": "scanner",
+            "nextScene": 4
+          }
+        ]
+      }
+    },
+    {
+      "sceneId": 3,
+      "sceneType": "ruleEngine",
+      "options": {
+        "rules": [
+        ],
+        "defaultScene": 200
+      }
+    },
+    {
+      "sceneId": 4,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+
+        },
+        "allow_capture": false
+      }
+    },
+    {
+      "sceneId": 200,
       "sceneType": "exit",
       "options": {}
     }
-
   ]
 }
