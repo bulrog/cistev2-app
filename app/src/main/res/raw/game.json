@@ -1,11 +1,21 @@
 {
-  "starting": 1,
-  "backButtonScene": 0,
+  "starting": 0,
+  "backButtonScene": 2,
   "scenes": [
     {
       "sceneId": 0,
-      "sceneType": "debug",
-      "options": {}
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 0,
+            "name": "start",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 1
+      }
     },
     {
       "sceneId": 1,
@@ -29,6 +39,10 @@
           {
             "buttonText": "scanner",
             "nextScene": 4
+          },
+          {
+            "buttonText": "debug",
+            "nextScene": 1000
           }
         ]
       }
@@ -38,23 +52,179 @@
       "sceneType": "ruleEngine",
       "options": {
         "rules": [
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              2
+            ],
+            "nextScene": 12
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              1
+            ],
+            "nextScene": 11
+          },
+          {
+            "ruleKey": "all",
+            "itemIds": [
+              0
+            ],
+            "nextScene": 10
+          }
         ],
         "defaultScene": 200
       }
     },
     {
+      "sceneId": 10,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "carte",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4,
+        "optionalText": "Dirigez vous vers le carrefour le plus proche! Ensuite prenez la voix qui part au sud ouest. Lorsque vous trouverez la femme portant son enfant victime de la gorgogne, scannez la pour que je vous donne les prochaines indications"
+      }
+    },
+    {
+      "sceneId": 11,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "carte",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4,
+        "optionalText": "Comme les saumons remontez la pente la plus raide, prenez garde au lion et suivez le 86. Suivez les fortifications et lorsque la pierre sera au dessus de vos tetes, trouvez Emile et scannez le!"
+      }
+    },
+    {
+      "sceneId": 12,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "carte",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4,
+        "optionalText": "Continuez le long des fortifications jusqu’a trouver reuze sur son pied d’estal en metal. Retenez bien combien de personnages devant Reuze sont visibles!!"
+      }
+    },
+    {
       "sceneId": 4,
+      "sceneType": "ruleEngine",
+      "options": {
+        "rules": [
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              2
+            ],
+            "nextScene": 112
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              1
+            ],
+            "nextScene": 111
+          },
+          {
+            "ruleKey": "all",
+            "itemIds": [
+              0
+            ],
+            "nextScene": 110
+          }
+
+        ],
+        "defaultScene": 200
+      }
+    },
+    {
+      "sceneId": 110,
       "sceneType": "detector",
       "options": {
         "pic2Scene": {
-
+          "vierge": 101
         },
         "allow_capture": false
       }
     },
     {
+      "sceneId": 111,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "emile_signe": 102
+        },
+        "allow_capture": false
+      }
+    },
+    {
+      "sceneId": 112,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "reuze": 103
+        },
+        "allow_capture": false
+      }
+    },
+
+    {
+      "sceneId": 101,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 1,
+            "name": "vierge",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 102,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 2,
+            "name": "emile_signe",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 103,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 3,
+            "name": "reuze",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 3
+      }
+    },
+    {
       "sceneId": 200,
       "sceneType": "exit",
+      "options": {}
+    },
+    {
+      "sceneId": 1000,
+      "sceneType": "debug",
       "options": {}
     }
   ]
