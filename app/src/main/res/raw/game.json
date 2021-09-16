@@ -22,7 +22,7 @@
       "sceneType": "picMusic",
       "options": {
         "imageName": "cassel_insolite",
-        "musicName": "beetlejuice_theme",
+        "musicName": "matrix_music",
         "loopMusic": true,
         "nextScene": 2
       }
