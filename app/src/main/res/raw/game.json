@@ -55,6 +55,41 @@
           {
             "ruleKey": "contains",
             "itemIds": [
+              7
+            ],
+            "nextScene": 17
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              6
+            ],
+            "nextScene": 16
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              5
+            ],
+            "nextScene": 15
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              4
+            ],
+            "nextScene": 14
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              3
+            ],
+            "nextScene": 13
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
               2
             ],
             "nextScene": 12
@@ -111,10 +146,99 @@
       }
     },
     {
+      "sceneId": 13,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "carte",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4,
+        "optionalText": "Prenez la 2eme a droite et en haut de l’escalier, trouvez les 2 vaches qui vous observent. Attention aux taureaux d’acier qui pourraient vous charger! Retenez bien le numero sous les vaches!"
+      }
+    },
+    {
+      "sceneId": 14,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "carte",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4,
+        "optionalText": "Prenez la direction nord ouest et trouvez l’amiral et retenez l’annee!!"
+      }
+    },
+    {
+      "sceneId": 15,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "carte",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4,
+        "optionalText": "Premiere a droite et en haut de l’escalier trouvez la petite oie qui va vous sonner! 1 ptit zoom sur la plaque et c’est reparti!"
+      }
+    },
+    {
+      "sceneId": 16,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "carte",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4,
+        "optionalText": "Cherchez pas trop loin le lion qui a 1 bon coup de fourchette!"
+      }
+    },
+    {
+      "sceneId": 17,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "composition",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4
+      }
+    },
+    {
       "sceneId": 4,
       "sceneType": "ruleEngine",
       "options": {
         "rules": [
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              7
+            ],
+            "nextScene": 117
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              6
+            ],
+            "nextScene": 116
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              5
+            ],
+            "nextScene": 115
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              4
+            ],
+            "nextScene": 114
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              3
+            ],
+            "nextScene": 113
+          },
           {
             "ruleKey": "contains",
             "itemIds": [
@@ -171,7 +295,59 @@
         "allow_capture": false
       }
     },
-
+    {
+      "sceneId": 113,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "vaches": 104
+        },
+        "allow_capture": false
+      }
+    },
+    {
+      "sceneId": 114,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "amiral": 105
+        },
+        "allow_capture": false
+      }
+    },
+    {
+      "sceneId": 115,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "oie": 106
+        },
+        "allow_capture": false
+      }
+    },
+    {
+      "sceneId": 116,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "lion": 107
+        },
+        "allow_capture": false
+      }
+    },
+    {
+      "sceneId": 117,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "bateau": 150,
+          "rocher": 151,
+          "plan": 152,
+          "tag": 153
+        },
+        "allow_capture": false
+      }
+    },
     {
       "sceneId": 101,
       "sceneType": "updateInventory",
@@ -218,9 +394,169 @@
       }
     },
     {
+      "sceneId": 104,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 4,
+            "name": "vaches",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 105,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 5,
+            "name": "amiral",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 106,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 6,
+            "name": "oie",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 107,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 7,
+            "name": "lion",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 150,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 8,
+            "name": "bateau",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 300
+      }
+    },
+    {
+      "sceneId": 151,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 9,
+            "name": "rocher",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 301
+      }
+    },
+    {
+      "sceneId": 152,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 10,
+            "name": "plan",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 302
+      }
+    },
+    {
+      "sceneId": 153,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 11,
+            "name": "tag",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 303
+      }
+    },
+    {
       "sceneId": 200,
       "sceneType": "exit",
       "options": {}
+    },
+    {
+      "sceneId": 300,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "bien",
+        "musicName": "yeah",
+        "loopMusic": false,
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 301,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "great",
+        "musicName": "cool",
+        "loopMusic": false,
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 302,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "dur",
+        "musicName": "ouch",
+        "loopMusic": false,
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 303,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "pas_content",
+        "musicName": "grrr",
+        "loopMusic": false,
+        "nextScene": 3
+      }
     },
     {
       "sceneId": 1000,
