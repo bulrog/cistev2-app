@@ -55,6 +55,34 @@
           {
             "ruleKey": "contains",
             "itemIds": [
+              14,15,16
+            ],
+            "nextScene": 600
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              13
+            ],
+            "nextScene": 20
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              12
+            ],
+            "nextScene": 19
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              8,9,10,11
+            ],
+            "nextScene": 18
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
               7
             ],
             "nextScene": 17
@@ -175,7 +203,7 @@
         "musicName": "indice",
         "loopMusic": false,
         "nextScene": 4,
-        "optionalText": "Premiere a droite et en haut de l’escalier trouvez la petite oie qui va vous sonner! 1 ptit zoom sur la plaque et c’est reparti!"
+        "optionalText": "Premiere a droite et en haut de l’escalier trouvez la petite oie qui va vous sonner! 1 ptit zoom sur la plaque (retenez son numero) et c’est reparti!"
       }
     },
     {
@@ -200,10 +228,64 @@
       }
     },
     {
+      "sceneId": 18,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "carte",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4,
+        "optionalText": "De la pierre souillee, redescendez par le chemin pave et en bas partez au nord est pour descendre par les ecoles et en arrivant en bas a la route pave, trouvez la cigale!"
+      }
+    },
+    {
+      "sceneId": 19,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "carte",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4,
+        "optionalText": "Remontez par les paves pour trouver Reuze papa et maman qui dehydrates, boivent un coup!"
+      }
+    },
+    {
+      "sceneId": 20,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "bigfinale",
+        "musicName": "indice",
+        "loopMusic": false,
+        "nextScene": 4,
+        "optionalText": "Maintenant c’est le final! Allez sur la place et trouvez les 3 elements:\n\n 1) Prenez deux Reuze, ajoutez y une oie et ajoutez y 4 et rendez vous a cette maison et scannez le system qui permet d’actionner le store!\n\n 2) Un peu sur la gauche, vous allez trouver le moulin transparent\n\n 3) Enfin sur la droite, en ce lieu de culture scanner le visage de pierre a l’air feroce!!"
+      }
+    },
+    {
       "sceneId": 4,
       "sceneType": "ruleEngine",
       "options": {
         "rules": [
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              13
+            ],
+            "nextScene": 120
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              12
+            ],
+            "nextScene": 119
+          },
+          {
+            "ruleKey": "contains",
+            "itemIds": [
+              8,9,10,11
+            ],
+            "nextScene": 118
+          },
           {
             "ruleKey": "contains",
             "itemIds": [
@@ -344,6 +426,38 @@
           "rocher": 151,
           "plan": 152,
           "tag": 153
+        },
+        "allow_capture": false
+      }
+    },
+    {
+      "sceneId": 118,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "cigale": 154
+        },
+        "allow_capture": false
+      }
+    },
+    {
+      "sceneId": 119,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "biere": 155
+        },
+        "allow_capture": false
+      }
+    },
+    {
+      "sceneId": 120,
+      "sceneType": "detector",
+      "options": {
+        "pic2Scene": {
+          "gargouille": 156,
+          "store": 157,
+          "moulin": 158
         },
         "allow_capture": false
       }
@@ -514,6 +628,81 @@
       }
     },
     {
+      "sceneId": 154,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 12,
+            "name": "cigale",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 155,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 13,
+            "name": "biere",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 156,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 14,
+            "name": "fin1",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 400
+      }
+    },
+    {
+      "sceneId": 157,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 15,
+            "name": "fin2",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 400
+      }
+    },
+    {
+      "sceneId": 158,
+      "sceneType": "updateInventory",
+      "options": {
+        "itemsToAdd": [
+          {
+            "id": 16,
+            "name": "fin3",
+            "picture": "none"
+          }
+        ],
+        "itemIdsToRemove": [],
+        "nextScene": 400
+      }
+    },
+    {
       "sceneId": 200,
       "sceneType": "exit",
       "options": {}
@@ -556,6 +745,27 @@
         "musicName": "grrr",
         "loopMusic": false,
         "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 400,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "almost_there2",
+        "musicName": "applause",
+        "loopMusic": false,
+        "nextScene": 3
+      }
+    },
+    {
+      "sceneId": 600,
+      "sceneType": "picMusic",
+      "options": {
+        "imageName": "the_end",
+        "musicName": "crowd",
+        "loopMusic": true,
+        "nextScene": 200,
+        "optionalText": "BRAVO! VOUS AVEZ GAGNE, IL EST TEMPS DE DEMANDER VOTRE RECOMPENSE!!!"
       }
     },
     {
