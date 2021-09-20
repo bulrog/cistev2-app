@@ -22,6 +22,9 @@ class GameMgtActivity : AppCompatActivity() {
             finish()
             System.exit(0)
         }
+        findViewById<ImageButton>(R.id.new_game).setOnClickListener {
+            setContentView(R.layout.editor_new_game)
+        }
 
     }
 }

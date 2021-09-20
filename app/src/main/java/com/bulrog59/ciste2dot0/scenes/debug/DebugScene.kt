@@ -20,7 +20,7 @@ class DebugScene(private val debugOptions: DebugOptions, private val cisteActivi
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
-        cisteActivity.setContentView(R.layout.view_debug)
+        cisteActivity.setContentView(R.layout.scene_debug)
         val debugText="inventory:\n${cisteActivity.inventoryToString()}\ngame data:\n${cisteActivity.gameDataToString()}"
         cisteActivity.findViewById<TextView>(R.id.debugData).apply {
             text =debugText

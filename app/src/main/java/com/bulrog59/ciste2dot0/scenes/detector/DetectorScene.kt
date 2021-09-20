@@ -71,7 +71,7 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
-        cisteActivity.setContentView(R.layout.view_detector)
+        cisteActivity.setContentView(R.layout.scene_detector)
         cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         startCamera()
 

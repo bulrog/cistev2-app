@@ -84,7 +84,7 @@ class InventoryAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val itemView = inflater.inflate(R.layout.inventory_row, parent, false)
+        val itemView = inflater.inflate(R.layout.scene_inventory_row, parent, false)
         return ViewHolder(itemView)
     }
 

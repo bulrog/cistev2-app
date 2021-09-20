@@ -11,4 +11,6 @@
     <string name="denial">Non</string>
     <string name="delete_game_message">Êtes vous sur de vouloir effacer ce jeu?</string>
     <string name="matching_text">Similitude</string>
+    <string name="game_title">Titre du jeu</string>
+    <string name="game_title_help_text">Entrez le titre du jeu</string>
 </resources>

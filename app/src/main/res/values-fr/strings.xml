@@ -2,4 +2,5 @@
 <resources>
     <string name="error_downloading_game">Erreur pour telecharger le jeu</string>
     <string name="error_searching_game">Erreur pendant la recherche</string>
+    <string name="title_new_game">Créer un nouveau jeu</string>
 </resources>

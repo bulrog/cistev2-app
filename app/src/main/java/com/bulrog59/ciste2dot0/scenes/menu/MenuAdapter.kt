@@ -25,7 +25,7 @@ class MenuAdapter(private val menuOptions: MenuOptions, private val cisteActivit
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuAdapter.ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val menuRow = inflater.inflate(R.layout.menu_row, parent, false)
+        val menuRow = inflater.inflate(R.layout.scene_menu_row, parent, false)
         return ViewHolder(menuRow)
     }
 

@@ -17,7 +17,7 @@ class VideoScene(private val videoOption: VideoOption, private val cisteActivity
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun createVideo(){
-        cisteActivity.setContentView(R.layout.view_video)
+        cisteActivity.setContentView(R.layout.scene_video)
         cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
         videoView =  cisteActivity.findViewById(R.id.videoView)
         mediaController= MediaController(cisteActivity)

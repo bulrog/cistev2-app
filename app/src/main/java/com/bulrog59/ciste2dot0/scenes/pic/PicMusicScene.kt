@@ -35,7 +35,7 @@ class PicMusicScene(
 
         }
         mediaPlayer?.apply { isLooping = picMusicOption.loopMusic }
-        cisteActivity.setContentView(R.layout.view_pic_music)
+        cisteActivity.setContentView(R.layout.scene_pic_music)
         cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         cisteActivity.findViewById<ImageView>(R.id.imageView).apply {
             setImageURI(cisteActivity.resourceFinder.getUri(picMusicOption.imageName))

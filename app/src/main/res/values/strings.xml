@@ -13,4 +13,7 @@
     <string name="matching_text">Matching</string>
     <string name="error_downloading_game">Error to download the game</string>
     <string name="error_searching_game">Error during the search</string>
+    <string name="title_new_game">Create new game</string>
+    <string name="game_title">Game title</string>
+    <string name="game_title_help_text">Enter short name for the game</string>
 </resources>
