@@ -38,10 +38,12 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
 
 
     inner class ViewHolder(gameDetail: View) : RecyclerView.ViewHolder(gameDetail) {
-        val gameName = gameDetail.findViewById<TextView>(R.id.game_name)
-        val loadStartButton = gameDetail.findViewById<Button>(R.id.load_start_game)
-        val deleteButton = gameDetail.findViewById<Button>(R.id.delete)
-        val detailButton= gameDetail.findViewById<ImageButton>(R.id.detail_button)
+        val gameNameText = gameDetail.findViewById<TextView>(R.id.game_name)
+        var gameName: String = ""
+        var remoteGame = true
+        val startButton = gameDetail.findViewById<ImageButton>(R.id.load_start_game)
+        val loadDeleteButton = gameDetail.findViewById<ImageButton>(R.id.delete)
+        val detailButton = gameDetail.findViewById<ImageButton>(R.id.detail_button)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameListAdapter.ViewHolder {
@@ -60,38 +62,45 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
 
 
     private fun downloadGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
-        holder.loadStartButton.setText(R.string.load_game_button)
-        holder.loadStartButton.isEnabled = true
-        holder.loadStartButton.setOnClickListener {
-            gameDataLoader.loadGame(game.id,
-                { transfer, total ->
-                    val loadingMessage = cisteActivitiy.resources.getString(R.string.busy_game_button)
-                    holder.loadStartButton.text =
-                        "$loadingMessage (" + "%.1f".format(transfer * 100.0f / total) + "%)"
-                }, { e ->
-                    Toast.makeText(
-                        cisteActivitiy,
-                        "${cisteActivitiy.getText(R.string.error_downloading_game)}:${e.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    downloadGameButtons(holder, game)
-                }
-            ) { loadedGameButtons(holder, game) }
-            holder.loadStartButton.isEnabled = false
-            holder.loadStartButton.setText(R.string.busy_game_button)
+        holder.startButton.visibility = View.INVISIBLE
+        if (holder.remoteGame) {
+            holder.loadDeleteButton.visibility = View.VISIBLE
+            holder.loadDeleteButton.setOnClickListener {
+                gameDataLoader.loadGame(game.id,
+                    { transfer, total ->
+                        val loadingMessage =
+                            cisteActivitiy.resources.getString(R.string.busy_game_button)
+                        holder.gameNameText.text =
+                            "${holder.gameName}: $loadingMessage (" + "%.1f".format(transfer * 100.0f / total) + "%)"
+                    }, { e ->
+                        Toast.makeText(
+                            cisteActivitiy,
+                            "${cisteActivitiy.getText(R.string.error_downloading_game)}:${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        downloadGameButtons(holder, game)
+                    }
+                ) { loadedGameButtons(holder, game) }
+                holder.loadDeleteButton.visibility = View.INVISIBLE
+            }
+            holder.loadDeleteButton.setImageResource(R.drawable.ic_download)
         }
-        holder.deleteButton.isEnabled = false
+
+
     }
 
 
     private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
-        holder.loadStartButton.setText(R.string.start_game_button)
-        holder.deleteButton.isEnabled = true
-        holder.loadStartButton.isEnabled = true
-        holder.deleteButton.setOnClickListener {
-            deletionWithConfirmation(game, holder)
+        holder.startButton.visibility = View.VISIBLE
+        holder.gameNameText.text = holder.gameName
+        if (holder.remoteGame) {
+            holder.loadDeleteButton.setImageResource(R.drawable.ic_delete)
+            holder.loadDeleteButton.visibility = View.VISIBLE
+            holder.loadDeleteButton.setOnClickListener {
+                deletionWithConfirmation(game, holder)
+            }
         }
-        holder.loadStartButton.setOnClickListener { startGame(game.id) }
+        holder.startButton.setOnClickListener { startGame(game.id) }
     }
 
     private fun deletionWithConfirmation(
@@ -113,11 +122,11 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
 
     override fun onBindViewHolder(holder: GameListAdapter.ViewHolder, position: Int) {
         val game = games[position]
-        holder.gameName.text = game.name
-        if (game.id == null) {
-            holder.deleteButton.visibility = View.INVISIBLE
-        }
-        if (game.id == null || gameDataLoader.gameIsAvailable(game.id)) {
+        holder.gameName = game.name
+        holder.gameNameText.text = holder.gameName
+        holder.remoteGame = game.id != null
+
+        if (!holder.remoteGame || gameDataLoader.gameIsAvailable(game.id!!)) {
             loadedGameButtons(holder, game)
 
         } else {
@@ -125,10 +134,10 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
         }
         holder.detailButton.setOnClickListener {
 
-            val detailText=cisteActivitiy.findViewById<TextView>(R.id.game_details)
-            detailText.visibility=View.VISIBLE
-            detailText.text=game.gameDetails()
-            detailText.setOnClickListener { it.visibility=View.GONE }
+            val detailText = cisteActivitiy.findViewById<TextView>(R.id.game_details)
+            detailText.visibility = View.VISIBLE
+            detailText.text = game.gameDetails()
+            detailText.setOnClickListener { it.visibility = View.GONE }
         }
     }
 

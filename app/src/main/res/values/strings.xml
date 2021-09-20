@@ -2,16 +2,11 @@
     <string name="app_name">ciste 2.0</string>
     <string name="start_screen_description">Touch to start</string>
     <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="inventory_title">Inventory</string>
     <string name="inventory_message_default">Select an item to use</string>
     <string name="second_object_use_message">Please select the other item to use with:</string>
     <string name="invalid_combination">That does not make sense!</string>
     <string name="game_menu">Select game to play</string>
-    <string name="delete_game_button">delete</string>
-    <string name="load_game_button">Download</string>
-    <string name="start_game_button">Start</string>
     <string name="busy_game_button">Loading...</string>
     <string name="confirmation">Yes</string>
     <string name="denial">No</string>
