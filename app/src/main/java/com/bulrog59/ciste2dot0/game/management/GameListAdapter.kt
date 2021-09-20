@@ -6,14 +6,12 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
 import java.util.*
+import kotlin.math.roundToInt
 
 
 class GameListAdapter(private val cisteActivitiy: Activity) :
@@ -41,8 +39,9 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
         val gameNameText = gameDetail.findViewById<TextView>(R.id.game_name)
         var gameName: String = ""
         var remoteGame = true
-        val startButton = gameDetail.findViewById<ImageButton>(R.id.load_start_game)
-        val loadDeleteButton = gameDetail.findViewById<ImageButton>(R.id.delete)
+        val progressBar=gameDetail.findViewById<ProgressBar>(R.id.load_progress)
+        val startButton = gameDetail.findViewById<ImageButton>(R.id.start_game)
+        val loadDeleteButton = gameDetail.findViewById<ImageButton>(R.id.download_delete)
         val detailButton = gameDetail.findViewById<ImageButton>(R.id.detail_button)
     }
 
@@ -68,10 +67,9 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
             holder.loadDeleteButton.setOnClickListener {
                 gameDataLoader.loadGame(game.id,
                     { transfer, total ->
-                        val loadingMessage =
-                            cisteActivitiy.resources.getString(R.string.busy_game_button)
-                        holder.gameNameText.text =
-                            "${holder.gameName}: $loadingMessage (" + "%.1f".format(transfer * 100.0f / total) + "%)"
+                        holder.progressBar.visibility=View.VISIBLE
+                        val progressValue=transfer * 100.0f / total
+                        holder.progressBar.progress=progressValue.roundToInt()
                     }, { e ->
                         Toast.makeText(
                             cisteActivitiy,
@@ -92,7 +90,7 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
 
     private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
         holder.startButton.visibility = View.VISIBLE
-        holder.gameNameText.text = holder.gameName
+        holder.progressBar.visibility=View.INVISIBLE
         if (holder.remoteGame) {
             holder.loadDeleteButton.setImageResource(R.drawable.ic_delete)
             holder.loadDeleteButton.visibility = View.VISIBLE
@@ -122,8 +120,7 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
 
     override fun onBindViewHolder(holder: GameListAdapter.ViewHolder, position: Int) {
         val game = games[position]
-        holder.gameName = game.name
-        holder.gameNameText.text = holder.gameName
+        holder.gameNameText.text = game.name
         holder.remoteGame = game.id != null
 
         if (!holder.remoteGame || gameDataLoader.gameIsAvailable(game.id!!)) {

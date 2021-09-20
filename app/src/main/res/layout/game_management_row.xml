@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/load_start_game"
+        android:id="@+id/start_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -28,12 +28,12 @@
         android:layout_weight="1"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/delete"
+        app:layout_constraintEnd_toStartOf="@+id/download_delete"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_start" />
 
     <ImageButton
-        android:id="@+id/delete"
+        android:id="@+id/download_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -57,8 +57,22 @@
         android:layout_marginBottom="10dp"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/load_start_game"
+        app:layout_constraintEnd_toStartOf="@+id/start_game"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/plus" />
+
+    <ProgressBar
+        android:id="@+id/load_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/detail_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_name"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

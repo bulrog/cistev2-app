@@ -7,7 +7,6 @@
     <string name="second_object_use_message">Please select the other item to use with:</string>
     <string name="invalid_combination">That does not make sense!</string>
     <string name="game_menu">Select game to play</string>
-    <string name="busy_game_button">Loading...</string>
     <string name="confirmation">Yes</string>
     <string name="denial">No</string>
     <string name="delete_game_message">Are you sure you want to delete this game?</string>
