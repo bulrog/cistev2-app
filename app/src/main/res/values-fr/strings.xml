@@ -3,4 +3,7 @@
     <string name="error_downloading_game">Erreur pour telecharger le jeu</string>
     <string name="error_searching_game">Erreur pendant la recherche</string>
     <string name="title_new_game">Créer un nouveau jeu</string>
+    <string name="game_language_help_text">Language</string>
+    <string name="game_description_help_text">Entrez la description du jeu</string>
+    <string name="create_game_button">Créer</string>
 </resources>
