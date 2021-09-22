@@ -20,7 +20,7 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
 
     private val gameDataManager = GameDataManager(cisteActivitiy)
 
-    init {
+    private fun getListOfGames(){
         GameSearch().getGames({
             Toast.makeText(
                 cisteActivitiy,
@@ -32,6 +32,10 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
             gameDataManager.addLocalGames(gamesMetaData as MutableList<GameMetaData>)
             notifyDataSetChanged()
         }
+    }
+
+    init {
+        getListOfGames()
 
     }
 
@@ -113,7 +117,7 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
                 cisteActivitiy.resources.getString(R.string.confirmation)
             ) { _, _ ->
                 gameDataManager.eraseLocalGame(gameMetaData.id)
-                downloadGameButtons(holder, gameMetaData)
+                getListOfGames()
             }
             .setNegativeButton(cisteActivitiy.resources.getString(R.string.denial), null)
             .show()
