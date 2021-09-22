@@ -3,6 +3,9 @@ package com.bulrog59.ciste2dot0.game.management
 import android.content.Context
 import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.gamedata.GameData
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
@@ -12,12 +15,46 @@ import java.util.*
 class GameDataManager(context: Context) {
     private val folderGame = context.filesDir.absolutePath + FOLDER_FOR_GAME_DATA
     private val storage = Firebase.storage
+    private val mapper = ObjectMapper()
+    private val GAMEDATA_FILE="game.json"
+
+
+
+    init {
+        createFolderIfNotExists(folderGame)
+        mapper.registerModule(KotlinModule())
+    }
+
+    fun addLocalGames(gamesMetaData: MutableList<GameMetaData>){
+        File(folderGame).listFiles().forEach {
+            if (it.isDirectory){
+                try {
+                    val gameData=mapper.readValue(File("${it.canonicalPath}/$GAMEDATA_FILE"),GameData::class.java)
+                    if (!gamesMetaData.map {it.id }.contains(gameData.gameMetaData?.id)){
+                        gamesMetaData.add(gameData.gameMetaData!!)
+                    }
+
+                } catch (e:Exception){
+                    println("error message when reading game data:${e.message}")
+                    //TODO: see what to do
+                }
+
+            }
+        }
+    }
 
 
     fun gameIsAvailable(gameID: UUID): Boolean {
         val folderForGameData = File(folderGame + gameID)
         return folderForGameData.exists() && folderForGameData.isDirectory
     }
+
+    private fun createFolderIfNotExists(folderName: String) {
+        if (!File(folderName).exists()) {
+            Files.createDirectory(File(folderName).toPath())
+        }
+    }
+
 
     fun loadGame(
         id: UUID?,
@@ -28,13 +65,22 @@ class GameDataManager(context: Context) {
         if (id == null || gameIsAvailable(id)) {
             return
         }
-        if (!File(folderGame).exists()) {
-            Files.createDirectory(File(folderGame).toPath())
-        }
-        loadFileFireStore(id, callOnProgress, callOnFailure ,onSuccessAction)
+
+        loadFileFireStore(id, callOnProgress, callOnFailure, onSuccessAction)
 
     }
 
+    fun createGame(gameData: GameData) {
+        gameData.gameMetaData?.apply {
+            val gameLocation="$folderGame${this.id}"
+            createFolderIfNotExists(gameLocation)
+            mapper.writeValue(File("$gameLocation/$GAMEDATA_FILE"),gameData)
+        }
+
+
+
+
+    }
 
 
     private fun deleteRecursive(fileOrDirectory: File) {

@@ -16,9 +16,9 @@ import kotlin.math.roundToInt
 
 class GameListAdapter(private val cisteActivitiy: Activity) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
-    private var games: List<Game> = listOf()
+    private var gamesMetaData: List<GameMetaData> = listOf()
 
-    private val gameDataLoader = GameDataManager(cisteActivitiy)
+    private val gameDataManager = GameDataManager(cisteActivitiy)
 
     init {
         GameSearch().getGames({
@@ -28,7 +28,8 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
                 Toast.LENGTH_LONG
             ).show()
         }) {
-            games = it
+            gamesMetaData = it
+            gameDataManager.addLocalGames(gamesMetaData as MutableList<GameMetaData>)
             notifyDataSetChanged()
         }
 
@@ -60,12 +61,12 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
     }
 
 
-    private fun downloadGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
+    private fun downloadGameButtons(holder: GameListAdapter.ViewHolder, gameMetaData: GameMetaData) {
         holder.startButton.visibility = View.INVISIBLE
         if (holder.remoteGame) {
             holder.loadDeleteButton.visibility = View.VISIBLE
             holder.loadDeleteButton.setOnClickListener {
-                gameDataLoader.loadGame(game.id,
+                gameDataManager.loadGame(gameMetaData.id,
                     { transfer, total ->
                         holder.progressBar.visibility=View.VISIBLE
                         val progressValue=transfer * 100.0f / total
@@ -76,9 +77,9 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
                             "${cisteActivitiy.getText(R.string.error_downloading_game)}:${e.message}",
                             Toast.LENGTH_SHORT
                         ).show()
-                        downloadGameButtons(holder, game)
+                        downloadGameButtons(holder, gameMetaData)
                     }
-                ) { loadedGameButtons(holder, game) }
+                ) { loadedGameButtons(holder, gameMetaData) }
                 holder.loadDeleteButton.visibility = View.INVISIBLE
             }
             holder.loadDeleteButton.setImageResource(R.drawable.ic_download)
@@ -88,21 +89,21 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
     }
 
 
-    private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, game: Game) {
+    private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, gameMetaData: GameMetaData) {
         holder.startButton.visibility = View.VISIBLE
         holder.progressBar.visibility=View.INVISIBLE
         if (holder.remoteGame) {
             holder.loadDeleteButton.setImageResource(R.drawable.ic_delete)
             holder.loadDeleteButton.visibility = View.VISIBLE
             holder.loadDeleteButton.setOnClickListener {
-                deletionWithConfirmation(game, holder)
+                deletionWithConfirmation(gameMetaData, holder)
             }
         }
-        holder.startButton.setOnClickListener { startGame(game.id) }
+        holder.startButton.setOnClickListener { startGame(gameMetaData.id) }
     }
 
     private fun deletionWithConfirmation(
-        game: Game,
+        gameMetaData: GameMetaData,
         holder: ViewHolder
     ) {
         AlertDialog.Builder(cisteActivitiy)
@@ -111,19 +112,19 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
             .setPositiveButton(
                 cisteActivitiy.resources.getString(R.string.confirmation)
             ) { _, _ ->
-                gameDataLoader.eraseLocalGame(game.id)
-                downloadGameButtons(holder, game)
+                gameDataManager.eraseLocalGame(gameMetaData.id)
+                downloadGameButtons(holder, gameMetaData)
             }
             .setNegativeButton(cisteActivitiy.resources.getString(R.string.denial), null)
             .show()
     }
 
     override fun onBindViewHolder(holder: GameListAdapter.ViewHolder, position: Int) {
-        val game = games[position]
+        val game = gamesMetaData[position]
         holder.gameNameText.text = game.name
         holder.remoteGame = game.id != null
 
-        if (!holder.remoteGame || gameDataLoader.gameIsAvailable(game.id!!)) {
+        if (!holder.remoteGame || gameDataManager.gameIsAvailable(game.id!!)) {
             loadedGameButtons(holder, game)
 
         } else {
@@ -139,6 +140,6 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
     }
 
     override fun getItemCount(): Int {
-        return games.size
+        return gamesMetaData.size
     }
 }

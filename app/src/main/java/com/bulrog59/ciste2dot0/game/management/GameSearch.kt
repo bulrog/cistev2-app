@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0.game.management
 
+import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -9,7 +10,7 @@ import java.util.*
 class GameSearch {
     val db = Firebase.firestore
 
-    fun mapToGame(document: QueryDocumentSnapshot): Game {
+    fun mapToGame(document: QueryDocumentSnapshot): GameMetaData {
         val uuidAsString = document.getString("id")
         val name = document.getString("name")
         if (name.isNullOrEmpty()) {
@@ -21,7 +22,7 @@ class GameSearch {
             UUID.fromString(uuidAsString)
         }
 
-        return Game(
+        return GameMetaData(
             name=name,
             id=id,
             description = document.getString("description"),
@@ -31,8 +32,8 @@ class GameSearch {
         )
     }
 
-    fun getGames(onFailure: (e: Exception) -> Unit, onSuccess: (List<Game>) -> Unit) {
-        val games = mutableListOf<Game>()
+    fun getGames(onFailure: (e: Exception) -> Unit, onSuccess: (MutableList<GameMetaData>) -> Unit) {
+        val games = mutableListOf<GameMetaData>()
         db.collection("games")
             .get()
             .addOnSuccessListener { result ->

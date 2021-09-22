@@ -3,7 +3,7 @@ package com.bulrog59.ciste2dot0.game.management
 import java.lang.StringBuilder
 import java.util.*
 
-data class Game(
+data class GameMetaData(
     val name: String,
     val id: UUID?,
     val description: String?,
