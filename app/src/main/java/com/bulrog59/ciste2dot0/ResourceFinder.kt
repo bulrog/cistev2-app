@@ -26,8 +26,8 @@ class ResourceFinder(cisteActivity: CisteActivity, id: String?, localFolder: Fil
     }
 
     private fun findFileWithName(name:String):String {
-        val matchingFiles=File(rootFolder).listFiles().filter { it.name.startsWith("$name.") }
-        if (matchingFiles.size!=1){
+        val matchingFiles=File(rootFolder).listFiles()?.filter { it.name.startsWith("$name.") }
+        if (matchingFiles?.size!=1){
             throw IllegalStateException("cannot find a unique file in the folder$rootFolder for name:$name")
         }
         return matchingFiles.first().name

@@ -100,15 +100,14 @@ class GameListAdapter(private val cisteActivitiy: Activity) :
             holder.loadDeleteButton.setImageResource(R.drawable.ic_delete)
             holder.loadDeleteButton.visibility = View.VISIBLE
             holder.loadDeleteButton.setOnClickListener {
-                deletionWithConfirmation(gameMetaData, holder)
+                deletionWithConfirmation(gameMetaData)
             }
         }
         holder.startButton.setOnClickListener { startGame(gameMetaData.id) }
     }
 
     private fun deletionWithConfirmation(
-        gameMetaData: GameMetaData,
-        holder: ViewHolder
+        gameMetaData: GameMetaData
     ) {
         AlertDialog.Builder(cisteActivitiy)
             .setIcon(android.R.drawable.ic_dialog_alert)
