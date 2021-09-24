@@ -7,4 +7,6 @@
     <string name="game_description_help_text">Entrez la description du jeu</string>
     <string name="create_game_button">Créer</string>
     <string name="game_location_help_text">Entrez de où démarrer le jeu</string>
+    <string name="scene_selection_title">Selectionnez la scene que vous souhaitez editer</string>
+    <string name="edit">Editer</string>
 </resources>

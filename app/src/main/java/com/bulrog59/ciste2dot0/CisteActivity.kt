@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bulrog59.ciste2dot0.game.management.GameDataLoader
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Inventory
 import com.bulrog59.ciste2dot0.gamedata.SceneData
@@ -31,11 +32,13 @@ import org.opencv.android.OpenCVLoader
 class CisteActivity : AppCompatActivity() {
     private var currentScene: Scene? = null
     private lateinit var gameData: GameData
-    lateinit var resourceFinder: ResourceFinder
     val mapper = ObjectMapper()
     val inventory = Inventory()
-    var gameId: String?=null
+    lateinit var gameDataLoader:GameDataLoader
 
+    init {
+        mapper.registerModule(KotlinModule())
+    }
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
             baseContext, it
@@ -61,16 +64,6 @@ class CisteActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadGameData() {
-        mapper.registerModule(KotlinModule())
-
-        val ios = resourceFinder.getStreamFromUri(GAME_RESOURCE_NAME)
-
-        gameData = mapper.readValue(
-            ios,
-            GameData::class.java
-        )
-    }
 
     fun gameDataToString(): String {
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(gameData)
@@ -87,11 +80,10 @@ class CisteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        gameId= intent.getStringExtra(GAME_ID)
-        resourceFinder = ResourceFinder(this, gameId, filesDir)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
+        gameDataLoader=GameDataLoader(this)
         reviewPermissions()
-        loadGameData()
+        gameData = gameDataLoader.loadGameDataFromIntent()
         initOpenCV()
 
         if (currentScene == null) {
@@ -182,7 +174,5 @@ class CisteActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        val GAME_ID = "game_id"
-        val GAME_RESOURCE_NAME="game"
     }
 }

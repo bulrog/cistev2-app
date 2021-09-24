@@ -1,23 +1,20 @@
 package com.bulrog59.ciste2dot0
 
+import android.app.Activity
 import android.net.Uri
 import com.bulrog59.ciste2dot0.game.management.GameDataManager.Companion.FOLDER_FOR_GAME_DATA
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import java.lang.IllegalStateException
-import java.nio.file.FileSystem
-import java.nio.file.FileSystems
-import java.nio.file.PathMatcher
-import java.util.*
 
-class ResourceFinder(cisteActivity: CisteActivity, id: String?, localFolder: File) {
+class ResourceFinder(activity: Activity, id: String?, localFolder: File) {
     private val useResource = id == null
-    private val resources=cisteActivity.resources
+    private val resources=activity.resources
     private val rootFolder: String = if (useResource) {
         StringBuilder()
             .append("android.resource://")
-            .append(cisteActivity.packageName).append(File.separator)
+            .append(activity.packageName).append(File.separator)
             .append("raw")
             .append(File.separator)
             .toString()

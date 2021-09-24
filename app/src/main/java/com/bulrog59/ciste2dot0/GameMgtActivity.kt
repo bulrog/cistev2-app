@@ -48,6 +48,7 @@ class GameMgtActivity : AppCompatActivity() {
             )
         )
         findViewById<Button>(R.id.create_game).setOnClickListener {
+            //TODO: to sanitize the inputs:
             val name = findViewById<TextView>(R.id.game_title_input).text.toString()
             val language = findViewById<TextView>(R.id.game_language_input).text.toString()
             val description =
@@ -63,7 +64,7 @@ class GameMgtActivity : AppCompatActivity() {
                 sizeInMB = null
             )
             val gameData = GameData(
-                scenes = listOf(SceneData(0, SceneType.exit, ObjectMapper().createObjectNode())),
+                scenes = listOf(SceneData(0, SceneType.exit, ObjectMapper().createObjectNode(),"exit")),
                 gameMetaData = gameMetaData,
                 backButtonScene = 0,
                 starting = 0

@@ -24,7 +24,7 @@ class FeatureMatching {
         detectorOption.pic2Scene.map {
 
 
-            val ios = cisteActivity.resourceFinder.getStreamFromUri(it.key)
+            val ios = cisteActivity.gameDataLoader.getStreamFromUri(it.key)
 
             val targetArray = ByteArray(ios.available())
 

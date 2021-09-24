@@ -16,6 +16,8 @@
         <activity android:name=".CrashActivity"></activity>
         <activity android:name=".CisteActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".EditActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".GameMgtActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
