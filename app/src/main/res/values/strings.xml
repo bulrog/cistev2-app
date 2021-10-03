@@ -21,5 +21,5 @@
     <string name="create_game_button">Create</string>
     <string name="game_location_help_text">Enter details where the game is located</string>
     <string name="scene_selection_title">Select the scene you want to edit</string>
-    <string name="edit">Edit</string>
+    <string name="add">Add scene</string>
 </resources>

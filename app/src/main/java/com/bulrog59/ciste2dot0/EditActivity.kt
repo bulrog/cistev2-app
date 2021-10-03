@@ -2,11 +2,11 @@ package com.bulrog59.ciste2dot0
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bulrog59.ciste2dot0.editor.MenuSelectorAdapter
 import com.bulrog59.ciste2dot0.game.management.GameDataLoader
-import com.bulrog59.ciste2dot0.gamedata.GameData
 
 class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,12 +18,9 @@ class EditActivity : AppCompatActivity() {
         }
 
         setContentView(R.layout.editor_scene_selection)
-        ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            scenesDescription
-        ).also { findViewById<Spinner>(R.id.scene_selection).adapter = it }
-
+        val recyclerView = findViewById<RecyclerView>(R.id.scene_selection_menu)
+        recyclerView.adapter = MenuSelectorAdapter(scenesDescription)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
     }
 }

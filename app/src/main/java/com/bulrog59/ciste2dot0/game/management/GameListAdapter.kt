@@ -43,7 +43,6 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
 
     inner class ViewHolder(gameDetail: View) : RecyclerView.ViewHolder(gameDetail) {
         val gameNameText = gameDetail.findViewById<TextView>(R.id.game_name)
-        var gameName: String = ""
         var remoteGame = true
         val progressBar = gameDetail.findViewById<ProgressBar>(R.id.load_progress)
         val startButton = gameDetail.findViewById<ImageButton>(R.id.start_game)
