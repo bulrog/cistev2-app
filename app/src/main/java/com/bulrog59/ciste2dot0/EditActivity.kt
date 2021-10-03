@@ -19,7 +19,7 @@ class EditActivity : AppCompatActivity() {
 
         setContentView(R.layout.editor_scene_selection)
         val recyclerView = findViewById<RecyclerView>(R.id.scene_selection_menu)
-        recyclerView.adapter = MenuSelectorAdapter(scenesDescription)
+        recyclerView.adapter = MenuSelectorAdapter(scenesDescription) { p-> println("scene selected:$p") }
         recyclerView.layoutManager = LinearLayoutManager(this)
 
     }

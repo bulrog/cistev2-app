@@ -22,6 +22,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
     private val gameDataManager = GameDataManager(gameMgtActivity)
 
     private fun getListOfGames() {
+        //TODO: add a loader icon when game list is loading.
         GameSearch().getGames({
             Toast.makeText(
                 gameMgtActivity,
@@ -49,6 +50,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
         val loadDeleteButton = gameDetail.findViewById<ImageButton>(R.id.download_delete)
         val detailButton = gameDetail.findViewById<ImageButton>(R.id.detail_button)
         val editButton = gameDetail.findViewById<ImageButton>(R.id.edit_game)
+        //TODO: also add icon for game metadata edition
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameListAdapter.ViewHolder {
@@ -79,6 +81,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
         gameMetaData: GameMetaData
     ) {
         holder.startButton.visibility = View.INVISIBLE
+        holder.editButton.visibility = View.INVISIBLE
         if (holder.remoteGame) {
             holder.loadDeleteButton.visibility = View.VISIBLE
             holder.loadDeleteButton.setOnClickListener {
@@ -108,6 +111,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
     private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, gameMetaData: GameMetaData) {
         holder.startButton.visibility = View.VISIBLE
         holder.progressBar.visibility = View.INVISIBLE
+        holder.editButton.visibility = View.VISIBLE
         if (holder.remoteGame) {
             holder.loadDeleteButton.setImageResource(R.drawable.ic_delete)
             holder.loadDeleteButton.visibility = View.VISIBLE

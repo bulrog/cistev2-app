@@ -12,12 +12,11 @@ import java.io.File
 import java.nio.file.Files
 import java.util.*
 
-class GameDataManager(context: Context) {
+class GameDataManager(val context: Context) {
     private val folderGame = context.filesDir.absolutePath + FOLDER_FOR_GAME_DATA
     private val storage = Firebase.storage
     private val mapper = ObjectMapper()
-    private val GAMEDATA_FILE="game.json"
-
+    private val GAMEDATA_FILE = "game.json"
 
 
     init {
@@ -25,18 +24,24 @@ class GameDataManager(context: Context) {
         mapper.registerModule(KotlinModule())
     }
 
-    fun addLocalGames(gamesMetaData: MutableList<GameMetaData>){
+    fun addLocalGames(gamesMetaData: MutableList<GameMetaData>) {
         File(folderGame).listFiles().forEach {
-            if (it.isDirectory){
+            if (it.isDirectory) {
                 try {
-                    val gameData=mapper.readValue(File("${it.canonicalPath}/$GAMEDATA_FILE"),GameData::class.java)
-                    if (!gamesMetaData.map {it.id }.contains(gameData.gameMetaData?.id)){
+                    val gameData = mapper.readValue(
+                        File("${it.canonicalPath}/$GAMEDATA_FILE"),
+                        GameData::class.java
+                    )
+                    if (!gamesMetaData.map { it.id }.contains(gameData.gameMetaData?.id)) {
                         gamesMetaData.add(gameData.gameMetaData!!)
                     }
 
-                } catch (e:Exception){
-                    println("error message when reading game data:${e.message}")
-                    //TODO: see what to do
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        context,
+                        "got following error when reading game data:${e.message}, please report this to the developer",
+                        Toast.LENGTH_LONG
+                    )
                 }
 
             }
@@ -72,12 +77,10 @@ class GameDataManager(context: Context) {
 
     fun createGame(gameData: GameData) {
         gameData.gameMetaData?.apply {
-            val gameLocation="$folderGame${this.id}"
+            val gameLocation = "$folderGame${this.id}"
             createFolderIfNotExists(gameLocation)
-            mapper.writeValue(File("$gameLocation/$GAMEDATA_FILE"),gameData)
+            mapper.writeValue(File("$gameLocation/$GAMEDATA_FILE"), gameData)
         }
-
-
 
 
     }
