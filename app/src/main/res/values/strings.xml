@@ -23,4 +23,18 @@
     <string name="scene_selection_title">Select the scene you want to edit</string>
     <string name="add">Add scene</string>
     <string name="no_edit_mode">There is no edit mode for this type of scene</string>
+    <string name="title_new_scene">Create new scene</string>
+    <string name="scene_title_help_text">Enter name of the scene (to find it back later)</string>
+    <string name="picMusic">Picture with music</string>
+    <string name="video">video</string>
+    <string name="exit">exit</string>
+    <string name="detector">picture detector</string>
+    <string name="updateInventory">update inventory</string>
+    <string name="ruleEngine">rule engine</string>
+    <string name="debug">debug</string>
+    <string name="inventory">inventory</string>
+    <string name="menu">menu</string>
+    <string name="scene_type_selection_title_help">Select the type of scene you want to create</string>
+    <string name="scene_create_button">Create</string>
+
 </resources>

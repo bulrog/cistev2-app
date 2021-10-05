@@ -47,6 +47,7 @@ class GameMgtActivity : AppCompatActivity() {
         return error
     }
 
+    //TODO: to see if we are protected against sql injection with firestore:
     private fun errorInNewGameFields(): Boolean {
         var error = validateField(
             R.id.game_title_input,

@@ -24,4 +24,17 @@
     <string name="scene_selection_title">Selectionnez la scene que vous souhaitez editer</string>
     <string name="add">Ajouter un scene</string>
     <string name="no_edit_mode">Il n\'y a pas de mode d\'edition pour ce type de scene</string>
+    <string name="title_new_scene">Créer une nouvelle scène</string>
+    <string name="scene_title_help_text">Entrez le nom de la scène (pour la retrouver plus tard)</string>
+    <string name="picMusic">Photo avec musique</string>
+    <string name="video">video</string>
+    <string name="exit">exit</string>
+    <string name="detector">detecteur de photo</string>
+    <string name="updateInventory">mise à jour de l\'inventaire</string>
+    <string name="ruleEngine">moteur de règles</string>
+    <string name="debug">debug</string>
+    <string name="inventory">inventaire</string>
+    <string name="menu">menu</string>
+    <string name="scene_type_selection_title_help">Selectionnez le type de la scène à créer</string>
+    <string name="scene_create_button">Créer</string>
 </resources>
