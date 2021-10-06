@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0.editor
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,11 @@ import com.bulrog59.ciste2dot0.R
 
 class MenuSelectorAdapter(val choices:List<String>, val callBack: (Int)-> Unit) : RecyclerView.Adapter<MenuSelectorAdapter.ViewHolder>(){
 
+    var positionSelected=RecyclerView.NO_POSITION
+
     inner class ViewHolder(parentView: View):RecyclerView.ViewHolder(parentView){
         val textElement=parentView.findViewById<TextView>(R.id.single_line_text)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,7 +28,15 @@ class MenuSelectorAdapter(val choices:List<String>, val callBack: (Int)-> Unit) 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.textElement.text=choices[position]
-        holder.textElement.setOnClickListener { callBack(position) }
+        if (position==positionSelected){
+            holder.itemView.setBackgroundColor(Color.GRAY)
+        }
+        else{
+            holder.itemView.setBackgroundColor(Color.BLACK)
+        }
+        holder.itemView.setOnClickListener  { positionSelected=position
+            notifyDataSetChanged()
+            callBack(position)}
     }
 
     override fun getItemCount(): Int {

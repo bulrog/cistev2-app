@@ -25,7 +25,7 @@
     <string name="add">Ajouter un scene</string>
     <string name="no_edit_mode">Il n\'y a pas de mode d\'edition pour ce type de scene</string>
     <string name="title_new_scene">Créer une nouvelle scène</string>
-    <string name="scene_title_help_text">Entrez le nom de la scène (pour la retrouver plus tard)</string>
+    <string name="scene_title_help_text">Entrez le nom de la scène</string>
     <string name="picMusic">Photo avec musique</string>
     <string name="video">video</string>
     <string name="exit">exit</string>
@@ -36,5 +36,6 @@
     <string name="inventory">inventaire</string>
     <string name="menu">menu</string>
     <string name="scene_type_selection_title_help">Selectionnez le type de la scène à créer</string>
-    <string name="scene_create_button">Créer</string>
+    <string name="create_button">Créer</string>
+    <string name="next_button">Suivant</string>
 </resources>

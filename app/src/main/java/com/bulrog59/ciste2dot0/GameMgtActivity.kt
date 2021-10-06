@@ -19,6 +19,9 @@ class GameMgtActivity : AppCompatActivity() {
     val languages =
         HashSet(Locale.getAvailableLocales().map { it.displayLanguage }).sorted()
 
+    companion object {
+        val MAX_CHAR=50
+    }
 
     private fun gameSelectionScreen() {
         setContentView(R.layout.game_management)
@@ -51,8 +54,8 @@ class GameMgtActivity : AppCompatActivity() {
     private fun errorInNewGameFields(): Boolean {
         var error = validateField(
             R.id.game_title_input,
-            { v -> v.isEmpty() || v.length > 255 },
-            "field cannot be empty or longer than 255 characters"
+            { v -> v.isEmpty() || v.length > MAX_CHAR },
+            "field cannot be empty or longer than $MAX_CHAR characters"
         )
         error = validateField(
             R.id.game_language_input,

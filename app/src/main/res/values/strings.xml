@@ -35,6 +35,7 @@
     <string name="inventory">inventory</string>
     <string name="menu">menu</string>
     <string name="scene_type_selection_title_help">Select the type of scene you want to create</string>
-    <string name="scene_create_button">Create</string>
+    <string name="create_button">Create</string>
+    <string name="next_button">Next</string>
 
 </resources>
