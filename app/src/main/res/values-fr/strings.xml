@@ -38,4 +38,7 @@
     <string name="scene_type_selection_title_help">Selectionnez le type de la scène à créer</string>
     <string name="create_button">Créer</string>
     <string name="next_button">Suivant</string>
+    <string name="empty_field_error">le champ ne peut pas être vide</string>
+    <string name="tool_long_field">"le champ est trop long, maximum: "</string>
+    <string name="element_not_in_list">choisissez un element dans la liste</string>
 </resources>

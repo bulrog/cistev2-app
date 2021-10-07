@@ -2,16 +2,17 @@ package com.bulrog59.ciste2dot0
 
 import android.app.Activity
 import android.net.Uri
-import com.bulrog59.ciste2dot0.game.management.GameDataManager.Companion.FOLDER_FOR_GAME_DATA
+import com.bulrog59.ciste2dot0.game.management.GameDataLoader
+import com.bulrog59.ciste2dot0.game.management.GamesDataManager.Companion.FOLDER_FOR_GAME_DATA
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import java.lang.IllegalStateException
 
-class ResourceFinder(activity: Activity, id: String?, localFolder: File) {
-    private val useResource = id == null
+class ResourceFinder(activity: Activity) {
+    private val id = activity.intent.getStringExtra(GAME_ID)
     private val resources=activity.resources
-    private val rootFolder: String = if (useResource) {
+    private val rootFolder: String = if (id==null) {
         StringBuilder()
             .append("android.resource://")
             .append(activity.packageName).append(File.separator)
@@ -19,7 +20,7 @@ class ResourceFinder(activity: Activity, id: String?, localFolder: File) {
             .append(File.separator)
             .toString()
     } else {
-        "${localFolder.absolutePath}/$FOLDER_FOR_GAME_DATA/$id/"
+        "${activity.filesDir.absolutePath}/$FOLDER_FOR_GAME_DATA/$id/"
     }
 
     private fun findFileWithName(name:String):String {
@@ -31,7 +32,7 @@ class ResourceFinder(activity: Activity, id: String?, localFolder: File) {
     }
 
     fun getUri(resourceName: String): Uri {
-        if (useResource){
+        if (id==null){
             return Uri.parse(rootFolder + resourceName);
         }
         return Uri.parse(rootFolder + findFileWithName(resourceName));
@@ -48,12 +49,16 @@ class ResourceFinder(activity: Activity, id: String?, localFolder: File) {
     }
 
     fun getStreamFromUri(resourceName: String) : InputStream {
-        return  if (useResource){
+        return  if (id==null){
                 resources.openRawResource(R.raw::class.java.getId(resourceName))
         }
         else{
             FileInputStream(File(getUri(resourceName).toString()))
         }
+    }
+
+    companion object {
+        val GAME_ID = "game_id"
     }
 
 

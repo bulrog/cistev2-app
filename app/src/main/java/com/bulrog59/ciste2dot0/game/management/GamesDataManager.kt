@@ -12,7 +12,7 @@ import java.io.File
 import java.nio.file.Files
 import java.util.*
 
-class GameDataManager(val context: Context) {
+class GamesDataManager(val context: Context) {
     private val folderGame = context.filesDir.absolutePath + FOLDER_FOR_GAME_DATA
     private val storage = Firebase.storage
     private val mapper = ObjectMapper()

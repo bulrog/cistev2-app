@@ -12,15 +12,8 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.io.InputStream
 
 class GameDataLoader(activity: Activity) {
-    val resourceFinder:ResourceFinder
-    val mapper=ObjectMapper()
-
-    init {
-        val gameId= activity.intent.getStringExtra(GAME_ID)
-        resourceFinder = ResourceFinder(activity, gameId, activity.filesDir)
-        mapper.registerModule(KotlinModule())
-
-    }
+    val resourceFinder=ResourceFinder(activity)
+    val mapper=ObjectMapper().apply { registerModule(KotlinModule()) }
 
     fun loadGameDataFromIntent():GameData{
         val ios = resourceFinder.getStreamFromUri(GAME_RESOURCE_NAME)
@@ -41,7 +34,7 @@ class GameDataLoader(activity: Activity) {
     }
 
     companion object {
-        val GAME_ID = "game_id"
+
         val GAME_RESOURCE_NAME="game"
 
     }

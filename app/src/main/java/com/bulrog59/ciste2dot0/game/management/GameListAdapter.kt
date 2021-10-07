@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.EditActivity
 import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.ResourceFinder
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -19,7 +20,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
     private var gamesMetaData: List<GameMetaData> = listOf()
 
-    private val gameDataManager = GameDataManager(gameMgtActivity)
+    private val gameDataManager = GamesDataManager(gameMgtActivity)
 
     private fun getListOfGames() {
         //TODO: add a loader icon when game list is loading.
@@ -62,7 +63,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
 
     private fun <T> launchActivity(clazz: Class<T>, id: UUID?) {
         val intent = Intent(gameMgtActivity, clazz)
-        intent.putExtra(GameDataLoader.GAME_ID, id?.toString())
+        intent.putExtra(ResourceFinder.GAME_ID, id?.toString())
         gameMgtActivity.startActivity(intent)
     }
 

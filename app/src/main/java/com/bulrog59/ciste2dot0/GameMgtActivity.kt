@@ -6,7 +6,8 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bulrog59.ciste2dot0.game.management.GameDataManager
+import com.bulrog59.ciste2dot0.editor.FieldValidator
+import com.bulrog59.ciste2dot0.game.management.GamesDataManager
 import com.bulrog59.ciste2dot0.game.management.GameMetaData
 import com.bulrog59.ciste2dot0.game.management.GameListAdapter
 import com.bulrog59.ciste2dot0.gamedata.GameData
@@ -16,12 +17,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.*
 
 class GameMgtActivity : AppCompatActivity() {
-    val languages =
+    private val fieldValidator = FieldValidator(this)
+    private val languages =
         HashSet(Locale.getAvailableLocales().map { it.displayLanguage }).sorted()
-
-    companion object {
-        val MAX_CHAR=50
-    }
 
     private fun gameSelectionScreen() {
         setContentView(R.layout.game_management)
@@ -37,39 +35,17 @@ class GameMgtActivity : AppCompatActivity() {
         }
     }
 
-    private fun validateField(
-        fieldId: Int,
-        validator: (String) -> Boolean,
-        errorMessage: String
-    ): Boolean {
-        val field = findViewById<EditText>(fieldId)
-        val error = validator(field.text.toString())
-        if (error) {
-            field.error = errorMessage
-        }
-        return error
-    }
 
     //TODO: to see if we are protected against sql injection with firestore:
     private fun errorInNewGameFields(): Boolean {
-        var error = validateField(
-            R.id.game_title_input,
-            { v -> v.isEmpty() || v.length > MAX_CHAR },
-            "field cannot be empty or longer than $MAX_CHAR characters"
-        )
-        error = validateField(
-            R.id.game_language_input,
-            { v -> !languages.contains(v) },
-            "please select a language from the list"
-        ) || error
-        return validateField(
-            R.id.game_location_input,
-            String::isEmpty,
-            "field cannot be empty"
-        ) || error
+        var error=fieldValidator.notEmptyField(R.id.game_title_input)
+        error=fieldValidator.maxSizeField(R.id.game_title_input)|| error
+        error=fieldValidator.notEmptyField(R.id.game_location_input)|| error
+        error=fieldValidator.inList(R.id.game_language_input, languages)|| error
+        return error
     }
 
-    private fun createGameFromFields(){
+    private fun createGameFromFields() {
         val name = findViewById<EditText>(R.id.game_title_input).text.toString()
         val language = findViewById<TextView>(R.id.game_language_input).text.toString()
         val description =
@@ -97,7 +73,7 @@ class GameMgtActivity : AppCompatActivity() {
             backButtonScene = 0,
             starting = 0
         )
-        GameDataManager(this).createGame(gameData)
+        GamesDataManager(this).createGame(gameData)
         gameSelectionScreen()
     }
 
