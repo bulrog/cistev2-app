@@ -41,4 +41,5 @@
     <string name="empty_field_error">le champ ne peut pas être vide</string>
     <string name="tool_long_field">"le champ est trop long, maximum: "</string>
     <string name="element_not_in_list">choisissez un element dans la liste</string>
+    <string name="element_not_selected">Vous devez selectionner un element dans la liste</string>
 </resources>

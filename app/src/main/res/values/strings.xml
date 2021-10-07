@@ -40,5 +40,6 @@
     <string name="empty_field_error">field cannot be empty</string>
     <string name="tool_long_field">field cannot be longer than </string>
     <string name="element_not_in_list">please select an element from the list</string>
+    <string name="element_not_selected">You need to select an element in the list</string>
 
 </resources>

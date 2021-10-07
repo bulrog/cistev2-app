@@ -4,9 +4,7 @@ import android.app.Activity
 import android.net.Uri
 import com.bulrog59.ciste2dot0.game.management.GameDataLoader
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager.Companion.FOLDER_FOR_GAME_DATA
-import java.io.File
-import java.io.FileInputStream
-import java.io.InputStream
+import java.io.*
 import java.lang.IllegalStateException
 
 class ResourceFinder(activity: Activity) {
@@ -57,8 +55,17 @@ class ResourceFinder(activity: Activity) {
         }
     }
 
+    fun getOutputStreamFromURI():OutputStream?{
+        return if (id==null){
+            null
+        }else{
+            FileOutputStream(File(getUri(GAME_RESOURCE_NAME).toString()))
+        }
+    }
+
     companion object {
         val GAME_ID = "game_id"
+        val GAME_RESOURCE_NAME="game"
     }
 
 

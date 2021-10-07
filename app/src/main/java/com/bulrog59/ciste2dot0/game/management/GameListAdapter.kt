@@ -112,13 +112,16 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
     private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, gameMetaData: GameMetaData) {
         holder.startButton.visibility = View.VISIBLE
         holder.progressBar.visibility = View.INVISIBLE
-        holder.editButton.visibility = View.VISIBLE
         if (holder.remoteGame) {
             holder.loadDeleteButton.setImageResource(R.drawable.ic_delete)
             holder.loadDeleteButton.visibility = View.VISIBLE
             holder.loadDeleteButton.setOnClickListener {
                 deletionWithConfirmation(gameMetaData)
             }
+            holder.editButton.visibility = View.VISIBLE
+
+        } else {
+            holder.editButton.visibility = View.INVISIBLE
         }
         holder.startButton.setOnClickListener { startGame(gameMetaData.id) }
         holder.editButton.setOnClickListener { editGame(gameMetaData.id) }

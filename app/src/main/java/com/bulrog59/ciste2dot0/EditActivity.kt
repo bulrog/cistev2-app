@@ -62,7 +62,13 @@ class EditActivity : AppCompatActivity() {
             SceneType.values().map { v -> getText(v.description).toString() }) {}
 
         findViewById<Button>(R.id.create_scene_button).setOnClickListener {
-            addNewSceneToGameData(SceneType.values()[sceneTypeSelector.positionSelected])
+            if (sceneTypeSelector.positionSelected!=RecyclerView.NO_POSITION){
+                addNewSceneToGameData(SceneType.values()[sceneTypeSelector.positionSelected])
+            }
+            else {
+                Toast.makeText(this,R.string.element_not_selected,Toast.LENGTH_LONG).show()
+            }
+
         }
         recyclerView.adapter = sceneTypeSelector
         recyclerView.layoutManager = LinearLayoutManager(this)

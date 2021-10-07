@@ -13,6 +13,10 @@ class GameDataWriter(activity: Activity) {
     private val mapper=ObjectMapper().apply { registerModule(KotlinModule()) }
     var gameData= GameDataLoader(activity).loadGameDataFromIntent()
 
+    private fun saveGameData(){
+        mapper.writeValue(resourceFinder.getOutputStreamFromURI(),gameData)
+    }
+
     fun addNewSceneToGameData(sceneType: SceneType, sceneName:String) {
         val maxSceneId = gameData.scenes.map(SceneData::sceneId).maxOrNull() ?: 0
         val sceneData = mutableListOf<SceneData>().apply {
@@ -32,5 +36,6 @@ class GameDataWriter(activity: Activity) {
             gameData.backButtonScene,
             gameData.gameMetaData
         )
+        saveGameData()
     }
 }
