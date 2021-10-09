@@ -42,8 +42,9 @@
     <string name="element_not_in_list">please select an element from the list</string>
     <string name="element_not_selected">You need to select an element in the list</string>
     <string name="file_not_selected">You need to select a file to proceed</string>
-    <string name="select_file_button_text">Upload</string>
+    <string name="upload_file_button_text">Upload</string>
     <string name="select_picture_text_title">Select the picture to show</string>
     <string name="issue_to_copy_file">There was an issue to copy the file</string>
+    <string name="select_file_button_text">Select existing file</string>
 
 </resources>

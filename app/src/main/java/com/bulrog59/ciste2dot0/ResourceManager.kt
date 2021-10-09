@@ -2,11 +2,13 @@ package com.bulrog59.ciste2dot0
 
 import android.app.Activity
 import android.net.Uri
+import com.bulrog59.ciste2dot0.editor.FilePickerType
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager.Companion.FOLDER_FOR_GAME_DATA
 import java.io.*
 import java.lang.IllegalStateException
+import java.nio.file.Files
 
-class ResourceFinder(activity: Activity) {
+class ResourceManager(activity: Activity) {
     private val id = activity.intent.getStringExtra(GAME_ID)
     private val resources=activity.resources
     private val rootFolder: String = if (id==null) {
@@ -64,6 +66,12 @@ class ResourceFinder(activity: Activity) {
         }else{
             FileOutputStream(File(getUri(uri).toString()))
         }
+    }
+
+    fun listFileOfType(filePickerType: FilePickerType):List<String>{
+        return File(rootFolder).listFiles().filter {
+           Files.probeContentType(it.toPath()).startsWith(filePickerType.name)
+        }.map { it.name }
     }
 
     companion object {

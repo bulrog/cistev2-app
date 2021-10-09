@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.EditActivity
 import com.bulrog59.ciste2dot0.R
-import com.bulrog59.ciste2dot0.ResourceFinder
+import com.bulrog59.ciste2dot0.ResourceManager
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -63,7 +63,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
 
     private fun <T> launchActivity(clazz: Class<T>, id: UUID?) {
         val intent = Intent(gameMgtActivity, clazz)
-        intent.putExtra(ResourceFinder.GAME_ID, id?.toString())
+        intent.putExtra(ResourceManager.GAME_ID, id?.toString())
         gameMgtActivity.startActivity(intent)
     }
 

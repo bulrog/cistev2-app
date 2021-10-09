@@ -1,7 +1,7 @@
 package com.bulrog59.ciste2dot0.game.management
 
 import android.app.Activity
-import com.bulrog59.ciste2dot0.ResourceFinder
+import com.bulrog59.ciste2dot0.ResourceManager
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
@@ -9,12 +9,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 
 class GameDataWriter(activity: Activity) {
-    private val resourceFinder=ResourceFinder(activity)
+    private val resourceFinder=ResourceManager(activity)
     private val mapper=ObjectMapper().apply { registerModule(KotlinModule()) }
     var gameData= GameDataLoader(activity).loadGameDataFromIntent()
 
     private fun saveGameData(){
-        mapper.writeValue(resourceFinder.getOutputStreamFromURI(ResourceFinder.GAME_RESOURCE_NAME),gameData)
+        mapper.writeValue(resourceFinder.getOutputStreamFromURI(ResourceManager.GAME_RESOURCE_NAME),gameData)
     }
 
     fun addNewSceneToGameData(sceneType: SceneType, sceneName:String) {
