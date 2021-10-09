@@ -7,6 +7,7 @@ import com.bulrog59.ciste2dot0.R
 
 class FieldValidator(val activity: Activity) {
 
+
     companion object {
         val MAX_CHAR=50
     }

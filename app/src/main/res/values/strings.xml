@@ -41,5 +41,7 @@
     <string name="tool_long_field">field cannot be longer than </string>
     <string name="element_not_in_list">please select an element from the list</string>
     <string name="element_not_selected">You need to select an element in the list</string>
+    <string name="select_file_button_text">Upload</string>
+    <string name="select_picture_text_title">Select the picture to show</string>
 
 </resources>

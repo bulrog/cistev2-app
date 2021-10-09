@@ -42,4 +42,6 @@
     <string name="tool_long_field">"le champ est trop long, maximum: "</string>
     <string name="element_not_in_list">choisissez un element dans la liste</string>
     <string name="element_not_selected">Vous devez selectionner un element dans la liste</string>
+    <string name="select_file_button_text">Telecharger</string>
+    <string name="select_picture_text_title">Selectionner la photo à afficher</string>
 </resources>

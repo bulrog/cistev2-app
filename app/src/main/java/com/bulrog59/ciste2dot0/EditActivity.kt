@@ -1,29 +1,35 @@
 package com.bulrog59.ciste2dot0
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bulrog59.ciste2dot0.editor.FieldValidator
-import com.bulrog59.ciste2dot0.editor.MenuSelectorAdapter
-import com.bulrog59.ciste2dot0.game.management.GameDataLoader
+import com.bulrog59.ciste2dot0.editor.*
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter
-import com.bulrog59.ciste2dot0.gamedata.GameData
-import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
-import com.fasterxml.jackson.databind.ObjectMapper
+
 
 class EditActivity : AppCompatActivity() {
 
     private lateinit var gameDataWriter: GameDataWriter
     private val fieldValidator = FieldValidator(this)
+    private var filePicker: FilePicker? = null
 
     private fun setEditorForScene(position: Int) {
         when (gameDataWriter.gameData.scenes[position].sceneType) {
+            SceneType.picMusic -> {
+                filePicker = PicMusicEditor(this).apply {
+                    createScene()
+                }
+            }
             else -> Toast.makeText(this, getText(R.string.no_edit_mode), Toast.LENGTH_LONG).show()
         }
     }
@@ -62,11 +68,10 @@ class EditActivity : AppCompatActivity() {
             SceneType.values().map { v -> getText(v.description).toString() }) {}
 
         findViewById<Button>(R.id.create_scene_button).setOnClickListener {
-            if (sceneTypeSelector.positionSelected!=RecyclerView.NO_POSITION){
+            if (sceneTypeSelector.positionSelected != RecyclerView.NO_POSITION) {
                 addNewSceneToGameData(SceneType.values()[sceneTypeSelector.positionSelected])
-            }
-            else {
-                Toast.makeText(this,R.string.element_not_selected,Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, R.string.element_not_selected, Toast.LENGTH_LONG).show()
             }
 
         }
@@ -75,7 +80,7 @@ class EditActivity : AppCompatActivity() {
 
     }
 
-
+    //TODO: backbutton to put a confirmation quit edit mode
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this))
@@ -84,4 +89,12 @@ class EditActivity : AppCompatActivity() {
         sceneSelectionScreen()
 
     }
+
+
+    //TODO: deprecated so need to review how to manage
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data?.apply { filePicker?.callBack(data.data,requestCode) }
+    }
+
 }
