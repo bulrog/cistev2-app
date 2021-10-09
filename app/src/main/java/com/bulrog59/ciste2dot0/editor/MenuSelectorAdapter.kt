@@ -32,7 +32,7 @@ class MenuSelectorAdapter(val choices:List<String>, val callBack: (Int)-> Unit) 
             holder.itemView.setBackgroundColor(Color.GRAY)
         }
         else{
-            holder.itemView.setBackgroundColor(Color.BLACK)
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT)
         }
         holder.itemView.setOnClickListener  { positionSelected=position
             notifyDataSetChanged()

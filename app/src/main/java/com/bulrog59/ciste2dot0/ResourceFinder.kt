@@ -2,7 +2,6 @@ package com.bulrog59.ciste2dot0
 
 import android.app.Activity
 import android.net.Uri
-import com.bulrog59.ciste2dot0.game.management.GameDataLoader
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager.Companion.FOLDER_FOR_GAME_DATA
 import java.io.*
 import java.lang.IllegalStateException
@@ -55,11 +54,15 @@ class ResourceFinder(activity: Activity) {
         }
     }
 
-    fun getOutputStreamFromURI():OutputStream?{
+    fun getOutputStreamForFile(fileName: String):OutputStream{
+        return FileOutputStream(File("$rootFolder$fileName"))
+    }
+
+    fun getOutputStreamFromURI(uri:String):OutputStream?{
         return if (id==null){
             null
         }else{
-            FileOutputStream(File(getUri(GAME_RESOURCE_NAME).toString()))
+            FileOutputStream(File(getUri(uri).toString()))
         }
     }
 

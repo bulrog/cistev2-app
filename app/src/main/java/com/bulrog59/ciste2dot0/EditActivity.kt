@@ -2,10 +2,7 @@ package com.bulrog59.ciste2dot0
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.database.Cursor
-import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -21,7 +18,7 @@ class EditActivity : AppCompatActivity() {
 
     private lateinit var gameDataWriter: GameDataWriter
     private val fieldValidator = FieldValidator(this)
-    private var filePicker: FilePicker? = null
+    private var filePicker: CallBackActivityResult? = null
 
     private fun setEditorForScene(position: Int) {
         when (gameDataWriter.gameData.scenes[position].sceneType) {

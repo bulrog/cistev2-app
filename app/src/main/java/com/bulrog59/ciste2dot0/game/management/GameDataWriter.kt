@@ -14,7 +14,7 @@ class GameDataWriter(activity: Activity) {
     var gameData= GameDataLoader(activity).loadGameDataFromIntent()
 
     private fun saveGameData(){
-        mapper.writeValue(resourceFinder.getOutputStreamFromURI(),gameData)
+        mapper.writeValue(resourceFinder.getOutputStreamFromURI(ResourceFinder.GAME_RESOURCE_NAME),gameData)
     }
 
     fun addNewSceneToGameData(sceneType: SceneType, sceneName:String) {
