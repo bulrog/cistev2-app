@@ -56,8 +56,10 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
     }
 
     private fun selectFile(filePickerType:FilePickerType){
-        resourceFinder.listFileOfType(filePickerType)
-        //TODO: to make a list picker.
+        newFile=false
+        //TODO: if not file then cannot do that:
+        val files=resourceFinder.listFileOfType(filePickerType)
+        ItemPicker(activity).init(R.string.select_picture_text_title,files){f-> doneCallBack(f)}
     }
 
     fun nextButton() {
@@ -75,6 +77,7 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
                 }
                 Toast.makeText(activity, R.string.issue_to_copy_file, Toast.LENGTH_LONG)
             }
+
         }
 
 
