@@ -23,7 +23,6 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
     private val gameDataManager = GamesDataManager(gameMgtActivity)
 
     private fun getListOfGames() {
-        //TODO: add a loader icon when game list is loading.
         GameSearch().getGames({
             Toast.makeText(
                 gameMgtActivity,
@@ -34,11 +33,13 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
             gamesMetaData = it
             gameDataManager.addLocalGames(gamesMetaData as MutableList<GameMetaData>)
             notifyDataSetChanged()
+            gameMgtActivity.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = View.GONE;
         }
     }
 
     init {
         getListOfGames()
+
 
     }
 
@@ -51,7 +52,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
         val loadDeleteButton = gameDetail.findViewById<ImageButton>(R.id.download_delete)
         val detailButton = gameDetail.findViewById<ImageButton>(R.id.detail_button)
         val editButton = gameDetail.findViewById<ImageButton>(R.id.edit_game)
-        //TODO: also add icon for game metadata edition
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameListAdapter.ViewHolder {
@@ -133,14 +134,12 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
     ) {
         AlertDialog.Builder(gameMgtActivity)
             .setIcon(android.R.drawable.ic_dialog_alert)
-            .setMessage(gameMgtActivity.resources.getString(R.string.delete_game_message))
-            .setPositiveButton(
-                gameMgtActivity.resources.getString(R.string.confirmation)
-            ) { _, _ ->
+            .setMessage(R.string.delete_game_message)
+            .setPositiveButton(R.string.confirmation) { _, _ ->
                 gameDataManager.eraseLocalGame(gameMetaData.id)
                 getListOfGames()
             }
-            .setNegativeButton(gameMgtActivity.resources.getString(R.string.denial), null)
+            .setNegativeButton(R.string.denial, null)
             .show()
     }
 

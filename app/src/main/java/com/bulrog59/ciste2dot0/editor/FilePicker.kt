@@ -57,8 +57,11 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
 
     private fun selectFile(filePickerType:FilePickerType){
         newFile=false
-        //TODO: if not file then cannot do that:
         val files=resourceFinder.listFileOfType(filePickerType)
+        if (files.isEmpty()){
+            Toast.makeText(activity,R.string.no_item_to_select,Toast.LENGTH_LONG).show()
+            return
+        }
         ItemPicker(activity).init(R.string.select_picture_text_title,files){f-> doneCallBack(f)}
     }
 
@@ -94,7 +97,6 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         this.doneCallBack = doneCallBack
         activity.setContentView(R.layout.editor_file_picker)
         activity.findViewById<TextView>(R.id.upload_file_title).setText(titleText)
-        //TODO: add also a button to select an existing image
         activity.findViewById<Button>(R.id.upload_file_button).setOnClickListener {
             uploadFile(filePickerType)
         }

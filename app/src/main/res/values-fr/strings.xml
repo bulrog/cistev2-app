@@ -47,4 +47,6 @@
     <string name="file_not_selected">Vous devez selectionner un ficher</string>
     <string name="issue_to_copy_file">Problème durant la copie du fichier</string>
     <string name="select_file_button_text">Select existing file</string>
+    <string name="no_item_to_select">Il n\'y a pas de resource de ce type à selectionner</string>
+    <string name="quit_editor_mode">Etes vous sûr de vouloir quitter le mode editor?</string>
 </resources>

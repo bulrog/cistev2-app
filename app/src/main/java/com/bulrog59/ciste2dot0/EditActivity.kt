@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -36,7 +37,7 @@ class EditActivity : AppCompatActivity() {
         val scenesDescription = gameDataWriter.gameData.scenes.map {
             "${it.sceneId}:${it.name ?: "none"} (${getText(it.sceneType.description)})"
         }
-
+        //TODO: to add also a button next to the scene selection to edit the game metadata
         setContentView(R.layout.editor_scene_selection)
 
         val recyclerView = findViewById<RecyclerView>(R.id.scene_selection_menu)
@@ -77,7 +78,6 @@ class EditActivity : AppCompatActivity() {
 
     }
 
-    //TODO: backbutton to put a confirmation quit edit mode
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this))
@@ -87,11 +87,23 @@ class EditActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        AlertDialog.Builder(this)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setMessage(R.string.quit_editor_mode)
+            .setPositiveButton(R.string.confirmation) { _, _ ->
+                super.onBackPressed()
+
+            }
+            .setNegativeButton(R.string.denial, null)
+            .show()
+    }
+
 
     //TODO: deprecated so need to review how to manage
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        data?.apply { filePicker?.callBack(data.data,requestCode) }
+        data?.apply { filePicker?.callBack(data.data, requestCode) }
     }
 
 }
