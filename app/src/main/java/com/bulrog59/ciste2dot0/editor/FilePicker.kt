@@ -55,14 +55,17 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         ActivityCompat.startActivityForResult(activity, chooseFile, filePickerType.code, null)
     }
 
-    private fun selectFile(filePickerType:FilePickerType){
-        newFile=false
-        val files=resourceFinder.listFileOfType(filePickerType)
-        if (files.isEmpty()){
-            Toast.makeText(activity,R.string.no_item_to_select,Toast.LENGTH_LONG).show()
+    private fun selectFile(filePickerType: FilePickerType) {
+        newFile = false
+        val files = resourceFinder.listFileOfType(filePickerType)
+        if (files.isEmpty()) {
+            Toast.makeText(activity, R.string.no_item_to_select, Toast.LENGTH_LONG).show()
             return
         }
-        ItemPicker(activity).init(R.string.select_picture_text_title,files){f-> doneCallBack(f)}
+        ItemPicker(activity).init(
+            R.string.select_picture_text_title,
+            files
+        ) { f -> doneCallBack(f) }
     }
 
     fun nextButton() {
@@ -92,11 +95,17 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
     fun init(
         titleText: Int,
         filePickerType: FilePickerType,
+        previousItem: String?,
         doneCallBack: (fileName: String) -> Unit
     ) {
         this.doneCallBack = doneCallBack
         activity.setContentView(R.layout.editor_file_picker)
         activity.findViewById<TextView>(R.id.upload_file_title).setText(titleText)
+        previousItem?.apply {
+            activity.findViewById<TextView>(R.id.selected_file_name).text =
+                previousItem
+        }
+
         activity.findViewById<Button>(R.id.upload_file_button).setOnClickListener {
             uploadFile(filePickerType)
         }

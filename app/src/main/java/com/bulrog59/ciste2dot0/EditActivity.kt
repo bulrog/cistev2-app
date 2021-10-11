@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.editor.*
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter
 import com.bulrog59.ciste2dot0.gamedata.SceneType
+import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 
 
 class EditActivity : AppCompatActivity() {
@@ -22,9 +25,10 @@ class EditActivity : AppCompatActivity() {
     private var filePicker: CallBackActivityResult? = null
 
     private fun setEditorForScene(position: Int) {
-        when (gameDataWriter.gameData.scenes[position].sceneType) {
+        val sceneData=gameDataWriter.gameData.scenes[position]
+        when (sceneData.sceneType) {
             SceneType.picMusic -> {
-                filePicker = PicMusicEditor(this).apply {
+                filePicker = PicMusicEditor(this,sceneData.options).apply {
                     createScene()
                 }
             }
