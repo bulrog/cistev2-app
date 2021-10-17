@@ -50,5 +50,8 @@
     <string name="no_item_to_select">There is no item loaded yet you can select from</string>
     <string name="quit_editor_mode">Are you sure you want to quit the editor mode?</string>
     <string name="next_scene_title">Select next scene</string>
+    <string name="pic_optional_help_text">Add optional text to display</string>
+    <string name="loop_sound_help_text">Play sound in loop</string>
+    <string name="save_text">Save</string>
 
 </resources>
