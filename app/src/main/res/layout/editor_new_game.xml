@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/game_language_help_text">
 
         <EditText
-            android:id="@+id/game_description_input"
+            android:id="@+id/pic_optional_text"
             android:inputType="textMultiLine"
             android:lines="8"
             android:minLines="8"

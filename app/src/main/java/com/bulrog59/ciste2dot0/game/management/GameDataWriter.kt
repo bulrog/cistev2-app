@@ -17,9 +17,20 @@ class GameDataWriter(activity: Activity) {
         mapper.writeValue(resourceFinder.getOutputStreamFromURI(ResourceManager.GAME_RESOURCE_NAME),gameData)
     }
 
+    private fun updateGameDataWithScenes(scenesData: List<SceneData>){
+        gameData = GameData(
+            gameData.starting,
+            scenesData,
+            gameData.backButtonScene,
+            gameData.gameMetaData
+        )
+        saveGameData()
+
+    }
+
     fun addNewSceneToGameData(sceneType: SceneType, sceneName:String) {
         val maxSceneId = gameData.scenes.map(SceneData::sceneId).maxOrNull() ?: 0
-        val sceneData = mutableListOf<SceneData>().apply {
+        val scenesData = mutableListOf<SceneData>().apply {
             addAll(gameData.scenes)
             add(
                 SceneData(
@@ -30,12 +41,15 @@ class GameDataWriter(activity: Activity) {
                 )
             )
         }
-        gameData = GameData(
-            gameData.starting,
-            sceneData,
-            gameData.backButtonScene,
-            gameData.gameMetaData
-        )
-        saveGameData()
+        updateGameDataWithScenes(scenesData)
+    }
+
+    fun updateSceneData( sceneData: SceneData) {
+        val scenesData = mutableListOf<SceneData>().apply {
+            addAll(gameData.scenes.filter { it.sceneId != sceneData.sceneId })
+            add(sceneData)
+        }
+        updateGameDataWithScenes(scenesData)
+
     }
 }

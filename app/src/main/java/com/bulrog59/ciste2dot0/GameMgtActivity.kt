@@ -48,7 +48,7 @@ class GameMgtActivity : AppCompatActivity() {
         val name = findViewById<EditText>(R.id.game_title_input).text.toString()
         val language = findViewById<TextView>(R.id.game_language_input).text.toString()
         val description =
-            findViewById<TextView>(R.id.game_description_input).text.toString()
+            findViewById<TextView>(R.id.pic_optional_text).text.toString()
         val location = findViewById<TextView>(R.id.game_location_input).text.toString()
         val id = UUID.randomUUID()
         val gameMetaData = GameMetaData(

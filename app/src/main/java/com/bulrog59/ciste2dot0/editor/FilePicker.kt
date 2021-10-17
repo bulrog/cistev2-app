@@ -65,7 +65,7 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         ItemPicker(activity).init(
             R.string.select_picture_text_title,
             files
-        ) { p -> doneCallBack(files[p]) }
+        ) { p-> doneCallBack(files[p]) }
     }
 
     fun nextButton() {
@@ -85,9 +85,13 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
             }
 
         }
-
-
-        Toast.makeText(activity, R.string.file_not_selected, Toast.LENGTH_LONG).show()
+        val fileName=activity.findViewById<TextView>(R.id.selected_file_name).text
+        if (fileName.isNullOrEmpty()){
+            Toast.makeText(activity, R.string.file_not_selected, Toast.LENGTH_LONG).show()
+        }
+        else {
+            doneCallBack(fileName.toString())
+        }
 
     }
 

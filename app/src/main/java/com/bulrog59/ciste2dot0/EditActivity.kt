@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.editor.*
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter
+import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -25,10 +26,24 @@ class EditActivity : AppCompatActivity() {
     private var filePicker: CallBackActivityResult? = null
 
     private fun setEditorForScene(position: Int) {
-        val sceneData=gameDataWriter.gameData.scenes[position]
+        val sceneData = gameDataWriter.gameData.scenes[position]
         when (sceneData.sceneType) {
             SceneType.picMusic -> {
-                filePicker = PicMusicEditor(this,gameDataWriter.gameData,position).apply {
+                filePicker = PicMusicEditor(
+                    this,
+                    gameDataWriter.gameData,
+                    position
+                ) {
+                    gameDataWriter.updateSceneData(
+                        SceneData(
+                            sceneData.sceneId,
+                            SceneType.picMusic,
+                            it,
+                            sceneData.name
+                        )
+                    )
+                    sceneSelectionScreen()
+                }.apply {
                     createScene()
                 }
             }
