@@ -28,7 +28,7 @@ class EditActivity : AppCompatActivity() {
         val sceneData=gameDataWriter.gameData.scenes[position]
         when (sceneData.sceneType) {
             SceneType.picMusic -> {
-                filePicker = PicMusicEditor(this,sceneData.options).apply {
+                filePicker = PicMusicEditor(this,gameDataWriter.gameData,position).apply {
                     createScene()
                 }
             }

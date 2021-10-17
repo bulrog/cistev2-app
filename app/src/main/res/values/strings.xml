@@ -49,5 +49,6 @@
     <string name="select_file_button_text">Select existing file</string>
     <string name="no_item_to_select">There is no item loaded yet you can select from</string>
     <string name="quit_editor_mode">Are you sure you want to quit the editor mode?</string>
+    <string name="next_scene_title">Select next scene</string>
 
 </resources>

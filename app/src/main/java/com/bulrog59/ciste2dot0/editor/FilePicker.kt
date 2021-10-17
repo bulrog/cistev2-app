@@ -65,7 +65,7 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         ItemPicker(activity).init(
             R.string.select_picture_text_title,
             files
-        ) { f -> doneCallBack(f) }
+        ) { p -> doneCallBack(files[p]) }
     }
 
     fun nextButton() {
