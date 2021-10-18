@@ -54,7 +54,7 @@ class GameDataWriter(activity: Activity) {
         updateGameDataWithScenes(scenesData)
     }
 
-    fun updateSceneData( sceneData: SceneData) {
+    fun addOrUpdateSceneData(sceneData: SceneData) {
         val scenesData = mutableListOf<SceneData>().apply {
             addAll(gameData.scenes.filter { it.sceneId != sceneData.sceneId })
             add(sceneData)

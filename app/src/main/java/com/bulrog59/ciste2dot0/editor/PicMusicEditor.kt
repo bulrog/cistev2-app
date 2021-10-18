@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Switch
 import android.widget.TextView
 import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.gamePreviousElement
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
@@ -29,14 +30,7 @@ class PicMusicEditor(val activity: Activity, val gameData: GameData, val scenePo
         filePicker.callBack(uri, requestCode)
     }
 
-    private fun getSceneOptions(): PicMusicOption? {
-        val options = gameData.scenes[scenePosition].options
-        return if (options.isEmpty) null else om.treeToValue<PicMusicOption>(options)
-    }
 
-    private fun <T> gamePreviousElement(getterFunction: (PicMusicOption?) -> T?): T? {
-        return getterFunction(getSceneOptions())
-    }
 
     private fun savePicMusic(){
 
@@ -51,10 +45,10 @@ class PicMusicEditor(val activity: Activity, val gameData: GameData, val scenePo
 
     private fun getLastOptions() {
         activity.setContentView(R.layout.editor_pic_options)
-        gamePreviousElement { it?.optionalText }?.apply {
+        gamePreviousElement<String,PicMusicOption>(gameData,scenePosition) { it?.optionalText }?.apply {
             activity.findViewById<TextView>(R.id.pic_optional_text).text = this
         }
-        gamePreviousElement { it?.loopMusic }?.apply {
+        gamePreviousElement<Boolean,PicMusicOption>(gameData,scenePosition) { it?.loopMusic }?.apply {
             activity.findViewById<Switch>(R.id.loop_music_switch).isChecked = this
         }
         activity.findViewById<Button>(R.id.pic_music_save_button).setOnClickListener {
@@ -71,7 +65,7 @@ class PicMusicEditor(val activity: Activity, val gameData: GameData, val scenePo
         ItemPicker(activity).init(
             R.string.next_scene_title,
             otherScenes.map { "${it.sceneId}:${it.name}" }) { p ->
-            nextScene = p
+            nextScene = otherScenes[p].sceneId
             getLastOptions()
         }
     }
@@ -80,7 +74,7 @@ class PicMusicEditor(val activity: Activity, val gameData: GameData, val scenePo
         filePicker.init(
             R.string.select_audio_text_title,
             FilePickerType.audio,
-            gamePreviousElement { it?.musicName }
+            gamePreviousElement<String,PicMusicOption>(gameData,scenePosition) { it?.musicName }
         ) { p ->
             audioName = p
             getNextScene()
@@ -91,7 +85,7 @@ class PicMusicEditor(val activity: Activity, val gameData: GameData, val scenePo
         filePicker.init(
             R.string.select_picture_text_title,
             FilePickerType.image,
-            gamePreviousElement { it?.imageName }
+            gamePreviousElement<String,PicMusicOption>(gameData,scenePosition) { it?.imageName }
         ) { p ->
             picName = p
             getAudio()

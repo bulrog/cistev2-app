@@ -55,5 +55,6 @@
     <string name="save_text">Save</string>
     <string name="change_starting_scene">Change starting scene</string>
     <string name="select_start_scene_title">Select the scene to start the game</string>
+    <string name="video_select_text">Select video to play</string>
 
 </resources>

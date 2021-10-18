@@ -14,9 +14,7 @@ import com.bulrog59.ciste2dot0.editor.*
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
-import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.databind.JsonNode
 
 
 class EditActivity : AppCompatActivity() {
@@ -26,40 +24,43 @@ class EditActivity : AppCompatActivity() {
     private var filePicker: CallBackActivityResult? = null
 
 
+    private fun updateSceneOption(sceneData: SceneData, option: JsonNode) {
+        gameDataWriter.addOrUpdateSceneData(
+            SceneData(
+                sceneData.sceneId,
+                sceneData.sceneType,
+                option,
+                sceneData.name
+            )
+        )
+        sceneSelectionScreen()
+    }
+
     private fun setEditorForScene(position: Int) {
         val sceneData = gameDataWriter.gameData.scenes[position]
         when (sceneData.sceneType) {
             SceneType.picMusic -> {
-                filePicker = PicMusicEditor(
-                    this,
-                    gameDataWriter.gameData,
-                    position
-                ) {
-                    gameDataWriter.updateSceneData(
-                        SceneData(
-                            sceneData.sceneId,
-                            SceneType.picMusic,
-                            it,
-                            sceneData.name
-                        )
-                    )
-                    sceneSelectionScreen()
-                }.apply {
-                    createScene()
-                }
+                filePicker = PicMusicEditor(this, gameDataWriter.gameData, position) {
+                    updateSceneOption(sceneData, it)
+                }.apply { createScene() }
+            }
+            SceneType.video -> {
+                filePicker = VideoEditor(this, gameDataWriter.gameData, position) {
+                    updateSceneOption(sceneData, it)
+                }.apply { createScene() }
             }
             else -> Toast.makeText(this, getText(R.string.no_edit_mode), Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun selectStartingSceneScreen(){
-        ItemPicker(this).init(R.string.select_start_scene_title,sceneList()) {p->
+    private fun selectStartingSceneScreen() {
+        ItemPicker(this).init(R.string.select_start_scene_title, sceneList()) { p ->
             gameDataWriter.apply { this.updateStartingScene(this.gameData.scenes[p].sceneId) }
             sceneSelectionScreen()
         }
     }
 
-    private fun sceneList():List<String> {
+    private fun sceneList(): List<String> {
         return gameDataWriter.gameData.scenes.map {
             "${it.sceneId}:${it.name ?: "none"} (${getText(it.sceneType.description)})"
         }

@@ -69,6 +69,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
     }
 
     private fun startGame(id: UUID?) {
+        //TODO: to add a compiler that verifies if game is ok (options are not empty json node and also files in the options are available)
         launchActivity(CisteActivity::class.java, id)
     }
 
