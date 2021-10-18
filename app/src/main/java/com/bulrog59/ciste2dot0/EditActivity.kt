@@ -25,6 +25,7 @@ class EditActivity : AppCompatActivity() {
     private val fieldValidator = FieldValidator(this)
     private var filePicker: CallBackActivityResult? = null
 
+
     private fun setEditorForScene(position: Int) {
         val sceneData = gameDataWriter.gameData.scenes[position]
         when (sceneData.sceneType) {
@@ -51,11 +52,21 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
+    private fun selectStartingSceneScreen(){
+        ItemPicker(this).init(R.string.select_start_scene_title,sceneList()) {p->
+            gameDataWriter.apply { this.updateStartingScene(this.gameData.scenes[p].sceneId) }
+            sceneSelectionScreen()
+        }
+    }
 
-    private fun sceneSelectionScreen() {
-        val scenesDescription = gameDataWriter.gameData.scenes.map {
+    private fun sceneList():List<String> {
+        return gameDataWriter.gameData.scenes.map {
             "${it.sceneId}:${it.name ?: "none"} (${getText(it.sceneType.description)})"
         }
+    }
+
+    private fun sceneSelectionScreen() {
+        val scenesDescription = sceneList()
         //TODO: to add also a button next to the scene selection to edit the game metadata
         setContentView(R.layout.editor_scene_selection)
 
@@ -63,6 +74,7 @@ class EditActivity : AppCompatActivity() {
         recyclerView.adapter = MenuSelectorAdapter(scenesDescription) { p -> setEditorForScene(p) }
         recyclerView.layoutManager = LinearLayoutManager(this)
         findViewById<Button>(R.id.add_scene_button).setOnClickListener { sceneCreationScreen() }
+        findViewById<Button>(R.id.edit_start_scene).setOnClickListener { selectStartingSceneScreen() }
     }
 
     private fun addNewSceneToGameData(sceneType: SceneType) {

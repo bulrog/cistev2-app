@@ -28,6 +28,16 @@ class GameDataWriter(activity: Activity) {
 
     }
 
+    fun updateStartingScene(startSceneId:Int){
+        gameData = GameData(
+            startSceneId,
+            gameData.scenes,
+            gameData.backButtonScene,
+            gameData.gameMetaData
+        )
+        saveGameData()
+    }
+
     fun addNewSceneToGameData(sceneType: SceneType, sceneName:String) {
         val maxSceneId = gameData.scenes.map(SceneData::sceneId).maxOrNull() ?: 0
         val scenesData = mutableListOf<SceneData>().apply {

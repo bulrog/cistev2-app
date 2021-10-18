@@ -53,5 +53,7 @@
     <string name="pic_optional_help_text">Add optional text to display</string>
     <string name="loop_sound_help_text">Play sound in loop</string>
     <string name="save_text">Save</string>
+    <string name="change_starting_scene">Change starting scene</string>
+    <string name="select_start_scene_title">Select the scene to start the game</string>
 
 </resources>
