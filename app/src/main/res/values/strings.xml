@@ -21,7 +21,7 @@
     <string name="create_game_button">Create</string>
     <string name="game_location_help_text">Enter details where the game is located</string>
     <string name="scene_selection_title">Select the scene you want to edit</string>
-    <string name="add">Add scene</string>
+    <string name="add">Add one</string>
     <string name="no_edit_mode">There is no edit mode for this type of scene</string>
     <string name="title_new_scene">Create new scene</string>
     <string name="scene_title_help_text">Enter name of the scene (to find it back later)</string>
@@ -56,5 +56,6 @@
     <string name="change_starting_scene">Change starting scene</string>
     <string name="select_start_scene_title">Select the scene to start the game</string>
     <string name="video_select_text">Select video to play</string>
+    <string name="title_menu_edtior_selection">Select the menu item you want to edit</string>
 
 </resources>

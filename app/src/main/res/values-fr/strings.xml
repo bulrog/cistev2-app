@@ -22,7 +22,7 @@
     <string name="create_game_button">Créer</string>
     <string name="game_location_help_text">Entrez de où démarrer le jeu</string>
     <string name="scene_selection_title">Selectionnez la scene que vous souhaitez editer</string>
-    <string name="add">Ajouter un scene</string>
+    <string name="add">Ajouter un nouvel item</string>
     <string name="no_edit_mode">Il n\'y a pas de mode d\'edition pour ce type de scene</string>
     <string name="title_new_scene">Créer une nouvelle scène</string>
     <string name="scene_title_help_text">Entrez le nom de la scène</string>
@@ -57,4 +57,5 @@
     <string name="change_starting_scene">Changer la scene de démarrage</string>
     <string name="select_start_scene_title">Sélectionnez la scène de démarrage du jeu</string>
     <string name="video_select_text">Sélectionnez la vidéo à jouer</string>
+    <string name="title_menu_edtior_selection">Sélectionnez l\'item à modifier</string>
 </resources>
