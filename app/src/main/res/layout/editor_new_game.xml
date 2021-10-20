@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/new_game_editor_title">
 
         <EditText
-            android:id="@+id/game_title_input"
+            android:id="@+id/menu_title_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

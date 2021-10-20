@@ -37,15 +37,15 @@ class GameMgtActivity : AppCompatActivity() {
 
 
     private fun errorInNewGameFields(): Boolean {
-        var error=fieldValidator.notEmptyField(R.id.game_title_input)
-        error=fieldValidator.maxSizeField(R.id.game_title_input)|| error
+        var error=fieldValidator.notEmptyField(R.id.menu_title_input)
+        error=fieldValidator.maxSizeField(R.id.menu_title_input)|| error
         error=fieldValidator.notEmptyField(R.id.game_location_input)|| error
         error=fieldValidator.inList(R.id.game_language_input, languages)|| error
         return error
     }
 
     private fun createGameFromFields() {
-        val name = findViewById<EditText>(R.id.game_title_input).text.toString()
+        val name = findViewById<EditText>(R.id.menu_title_input).text.toString()
         val language = findViewById<TextView>(R.id.game_language_input).text.toString()
         val description =
             findViewById<TextView>(R.id.pic_optional_text).text.toString()

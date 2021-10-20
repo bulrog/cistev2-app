@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Switch
 import android.widget.TextView
 import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.gamePreviousElement
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
@@ -34,13 +35,13 @@ class PicMusicEditor(val activity: Activity, val gameData: GameData, val scenePo
 
     private fun savePicMusic(){
 
-        done(om.readTree(om.writeValueAsString(PicMusicOption(
+        done(convertToJsonNode(PicMusicOption(
             imageName = picName!!,
             musicName = audioName!!,
             loopMusic = activity.findViewById<Switch>(R.id.loop_music_switch).isChecked,
             nextScene = nextScene!!,
             optionalText = activity.findViewById<TextView>(R.id.pic_optional_text).text.toString()
-        ))))
+        )))
     }
 
     private fun getLastOptions() {

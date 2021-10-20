@@ -58,4 +58,5 @@
     <string name="select_start_scene_title">Sélectionnez la scène de démarrage du jeu</string>
     <string name="video_select_text">Sélectionnez la vidéo à jouer</string>
     <string name="title_menu_edtior_selection">Sélectionnez l\'item à modifier</string>
+    <string name="title_menu_help_text">Entrez le texte à afficher sur le bouton du menu</string>
 </resources>

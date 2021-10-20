@@ -3,6 +3,7 @@ package com.bulrog59.ciste2dot0.editor
 import android.app.Activity
 import android.net.Uri
 import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.gamePreviousElement
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.om
 import com.bulrog59.ciste2dot0.gamedata.GameData
@@ -31,12 +32,11 @@ class VideoEditor(
             R.string.next_scene_title,
             otherScenes.map { "${it.sceneId}:${it.name}" }) { p ->
             done(
-                om.readTree(
-                    om.writeValueAsString(
-                        VideoOption(
-                            videoName!!, otherScenes[p].sceneId
-                        )
+                convertToJsonNode(
+                    VideoOption(
+                        videoName!!, otherScenes[p].sceneId
                     )
+
                 )
             )
         }

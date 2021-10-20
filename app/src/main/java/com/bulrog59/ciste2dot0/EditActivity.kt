@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.editor.*
+import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.sceneList
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
@@ -59,20 +60,15 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun selectStartingSceneScreen() {
-        ItemPicker(this).init(R.string.select_start_scene_title, sceneList()) { p ->
+        ItemPicker(this).init(R.string.select_start_scene_title, sceneList(gameDataWriter.gameData,this)) { p ->
             gameDataWriter.apply { this.updateStartingScene(this.gameData.scenes[p].sceneId) }
             sceneSelectionScreen()
         }
     }
 
-    private fun sceneList(): List<String> {
-        return gameDataWriter.gameData.scenes.map {
-            "${it.sceneId}:${it.name ?: "none"} (${getText(it.sceneType.description)})"
-        }
-    }
 
     private fun sceneSelectionScreen() {
-        val scenesDescription = sceneList()
+        val scenesDescription = sceneList(gameDataWriter.gameData,this)
         //TODO: to add also a button next to the scene selection to edit the game metadata
         setContentView(R.layout.editor_scene_selection)
 

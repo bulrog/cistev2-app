@@ -57,5 +57,6 @@
     <string name="select_start_scene_title">Select the scene to start the game</string>
     <string name="video_select_text">Select video to play</string>
     <string name="title_menu_edtior_selection">Select the menu item you want to edit</string>
+    <string name="title_menu_help_text">Enter the text to show on the button of the menu</string>
 
 </resources>
