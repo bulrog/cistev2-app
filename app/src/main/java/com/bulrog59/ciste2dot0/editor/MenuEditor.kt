@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.editor
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -25,53 +26,85 @@ class MenuEditor(
     private var menuItems = gamePreviousElement<List<MenuItem>, MenuOptions>(
         gameData,
         scenePosition
-    ) { it?.menuItems }?: emptyList()
+    ) { it?.menuItems } ?: emptyList()
 
-    private fun getMenuItemText(gameData: GameData, menuItem: MenuItem): String {
-        val nextScene = gameData.scenes.filter { it.sceneId == menuItem.nextScene }[0]
-        return "${menuItem.buttonText}->${nextScene.sceneId}:${nextScene.name}"
+    private fun getMenuItemsText(gameData: GameData, menuItems: List<MenuItem>): List<String> {
+        return menuItems.map { menuItem ->
+            val nextScene = gameData.scenes.filter { it.sceneId == menuItem.nextScene }[0]
+            "${menuItem.buttonText}->${nextScene.sceneId}:${nextScene.name}"
+        }
     }
 
     private fun editMenuItem(existingItem: MenuItem?, done: (MenuItem) -> Unit) {
-        var menuTitle:String?
+        var menuTitle: String?
         activity.setContentView(R.layout.editor_menu_title)
-        val menuTitleField=activity.findViewById<EditText>(R.id.menu_title_input)
+        val menuTitleField = activity.findViewById<EditText>(R.id.menu_title_input)
         existingItem?.apply {
             menuTitleField.setText(buttonText)
         }
         activity.findViewById<Button>(R.id.exit_button_menu_title).setOnClickListener {
-            menuTitle=menuTitleField.text.toString()
-            if (menuTitle.isNullOrEmpty()){
-                Toast.makeText(activity,R.string.empty_field_error,Toast.LENGTH_LONG).show()
+            menuTitle = menuTitleField.text.toString()
+            if (menuTitle.isNullOrEmpty()) {
+                Toast.makeText(activity, R.string.empty_field_error, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            ItemPicker(activity).init(R.string.next_scene_title,sceneDescriptions(gameData.scenes,activity)){
-                done(MenuItem(menuTitle!!,gameData.scenes[it].sceneId))
+            ItemPicker(activity).init(
+                R.string.next_scene_title,
+                sceneDescriptions(gameData.scenes, activity)
+            ) {
+                done(MenuItem(menuTitle!!, gameData.scenes[it].sceneId))
             }
         }
     }
 
-    private fun updateMenuItems(previousMenuItem: MenuItem?,updater:(MutableList<MenuItem>,MenuItem)-> Unit){
-        editMenuItem(previousMenuItem) {m->
-            menuItems=mutableListOf<MenuItem>().apply { addAll(menuItems) }.also { updater(it,m) }
+    private fun updateMenuItems(
+        previousMenuItem: MenuItem?,
+        updater: (MutableList<MenuItem>, MenuItem) -> Unit
+    ) {
+        editMenuItem(previousMenuItem) { m ->
+            menuItems =
+                mutableListOf<MenuItem>().apply { addAll(menuItems) }.also { updater(it, m) }
             selectMenuToEditOrAdd()
         }
     }
 
-    private fun selectMenuToEditOrAdd(){
+    private fun deleteMenuItem() {
+        ItemPicker(activity).init(
+            R.string.select_element_to_delete,
+            getMenuItemsText(gameData, menuItems)
+        ) {
+            AlertDialog.Builder(activity)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage(R.string.delete_item_message)
+                .setPositiveButton(R.string.confirmation) { _, _ ->
+                    menuItems = mutableListOf<MenuItem>().apply {
+                        addAll(menuItems)
+                        removeAt(it)
+                    }
+                    selectMenuToEditOrAdd()
+                }
+                .setNegativeButton(R.string.denial) { _, _ -> selectMenuToEditOrAdd() }
+                .show()
+
+        }
+
+    }
+
+    private fun selectMenuToEditOrAdd() {
         activity.setContentView(R.layout.editor_menu)
         val recyclerView = activity.findViewById<RecyclerView>(R.id.item_menu_selection)
         recyclerView.adapter =
-            MenuSelectorAdapter(menuItems.map { getMenuItemText(gameData, it) } ) {p->
-                updateMenuItems(menuItems[p]){ l, m-> l[p]=m}
+            MenuSelectorAdapter(getMenuItemsText(gameData, menuItems)) { p ->
+                updateMenuItems(menuItems[p]) { l, m -> l[p] = m }
             }
         recyclerView.layoutManager = LinearLayoutManager(activity)
         activity.findViewById<Button>(R.id.add_menu_button).setOnClickListener {
-                updateMenuItems(null){ l, m-> l.add(m)}
+            updateMenuItems(null) { l, m -> l.add(m) }
         }
 
-        //TODO: add a remove button and then item picker to select which menu item to remove
-
+        activity.findViewById<Button>(R.id.delete_menu_item_button).setOnClickListener {
+            deleteMenuItem()
+        }
         activity.findViewById<Button>(R.id.exit_button_menu_title).setOnClickListener {
             done(convertToJsonNode(MenuOptions(menuItems)))
         }
