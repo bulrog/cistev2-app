@@ -9,7 +9,7 @@
     <string name="game_menu">Select game to play</string>
     <string name="confirmation">Yes</string>
     <string name="denial">No</string>
-    <string name="delete_game_message">Are you sure you want to delete this game?</string>
+    <string name="delete_item_message">Are you sure you want to delete it?</string>
     <string name="matching_text">Matching</string>
     <string name="error_downloading_game">Error to download the game</string>
     <string name="error_searching_game">Error during the search</string>
@@ -58,5 +58,7 @@
     <string name="video_select_text">Select video to play</string>
     <string name="title_menu_edtior_selection">Select the menu item you want to edit</string>
     <string name="title_menu_help_text">Enter the text to show on the button of the menu</string>
+    <string name="delete">delete</string>
+    <string name="select_element_to_delete">Select the element to delete</string>
 
 </resources>

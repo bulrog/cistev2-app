@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.gamePreviousElement
-import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.sceneList
+import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.sceneDescriptions
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.scenes.menu.MenuItem
 import com.bulrog59.ciste2dot0.scenes.menu.MenuOptions
@@ -45,7 +45,7 @@ class MenuEditor(
                 Toast.makeText(activity,R.string.empty_field_error,Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            ItemPicker(activity).init(R.string.next_scene_title,sceneList(gameData,activity)){
+            ItemPicker(activity).init(R.string.next_scene_title,sceneDescriptions(gameData.scenes,activity)){
                 done(MenuItem(menuTitle!!,gameData.scenes[it].sceneId))
             }
         }

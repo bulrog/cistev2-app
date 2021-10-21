@@ -10,7 +10,7 @@
     <string name="game_menu">Selectionnez un jeu à jouer</string>
     <string name="confirmation">Oui</string>
     <string name="denial">Non</string>
-    <string name="delete_game_message">Êtes vous sur de vouloir effacer ce jeu?</string>
+    <string name="delete_item_message">Êtes vous sur de vouloir l\'effacer?</string>
     <string name="matching_text">Similitude</string>
     <string name="game_title">Titre du jeu</string>
     <string name="game_title_help_text">Entrez le titre du jeu</string>
@@ -46,7 +46,7 @@
     <string name="select_picture_text_title">Selectionner la photo à afficher</string>
     <string name="file_not_selected">Vous devez selectionner un ficher</string>
     <string name="issue_to_copy_file">Problème durant la copie du fichier</string>
-    <string name="select_file_button_text">Select existing file</string>
+    <string name="select_file_button_text">Selectionner le fichier existant</string>
     <string name="no_item_to_select">Il n\'y a pas de resource de ce type à selectionner</string>
     <string name="quit_editor_mode">Etes vous sûr de vouloir quitter le mode editor?</string>
     <string name="select_audio_text_title">Selectionner la musique/son à jouer</string>
@@ -59,4 +59,6 @@
     <string name="video_select_text">Sélectionnez la vidéo à jouer</string>
     <string name="title_menu_edtior_selection">Sélectionnez l\'item à modifier</string>
     <string name="title_menu_help_text">Entrez le texte à afficher sur le bouton du menu</string>
+    <string name="delete">effacer</string>
+    <string name="select_element_to_delete">Sélectionnez l\'élément à effacer</string>
 </resources>

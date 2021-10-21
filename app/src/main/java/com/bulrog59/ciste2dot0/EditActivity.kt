@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.editor.*
-import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.sceneList
+import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.sceneDescriptions
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
@@ -60,23 +60,47 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun selectStartingSceneScreen() {
-        ItemPicker(this).init(R.string.select_start_scene_title, sceneList(gameDataWriter.gameData,this)) { p ->
+        ItemPicker(this).init(
+            R.string.select_start_scene_title,
+            sceneDescriptions(gameDataWriter.gameData.scenes, this)
+        ) { p ->
             gameDataWriter.apply { this.updateStartingScene(this.gameData.scenes[p].sceneId) }
             sceneSelectionScreen()
         }
     }
 
+    private fun deleteScene() {
+        ItemPicker(this).init(
+            R.string.select_element_to_delete,
+            sceneDescriptions(gameDataWriter.gameData.scenes, this)
+        ) { p ->
+            AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage(R.string.delete_item_message)
+                .setPositiveButton(R.string.confirmation) { _, _ ->
+                    gameDataWriter.apply { this.deleteScene(this.gameData.scenes[p].sceneId) }
+                    sceneSelectionScreen()
+                }
+                .setNegativeButton(R.string.denial) { _, _ -> sceneSelectionScreen() }
+                .show()
+        }
+
+    }
+
 
     private fun sceneSelectionScreen() {
-        val scenesDescription = sceneList(gameDataWriter.gameData,this)
+        val scenesDescription = sceneDescriptions(gameDataWriter.gameData.scenes, this)
         //TODO: to add also a button next to the scene selection to edit the game metadata
         setContentView(R.layout.editor_scene_selection)
 
         val recyclerView = findViewById<RecyclerView>(R.id.scene_selection_menu)
         recyclerView.adapter = MenuSelectorAdapter(scenesDescription) { p -> setEditorForScene(p) }
         recyclerView.layoutManager = LinearLayoutManager(this)
+
         findViewById<Button>(R.id.add_scene_button).setOnClickListener { sceneCreationScreen() }
         findViewById<Button>(R.id.edit_start_scene).setOnClickListener { selectStartingSceneScreen() }
+        findViewById<Button>(R.id.delete_scene_button).setOnClickListener { deleteScene() }
+
     }
 
     private fun addNewSceneToGameData(sceneType: SceneType) {

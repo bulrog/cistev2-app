@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.gamePreviousElement
+import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.sceneDescriptions
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
@@ -65,7 +66,7 @@ class PicMusicEditor(val activity: Activity, val gameData: GameData, val scenePo
         }
         ItemPicker(activity).init(
             R.string.next_scene_title,
-            otherScenes.map { "${it.sceneId}:${it.name}" }) { p ->
+            sceneDescriptions(otherScenes,activity)) { p ->
             nextScene = otherScenes[p].sceneId
             getLastOptions()
         }

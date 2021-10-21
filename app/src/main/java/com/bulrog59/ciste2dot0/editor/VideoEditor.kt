@@ -6,6 +6,7 @@ import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.gamePreviousElement
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.om
+import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.sceneDescriptions
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.scenes.video.VideoOption
@@ -30,7 +31,7 @@ class VideoEditor(
         }
         ItemPicker(activity).init(
             R.string.next_scene_title,
-            otherScenes.map { "${it.sceneId}:${it.name}" }) { p ->
+            sceneDescriptions(otherScenes,activity)) { p ->
             done(
                 convertToJsonNode(
                     VideoOption(

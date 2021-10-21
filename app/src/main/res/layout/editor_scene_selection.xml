@@ -50,4 +50,14 @@
         android:text="@string/change_starting_scene"
         app:layout_constraintBottom_toTopOf="@+id/add_scene_button"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/delete_scene_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/add_scene_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,9 +18,10 @@ class GameDataWriter(activity: Activity) {
     }
 
     private fun updateGameDataWithScenes(scenesData: List<SceneData>){
+
         gameData = GameData(
             gameData.starting,
-            scenesData,
+            scenesData.sortedBy { it.sceneId},
             gameData.backButtonScene,
             gameData.gameMetaData
         )
@@ -36,6 +37,10 @@ class GameDataWriter(activity: Activity) {
             gameData.gameMetaData
         )
         saveGameData()
+    }
+
+    fun deleteScene(sceneId:Int){
+       updateGameDataWithScenes(gameData.scenes.filter { it.sceneId!=sceneId })
     }
 
     fun addNewSceneToGameData(sceneType: SceneType, sceneName:String) {

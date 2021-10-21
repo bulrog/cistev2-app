@@ -2,6 +2,7 @@ package com.bulrog59.ciste2dot0.editor
 
 import android.content.Context
 import com.bulrog59.ciste2dot0.gamedata.GameData
+import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.scenes.video.VideoOption
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -24,9 +25,8 @@ class GameOptionHelper {
             return getterFunction(getSceneOptions(gameData, scenePosition))
         }
 
-        //TODO: to see how to reuse each time we list the scenes:
-        fun sceneList(gameData: GameData, context: Context): List<String> {
-            return gameData.scenes.map {
+        fun sceneDescriptions(scenes:List<SceneData>, context: Context): List<String> {
+            return scenes.map {
                 "${it.sceneId}:${it.name ?: "none"} (${context.getText(it.sceneType.description)})"
             }
         }

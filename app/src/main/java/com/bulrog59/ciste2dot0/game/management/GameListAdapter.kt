@@ -135,7 +135,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
     ) {
         AlertDialog.Builder(gameMgtActivity)
             .setIcon(android.R.drawable.ic_dialog_alert)
-            .setMessage(R.string.delete_game_message)
+            .setMessage(R.string.delete_item_message)
             .setPositiveButton(R.string.confirmation) { _, _ ->
                 gameDataManager.eraseLocalGame(gameMetaData.id)
                 getListOfGames()
