@@ -26,6 +26,7 @@ class MenuEditor(
         scenePosition
     ) { it?.menuItems } ?: emptyList()
 
+
     private fun getMenuItemsText(gameData: GameData, menuItems: List<MenuItem>): List<String> {
         return menuItems.map { menuItem ->
             val nextScene = gameData.scenes.filter { it.sceneId == menuItem.nextScene }[0]
@@ -55,35 +56,13 @@ class MenuEditor(
         }
     }
 
-    private fun updateMenuItems(
-        previousMenuItem: MenuItem?,
-        updater: (MutableList<MenuItem>, MenuItem) -> Unit
-    ) {
-        editMenuItem(previousMenuItem) { m ->
-            menuItems =
-                mutableListOf<MenuItem>().apply { addAll(menuItems) }.also { updater(it, m) }
-            init()
-        }
-    }
-
-    private fun deleteMenuItem(position: Int) {
-
-        menuItems = mutableListOf<MenuItem>().apply {
-            addAll(menuItems)
-            removeAt(position)
-        }
-        init()
-    }
-
-
     fun init() {
         ListEditor(
             activity,
             menuItems,
             { l -> getMenuItemsText(gameData, l) },
-            this::updateMenuItems,
-            this::deleteMenuItem,
-            { done(convertToJsonNode(MenuOptions(menuItems))) }).init()
+            this::editMenuItem,
+            { i-> done(convertToJsonNode(MenuOptions(i))) }).init()
 
     }
 

@@ -6,17 +6,27 @@ import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.R
-import com.bulrog59.ciste2dot0.scenes.menu.MenuItem
 
 class ListEditor<T>(
-    val activity: Activity, val items: List<T>, val getItemText: (List<T>) -> List<String>,
-    val updateMenuItems: (
+    val activity: Activity, var items: List<T>, val getItemText: (List<T>) -> List<String>,
+    val editMenuItem: (
         T?,
-        (MutableList<T>, T) -> Unit
+        done:(T) -> Unit
     ) -> Unit,
-    val deleteMenuItem: (Int) -> Unit,
-    val done: () -> Unit
+    val done: (List<T>) -> Unit
 ) {
+
+    private fun updateMenuItems(
+        item: T?,
+        updater: (MutableList<T>, T) -> Unit
+    ) {
+        editMenuItem(item) { i ->
+            items =
+                mutableListOf<T>().apply { addAll(items) }.also { updater(it, i) }
+            init()
+        }
+    }
+
     private fun deleteMenuItem() {
         ItemPicker(activity).init(
             R.string.select_element_to_delete,
@@ -26,7 +36,11 @@ class ListEditor<T>(
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setMessage(R.string.delete_item_message)
                 .setPositiveButton(R.string.confirmation) { _, _ ->
-                    deleteMenuItem(it)
+                    items = mutableListOf<T>().apply {
+                        addAll(items)
+                        removeAt(it)
+                    }
+                    init()
                 }
                 .setNegativeButton(R.string.denial) { _, _ -> init() }
                 .show()
@@ -51,7 +65,7 @@ class ListEditor<T>(
             deleteMenuItem()
         }
         activity.findViewById<Button>(R.id.exit_button_menu_title).setOnClickListener {
-            done()
+            done(items)
         }
 
     }
