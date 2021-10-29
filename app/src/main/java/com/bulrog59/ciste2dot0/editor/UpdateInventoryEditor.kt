@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.editor
 
 import android.app.Activity
+import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.scenes.menu.MenuItem
 import com.bulrog59.ciste2dot0.scenes.menu.MenuOptions
@@ -22,6 +23,7 @@ class UpdateInventoryEditor(
 
 
     fun init() {
+        activity.setContentView(R.layout.editor_update_inventory)
 
     }
 }

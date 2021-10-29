@@ -5,8 +5,6 @@ import android.app.AlertDialog
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.gamePreviousElement
@@ -64,55 +62,28 @@ class MenuEditor(
         editMenuItem(previousMenuItem) { m ->
             menuItems =
                 mutableListOf<MenuItem>().apply { addAll(menuItems) }.also { updater(it, m) }
-            selectMenuToEditOrAdd()
+            init()
         }
     }
 
-    private fun deleteMenuItem() {
-        ItemPicker(activity).init(
-            R.string.select_element_to_delete,
-            getMenuItemsText(gameData, menuItems)
-        ) {
-            AlertDialog.Builder(activity)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setMessage(R.string.delete_item_message)
-                .setPositiveButton(R.string.confirmation) { _, _ ->
-                    menuItems = mutableListOf<MenuItem>().apply {
-                        addAll(menuItems)
-                        removeAt(it)
-                    }
-                    selectMenuToEditOrAdd()
-                }
-                .setNegativeButton(R.string.denial) { _, _ -> selectMenuToEditOrAdd() }
-                .show()
+    private fun deleteMenuItem(position: Int) {
 
+        menuItems = mutableListOf<MenuItem>().apply {
+            addAll(menuItems)
+            removeAt(position)
         }
-
+        init()
     }
 
-    private fun selectMenuToEditOrAdd() {
-        activity.setContentView(R.layout.editor_menu)
-        val recyclerView = activity.findViewById<RecyclerView>(R.id.item_menu_selection)
-        recyclerView.adapter =
-            MenuSelectorAdapter(getMenuItemsText(gameData, menuItems)) { p ->
-                updateMenuItems(menuItems[p]) { l, m -> l[p] = m }
-            }
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        activity.findViewById<Button>(R.id.add_menu_button).setOnClickListener {
-            updateMenuItems(null) { l, m -> l.add(m) }
-        }
-
-        activity.findViewById<Button>(R.id.delete_menu_item_button).setOnClickListener {
-            deleteMenuItem()
-        }
-        activity.findViewById<Button>(R.id.exit_button_menu_title).setOnClickListener {
-            done(convertToJsonNode(MenuOptions(menuItems)))
-        }
-
-    }
 
     fun init() {
-        selectMenuToEditOrAdd()
+        ListEditor(
+            activity,
+            menuItems,
+            { l -> getMenuItemsText(gameData, l) },
+            this::updateMenuItems,
+            this::deleteMenuItem,
+            { done(convertToJsonNode(MenuOptions(menuItems))) }).init()
 
     }
 

@@ -60,5 +60,8 @@
     <string name="title_menu_help_text">Enter the text to show on the button of the menu</string>
     <string name="delete">delete</string>
     <string name="select_element_to_delete">Select the element to delete</string>
+    <string name="update_inventory_editor_title">Select what you want to do with the inventory</string>
+    <string name="remove_inventory_menu">Remove item from inventory</string>
+    <string name="add_item_to_inventory_button">Add an item to the inventory</string>
 
 </resources>
