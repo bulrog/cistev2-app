@@ -28,8 +28,14 @@ class PicMusicEditor(
 ) :
     CallBackActivityResult {
     val filePicker = FilePicker(activity)
-    var picName: String? = null
-    var audioName: String? = null
+    var picName = gamePreviousElement<String, PicMusicOption>(
+        gameData,
+        scenePosition
+    ) { it?.imageName }
+    var audioName = gamePreviousElement<String, PicMusicOption>(
+        gameData,
+        scenePosition
+    ) { it?.musicName }
     var nextScene: Int? = null
 
 
@@ -79,13 +85,14 @@ class PicMusicEditor(
             gameData,
             scenePosition,
             { it?.nextScene })
-         { p ->
+        { p ->
             nextScene = p
             getLastOptions()
         }
     }
 
     private fun getAudio() {
+        filePicker.previousFileName = audioName
         filePicker.init(
             R.string.select_audio_text_title,
             FilePickerType.audio,
@@ -97,6 +104,7 @@ class PicMusicEditor(
     }
 
     private fun getPic() {
+        filePicker.previousFileName = picName
         filePicker.init(
             R.string.select_picture_text_title,
             FilePickerType.image,

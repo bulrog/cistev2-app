@@ -47,7 +47,12 @@ class MenuEditor(
                 Toast.makeText(activity, R.string.empty_field_error, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            ItemPicker(activity).init(
+            val itemPicker = ItemPicker(activity)
+            existingItem?.apply {
+                itemPicker.previousSelection=gameData.scenes.indexOf(gameData.scenes.findLast { it.sceneId==this.nextScene })
+            }
+
+            itemPicker.init(
                 R.string.next_scene_title,
                 sceneDescriptions(gameData.scenes, activity)
             ) {
@@ -62,7 +67,7 @@ class MenuEditor(
             menuItems,
             { l -> getMenuItemsText(gameData, l) },
             this::editMenuItem,
-            { i-> done(convertToJsonNode(MenuOptions(i))) }).init()
+            { i -> done(convertToJsonNode(MenuOptions(i))) }).init()
 
     }
 

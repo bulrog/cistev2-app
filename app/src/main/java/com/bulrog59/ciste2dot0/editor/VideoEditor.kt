@@ -21,13 +21,21 @@ class VideoEditor(
     val done: (JsonNode) -> Unit
 ) : CallBackActivityResult {
     private var filePicker = FilePicker(activity)
-    private var videoName: String? = null
+    private var videoName = gamePreviousElement<String, VideoOption>(
+        gameData,
+        scenePosition
+    ) { it?.videoName }
+
     override fun callBack(uri: Uri?, requestCode: Int) {
         filePicker.callBack(uri, requestCode)
     }
 
     private fun getNextScene() {
-        getItemPickerNextScene<VideoOption>(activity,gameData,scenePosition, { it?.nextScene }){ p ->
+        getItemPickerNextScene<VideoOption>(
+            activity,
+            gameData,
+            scenePosition,
+            { it?.nextScene }) { p ->
             done(
                 convertToJsonNode(
                     VideoOption(
@@ -40,6 +48,7 @@ class VideoEditor(
     }
 
     fun createScene() {
+        filePicker.previousFileName=videoName
         filePicker.init(
             R.string.video_select_text,
             FilePickerType.video,

@@ -19,6 +19,7 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
     var fileUri: Uri? = null
     var newFile = false
     val resourceFinder = ResourceManager(activity)
+    var previousFileName: String? = null
 
 
     private fun getFileName(uri: Uri): String? {
@@ -62,10 +63,14 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
             Toast.makeText(activity, R.string.no_item_to_select, Toast.LENGTH_LONG).show()
             return
         }
-        ItemPicker(activity).init(
+        val itemPicker = ItemPicker(activity)
+        previousFileName?.apply {
+            itemPicker.previousSelection=files.indexOf(this)
+        }
+        itemPicker.init(
             R.string.select_picture_text_title,
             files
-        ) { p-> doneCallBack(files[p]) }
+        ) { p -> doneCallBack(files[p]) }
     }
 
     //TODO: check if file exists and ask if overwrite it
@@ -86,11 +91,10 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
             }
 
         }
-        val fileName=activity.findViewById<TextView>(R.id.selected_file_name).text
-        if (fileName.isNullOrEmpty()){
+        val fileName = activity.findViewById<TextView>(R.id.selected_file_name).text
+        if (fileName.isNullOrEmpty()) {
             Toast.makeText(activity, R.string.file_not_selected, Toast.LENGTH_LONG).show()
-        }
-        else {
+        } else {
             doneCallBack(fileName.toString())
         }
 
