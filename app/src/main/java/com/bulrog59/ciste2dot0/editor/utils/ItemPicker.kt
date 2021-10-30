@@ -1,4 +1,4 @@
-package com.bulrog59.ciste2dot0.editor
+package com.bulrog59.ciste2dot0.editor.utils
 
 import android.app.Activity
 import android.widget.TextView
@@ -20,7 +20,7 @@ class ItemPicker(val activity:Activity) {
         activity.setContentView(R.layout.editor_item_selection)
         activity.findViewById<TextView>(R.id.editor_item_selection_title).setText(titleText)
         val recyclerView = activity.findViewById<RecyclerView>(R.id.editor_item_selection_list)
-        val menuSelectorAdapter=MenuSelectorAdapter(items) { p -> doneCallBack(p) }
+        val menuSelectorAdapter= MenuSelectorAdapter(items) { p -> doneCallBack(p) }
         menuSelectorAdapter.positionSelected=previousSelection
         recyclerView.adapter = menuSelectorAdapter
         recyclerView.layoutManager = LinearLayoutManager(activity)

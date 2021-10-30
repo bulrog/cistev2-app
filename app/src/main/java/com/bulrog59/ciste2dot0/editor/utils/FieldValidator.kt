@@ -1,8 +1,7 @@
-package com.bulrog59.ciste2dot0.editor
+package com.bulrog59.ciste2dot0.editor.utils
 
 import android.app.Activity
 import android.widget.EditText
-import com.bulrog59.ciste2dot0.GameMgtActivity
 import com.bulrog59.ciste2dot0.R
 
 class FieldValidator(val activity: Activity) {
@@ -33,7 +32,7 @@ class FieldValidator(val activity: Activity) {
         )
     }
     fun maxSizeField(fieldId: Int):Boolean {
-        return validateField(fieldId,{v-> v.length > MAX_CHAR},activity.getString(R.string.tool_long_field)+ MAX_CHAR)
+        return validateField(fieldId,{v-> v.length > MAX_CHAR },activity.getString(R.string.tool_long_field)+ MAX_CHAR)
     }
 
     fun inList(fieldId: Int,elements:List<String>):Boolean{

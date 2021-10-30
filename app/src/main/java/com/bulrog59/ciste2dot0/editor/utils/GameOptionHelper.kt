@@ -1,11 +1,10 @@
-package com.bulrog59.ciste2dot0.editor
+package com.bulrog59.ciste2dot0.editor.utils
 
 import android.app.Activity
 import android.content.Context
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
-import com.bulrog59.ciste2dot0.scenes.video.VideoOption
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule

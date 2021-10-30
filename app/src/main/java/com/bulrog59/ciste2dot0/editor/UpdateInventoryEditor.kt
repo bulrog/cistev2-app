@@ -7,8 +7,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.R
-import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.convertToJsonNode
-import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.gamePreviousElement
+import com.bulrog59.ciste2dot0.editor.utils.*
+import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
+import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.gamePreviousElement
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Item
 import com.bulrog59.ciste2dot0.gamedata.SceneType
@@ -41,11 +42,11 @@ class UpdateInventoryEditor(
     ) { it?.nextScene }
 
     private fun getItemList(): List<Item> {
-            return gameData.scenes.filter { it.sceneType == SceneType.updateInventory }
-                .filter { it.options!=om.createObjectNode() }
-                .map { om.treeToValue<UpdateInventoryOptions>(it.options)?.itemsToAdd }
-                .filterNotNull()
-                .flatMap { it }
+        return gameData.scenes.filter { it.sceneType == SceneType.updateInventory }
+            .filter { it.options != om.createObjectNode() }
+            .map { om.treeToValue<UpdateInventoryOptions>(it.options)?.itemsToAdd }
+            .filterNotNull()
+            .flatMap { it }
 
     }
 
@@ -153,7 +154,6 @@ class UpdateInventoryEditor(
             }
 
         }
-
 
     }
 }

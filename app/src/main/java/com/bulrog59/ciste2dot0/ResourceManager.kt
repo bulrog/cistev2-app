@@ -2,7 +2,7 @@ package com.bulrog59.ciste2dot0
 
 import android.app.Activity
 import android.net.Uri
-import com.bulrog59.ciste2dot0.editor.FilePickerType
+import com.bulrog59.ciste2dot0.editor.utils.FilePickerType
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager.Companion.FOLDER_FOR_GAME_DATA
 import java.io.*
 import java.lang.IllegalStateException

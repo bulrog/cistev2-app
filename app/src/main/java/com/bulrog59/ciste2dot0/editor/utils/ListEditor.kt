@@ -1,4 +1,4 @@
-package com.bulrog59.ciste2dot0.editor
+package com.bulrog59.ciste2dot0.editor.utils
 
 import android.app.Activity
 import android.app.AlertDialog

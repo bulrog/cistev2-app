@@ -6,7 +6,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bulrog59.ciste2dot0.editor.FieldValidator
+import com.bulrog59.ciste2dot0.editor.utils.FieldValidator
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager
 import com.bulrog59.ciste2dot0.game.management.GameMetaData
 import com.bulrog59.ciste2dot0.game.management.GameListAdapter
