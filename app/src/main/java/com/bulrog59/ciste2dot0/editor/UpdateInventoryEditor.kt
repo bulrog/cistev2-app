@@ -53,19 +53,19 @@ class UpdateInventoryEditor(
                 Toast.makeText(activity, R.string.empty_field_error, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            getPic(previousItem,name,done)
+            getPic(previousItem, name, done)
         }
 
     }
 
-    private fun getPic(previousItem: Item?, name:String, done: (Item) -> Unit) {
+    private fun getPic(previousItem: Item?, name: String, done: (Item) -> Unit) {
         FilePicker(activity).init(
             R.string.select_picture_text_title,
             FilePickerType.image,
             previousItem?.picture
         ) {
-            val id=(getItemList().map { it.id }.maxOrNull()?:0)+1
-            done(Item(id,name,it))
+            val id = (getItemList().map { it.id }.maxOrNull() ?: 0) + 1
+            done(Item(id, name, it))
 
         }
     }
@@ -74,8 +74,15 @@ class UpdateInventoryEditor(
         getItemName(previousItem, done)
     }
 
-    private fun removeItem(previousItem: Item?, done: (Item) -> Unit) {
-        //TODO: implement item creation
+    private fun removeItemSelection(previousItem: Item?, done: (Item) -> Unit) {
+        val itemPicker = ItemPicker(activity)
+        //TODO: remove items to add from my list
+        val items = getItemList()
+        previousItem?.apply {
+            itemPicker.previousSelection = items.indexOf(this)
+        }
+        itemPicker.init(R.string.item_removal_help_text, items.map { it.name }) { done(items[it]) }
+
     }
 
 
@@ -92,11 +99,11 @@ class UpdateInventoryEditor(
                 activity,
                 itemIdsToRemove,
                 { l -> l.map { it.name } },
-                this::removeItem,
+                this::removeItemSelection,
                 { r ->
                     itemIdsToRemove = r
                     init()
-                })
+                }).init()
 
         }
 

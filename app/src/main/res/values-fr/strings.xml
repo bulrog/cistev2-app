@@ -64,4 +64,5 @@
     <string name="update_inventory_editor_title">Sélectionnez la mise à jour à effectuer dans l\'inventaire</string>
     <string name="remove_inventory_menu">Retirer un élément de l\'inventaire</string>
     <string name="add_item_to_inventory_button">Ajouter un élément à l\'inventaire</string>
+    <string name="item_removal_help_text">Sélectionnez l\'élément à enlever de l\'inventaire</string>
 </resources>
