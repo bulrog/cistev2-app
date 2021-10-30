@@ -4,7 +4,10 @@ import android.app.Activity
 import android.content.Context
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.gamedata.GameData
+import com.bulrog59.ciste2dot0.gamedata.Item
 import com.bulrog59.ciste2dot0.gamedata.SceneData
+import com.bulrog59.ciste2dot0.gamedata.SceneType
+import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -66,6 +69,15 @@ class GameOptionHelper {
             ) { p ->
                 done(otherScenes[p].sceneId)
             }
+        }
+
+        fun getItemList(gameData: GameData): List<Item> {
+            return gameData.scenes.filter { it.sceneType == SceneType.updateInventory }
+                .filter { it.options != om.createObjectNode() }
+                .map { om.treeToValue<UpdateInventoryOptions>(it.options)?.itemsToAdd }
+                .filterNotNull()
+                .flatMap { it }
+
         }
     }
 }

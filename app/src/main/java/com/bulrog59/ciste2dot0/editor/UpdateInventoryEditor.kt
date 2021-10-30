@@ -10,6 +10,7 @@ import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.*
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.gamePreviousElement
+import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemList
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Item
 import com.bulrog59.ciste2dot0.gamedata.SceneType
@@ -35,20 +36,12 @@ class UpdateInventoryEditor(
         gamePreviousElement<List<Item>, UpdateInventoryOptions>(
             gameData,
             scenePosition
-        ) { getItemList().filter { i -> it?.itemIdsToRemove!!.contains(i.id) } } ?: emptyList()
+        ) { getItemList(gameData).filter { i -> it?.itemIdsToRemove!!.contains(i.id) } } ?: emptyList()
     private var nextScene = gamePreviousElement<Int, UpdateInventoryOptions>(
         gameData,
         scenePosition
     ) { it?.nextScene }
 
-    private fun getItemList(): List<Item> {
-        return gameData.scenes.filter { it.sceneType == SceneType.updateInventory }
-            .filter { it.options != om.createObjectNode() }
-            .map { om.treeToValue<UpdateInventoryOptions>(it.options)?.itemsToAdd }
-            .filterNotNull()
-            .flatMap { it }
-
-    }
 
     private fun getItemName(previousItem: Item?, done: (Item) -> Unit) {
         activity.setContentView(R.layout.editor_entity_name)
@@ -73,7 +66,7 @@ class UpdateInventoryEditor(
             FilePickerType.image,
             previousItem?.picture
         ) {
-            val id = (getItemList().map { it.id }.maxOrNull() ?: 0) + 1
+            val id = (getItemList(gameData).map { it.id }.maxOrNull() ?: 0) + 1
             done(Item(id, name, it))
 
         }
@@ -90,7 +83,7 @@ class UpdateInventoryEditor(
             return
         }
         val itemPicker = ItemPicker(activity)
-        val items = getItemList().filter { i -> !itemsToAdd.contains(i) }
+        val items = getItemList(gameData).filter { i -> !itemsToAdd.contains(i) }
         if (items.isEmpty()) {
             Toast.makeText(activity, R.string.no_item_to_select, Toast.LENGTH_LONG).show()
             return
