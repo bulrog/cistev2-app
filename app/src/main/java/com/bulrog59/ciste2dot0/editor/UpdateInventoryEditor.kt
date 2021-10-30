@@ -70,7 +70,6 @@ class UpdateInventoryEditor(
 
         }
 
-        //TODO: change menu selector to highlight already selected scene (done) and review for other places where it is used!
         val r = activity.findViewById<RecyclerView>(R.id.next_scene_update_inventory)
         val menuSelector = MenuSelectorAdapter(
             GameOptionHelper.sceneDescriptions(
