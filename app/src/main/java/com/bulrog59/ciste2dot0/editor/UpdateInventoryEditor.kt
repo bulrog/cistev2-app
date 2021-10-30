@@ -37,6 +37,7 @@ class UpdateInventoryEditor(
     ) { it?.nextScene }
 
     private fun getItemList(): List<Item> {
+        //TODO: flatmap does not work as I need to deserialize the object and get the list of items to add
         return gameData.scenes.filter { it.sceneType == SceneType.updateInventory }
             .flatMap { itemsToAdd }
     }
@@ -76,10 +77,13 @@ class UpdateInventoryEditor(
 
     private fun removeItemSelection(previousItem: Item?, done: (Item) -> Unit) {
         val itemPicker = ItemPicker(activity)
-        //TODO: remove items to add from my list
-        val items = getItemList()
+        val items = getItemList().filter { i-> !itemsToAdd.contains(i) }
         previousItem?.apply {
             itemPicker.previousSelection = items.indexOf(this)
+        }
+        if (items.isEmpty()){
+            Toast.makeText(activity,R.string.no_item_to_select,Toast.LENGTH_LONG).show()
+            return
         }
         itemPicker.init(R.string.item_removal_help_text, items.map { it.name }) { done(items[it]) }
 
@@ -95,6 +99,7 @@ class UpdateInventoryEditor(
             }).init()
         }
         activity.findViewById<Button>(R.id.delete_menu_item_button).setOnClickListener {
+            //TODO: to review as cannot edit an existing element
             ListEditor(
                 activity,
                 itemIdsToRemove,
