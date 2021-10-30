@@ -1,7 +1,6 @@
 package com.bulrog59.ciste2dot0.editor
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -36,12 +35,12 @@ class MenuEditor(
 
     private fun editMenuItem(existingItem: MenuItem?, done: (MenuItem) -> Unit) {
         var menuTitle: String?
-        activity.setContentView(R.layout.editor_menu_title)
+        activity.setContentView(R.layout.editor_entity_name)
         val menuTitleField = activity.findViewById<EditText>(R.id.menu_title_input)
         existingItem?.apply {
             menuTitleField.setText(buttonText)
         }
-        activity.findViewById<Button>(R.id.exit_button_menu_title).setOnClickListener {
+        activity.findViewById<Button>(R.id.next_button_entity).setOnClickListener {
             menuTitle = menuTitleField.text.toString()
             if (menuTitle.isNullOrEmpty()) {
                 Toast.makeText(activity, R.string.empty_field_error, Toast.LENGTH_LONG).show()

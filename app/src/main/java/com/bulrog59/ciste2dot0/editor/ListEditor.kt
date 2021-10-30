@@ -71,7 +71,7 @@ class ListEditor<T>(
         activity.findViewById<Button>(R.id.delete_menu_item_button).setOnClickListener {
             deleteMenuItem()
         }
-        activity.findViewById<Button>(R.id.exit_button_menu_title).setOnClickListener {
+        activity.findViewById<Button>(R.id.next_button_entity).setOnClickListener {
             done(items)
         }
 

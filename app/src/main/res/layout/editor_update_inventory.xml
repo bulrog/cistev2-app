@@ -30,7 +30,7 @@
 
 
     <Button
-        android:id="@+id/exit_button_menu_title"
+        android:id="@+id/next_button_entity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
