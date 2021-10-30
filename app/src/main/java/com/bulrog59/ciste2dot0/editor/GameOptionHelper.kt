@@ -1,6 +1,8 @@
 package com.bulrog59.ciste2dot0.editor
 
+import android.app.Activity
 import android.content.Context
+import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.scenes.video.VideoOption
@@ -25,7 +27,7 @@ class GameOptionHelper {
             return getterFunction(getSceneOptions(gameData, scenePosition))
         }
 
-        fun sceneDescriptions(scenes:List<SceneData>, context: Context): List<String> {
+        fun sceneDescriptions(scenes: List<SceneData>, context: Context): List<String> {
             return scenes.map {
                 "${it.sceneId}:${it.name ?: "none"} (${context.getText(it.sceneType.description)})"
             }
@@ -37,6 +39,34 @@ class GameOptionHelper {
                     data
                 )
             )
+        }
+
+        inline fun <reified T> getItemPickerNextScene(
+            activity: Activity,
+            gameData: GameData,
+            scenePosition: Int,
+            getNextScene: (T?) -> Int?,
+            crossinline done: (Int) -> Unit
+        ) {
+            val otherScenes = mutableListOf<SceneData>().apply {
+                addAll(gameData.scenes)
+                removeAt(scenePosition)
+            }
+
+            val itemPicker = ItemPicker(activity)
+            gamePreviousElement<Int, T>(
+                gameData,
+                scenePosition
+            ) { getNextScene(it) }?.apply {
+                itemPicker.previousSelection =
+                    otherScenes.indexOf(otherScenes.find { s -> s.sceneId == this })
+            }
+            itemPicker.init(
+                R.string.next_scene_title,
+                sceneDescriptions(otherScenes, activity)
+            ) { p ->
+                done(otherScenes[p].sceneId)
+            }
         }
     }
 }

@@ -5,10 +5,12 @@ import android.net.Uri
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.gamePreviousElement
+import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.getItemPickerNextScene
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.om
 import com.bulrog59.ciste2dot0.editor.GameOptionHelper.Companion.sceneDescriptions
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
+import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
 import com.bulrog59.ciste2dot0.scenes.video.VideoOption
 import com.fasterxml.jackson.databind.JsonNode
 
@@ -25,17 +27,11 @@ class VideoEditor(
     }
 
     private fun getNextScene() {
-        val otherScenes = mutableListOf<SceneData>().apply {
-            addAll(gameData.scenes)
-            removeAt(scenePosition)
-        }
-        ItemPicker(activity).init(
-            R.string.next_scene_title,
-            sceneDescriptions(otherScenes,activity)) { p ->
+        getItemPickerNextScene<VideoOption>(activity,gameData,scenePosition, { it?.nextScene }){ p ->
             done(
                 convertToJsonNode(
                     VideoOption(
-                        videoName!!, otherScenes[p].sceneId
+                        videoName!!, p
                     )
 
                 )

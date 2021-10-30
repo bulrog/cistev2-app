@@ -8,6 +8,8 @@ import com.bulrog59.ciste2dot0.R
 
 class ItemPicker(val activity:Activity) {
 
+    var previousSelection=RecyclerView.NO_POSITION
+
     var doneCallBack:((Int)-> Unit)?=null
     fun init(
         titleText: Int,
@@ -18,7 +20,9 @@ class ItemPicker(val activity:Activity) {
         activity.setContentView(R.layout.editor_item_selection)
         activity.findViewById<TextView>(R.id.editor_item_selection_title).setText(titleText)
         val recyclerView = activity.findViewById<RecyclerView>(R.id.editor_item_selection_list)
-        recyclerView.adapter = MenuSelectorAdapter(items) { p -> doneCallBack(p) }
+        val menuSelectorAdapter=MenuSelectorAdapter(items) { p -> doneCallBack(p) }
+        menuSelectorAdapter.positionSelected=previousSelection
+        recyclerView.adapter = menuSelectorAdapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
     }
 }

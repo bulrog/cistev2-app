@@ -56,7 +56,7 @@ class EditActivity : AppCompatActivity() {
                 }.apply { init() }
             }
             SceneType.updateInventory -> {
-                UpdateInventoryEditor(this,gameDataWriter.gameData,position){
+                UpdateInventoryEditor(this, gameDataWriter.gameData, position) {
                     updateSceneOption(sceneData, it)
                 }.apply { init() }
             }
@@ -65,7 +65,10 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun selectStartingSceneScreen() {
-        ItemPicker(this).init(
+        val itemPicker = ItemPicker(this)
+        itemPicker.previousSelection =
+            gameDataWriter.gameData.scenes.indexOf(gameDataWriter.gameData.scenes.findLast { gameDataWriter.gameData.starting == it.sceneId })
+        itemPicker.init(
             R.string.select_start_scene_title,
             sceneDescriptions(gameDataWriter.gameData.scenes, this)
         ) { p ->
