@@ -14,6 +14,9 @@ import com.bulrog59.ciste2dot0.gamedata.Item
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.treeToValue
 
 class UpdateInventoryEditor(
     val activity: Activity,
@@ -21,6 +24,7 @@ class UpdateInventoryEditor(
     scenePosition: Int,
     val done: (JsonNode) -> Unit
 ) {
+    private val om = ObjectMapper().apply { registerModule(KotlinModule()) }
     private var itemsToAdd =
         gamePreviousElement<List<Item>, UpdateInventoryOptions>(
             gameData,
@@ -37,9 +41,12 @@ class UpdateInventoryEditor(
     ) { it?.nextScene }
 
     private fun getItemList(): List<Item> {
-        //TODO: flatmap does not work as I need to deserialize the object and get the list of items to add
-        return gameData.scenes.filter { it.sceneType == SceneType.updateInventory }
-            .flatMap { itemsToAdd }
+            return gameData.scenes.filter { it.sceneType == SceneType.updateInventory }
+                .filter { it.options!=om.createObjectNode() }
+                .map { om.treeToValue<UpdateInventoryOptions>(it.options)?.itemsToAdd }
+                .filterNotNull()
+                .flatMap { it }
+
     }
 
     private fun getItemName(previousItem: Item?, done: (Item) -> Unit) {
@@ -50,7 +57,7 @@ class UpdateInventoryEditor(
         }
         activity.findViewById<Button>(R.id.next_button_entity).setOnClickListener {
             val name = textField.text.toString()
-            if (name.isNullOrEmpty()) {
+            if (name.isEmpty()) {
                 Toast.makeText(activity, R.string.empty_field_error, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
@@ -76,13 +83,15 @@ class UpdateInventoryEditor(
     }
 
     private fun removeItemSelection(previousItem: Item?, done: (Item) -> Unit) {
-        val itemPicker = ItemPicker(activity)
-        val items = getItemList().filter { i-> !itemsToAdd.contains(i) }
-        previousItem?.apply {
-            itemPicker.previousSelection = items.indexOf(this)
+
+        if (previousItem != null) {
+            Toast.makeText(activity, R.string.item_removal_cannot_edit, Toast.LENGTH_LONG).show()
+            return
         }
-        if (items.isEmpty()){
-            Toast.makeText(activity,R.string.no_item_to_select,Toast.LENGTH_LONG).show()
+        val itemPicker = ItemPicker(activity)
+        val items = getItemList().filter { i -> !itemsToAdd.contains(i) }
+        if (items.isEmpty()) {
+            Toast.makeText(activity, R.string.no_item_to_select, Toast.LENGTH_LONG).show()
             return
         }
         itemPicker.init(R.string.item_removal_help_text, items.map { it.name }) { done(items[it]) }
@@ -99,7 +108,6 @@ class UpdateInventoryEditor(
             }).init()
         }
         activity.findViewById<Button>(R.id.delete_menu_item_button).setOnClickListener {
-            //TODO: to review as cannot edit an existing element
             ListEditor(
                 activity,
                 itemIdsToRemove,

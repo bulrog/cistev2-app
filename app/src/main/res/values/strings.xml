@@ -64,5 +64,6 @@
     <string name="remove_inventory_menu">Remove item from inventory</string>
     <string name="add_item_to_inventory_button">Add an item to the inventory</string>
     <string name="item_removal_help_text">Select element to remove from the inventory</string>
+    <string name="item_removal_cannot_edit">Cannot edit an item can just add or remove them from the list.</string>
 
 </resources>

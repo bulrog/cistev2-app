@@ -65,4 +65,5 @@
     <string name="remove_inventory_menu">Retirer un élément de l\'inventaire</string>
     <string name="add_item_to_inventory_button">Ajouter un élément à l\'inventaire</string>
     <string name="item_removal_help_text">Sélectionnez l\'élément à enlever de l\'inventaire</string>
+    <string name="item_removal_cannot_edit">Vous ne pouvez pas éditer des items, vous pouvez seulement en ajouter ou en retirer</string>
 </resources>
