@@ -30,7 +30,7 @@ class UpdateInventoryEditor(
             gameData,
             scenePosition
         ) { getItemList().filter { i -> it?.itemIdsToRemove!!.contains(i.id) } } ?: emptyList()
-    private var nextScene=gamePreviousElement<Int, UpdateInventoryOptions>(
+    private var nextScene = gamePreviousElement<Int, UpdateInventoryOptions>(
         gameData,
         scenePosition
     ) { it?.nextScene }
@@ -70,9 +70,9 @@ class UpdateInventoryEditor(
 
         }
 
-        //TODO: change menu selector to highlight already selected scene and review for other places where it is used!
+        //TODO: change menu selector to highlight already selected scene (done) and review for other places where it is used!
         val r = activity.findViewById<RecyclerView>(R.id.next_scene_update_inventory)
-        r.adapter = MenuSelectorAdapter(
+        val menuSelector = MenuSelectorAdapter(
             GameOptionHelper.sceneDescriptions(
                 gameData.scenes,
                 activity
@@ -80,6 +80,11 @@ class UpdateInventoryEditor(
         ) { p ->
             nextScene = gameData.scenes[p].sceneId
         }
+        nextScene?.apply {
+            menuSelector.positionSelected =
+                gameData.scenes.indexOf(gameData.scenes.find { s -> s.sceneId == nextScene })
+        }
+        r.adapter = menuSelector
         r.layoutManager = LinearLayoutManager(activity)
 
 
