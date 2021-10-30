@@ -3,15 +3,18 @@ package com.bulrog59.ciste2dot0.editor
 import android.app.Activity
 import android.app.AlertDialog
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.R
 
 class ListEditor<T>(
-    val activity: Activity, var items: List<T>, val getItemText: (List<T>) -> List<String>,
+    val activity: Activity,
+    var items: List<T>,
+    val getItemText: (List<T>) -> List<String>,
     val editMenuItem: (
         T?,
-        done:(T) -> Unit
+        done: (T) -> Unit
     ) -> Unit,
     val done: (List<T>) -> Unit
 ) {
@@ -28,6 +31,10 @@ class ListEditor<T>(
     }
 
     private fun deleteMenuItem() {
+        if (items.isEmpty()) {
+            Toast.makeText(activity, R.string.no_item_to_select, Toast.LENGTH_LONG).show()
+            return
+        }
         ItemPicker(activity).init(
             R.string.select_element_to_delete,
             getItemText(items)

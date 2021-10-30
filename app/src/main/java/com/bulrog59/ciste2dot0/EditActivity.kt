@@ -57,7 +57,7 @@ class EditActivity : AppCompatActivity() {
             }
             SceneType.updateInventory -> {
                 UpdateInventoryEditor(this,gameDataWriter.gameData,position){
-
+                    updateSceneOption(sceneData, it)
                 }.apply { init() }
             }
             else -> Toast.makeText(this, getText(R.string.no_edit_mode), Toast.LENGTH_LONG).show()

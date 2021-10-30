@@ -68,6 +68,7 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         ) { p-> doneCallBack(files[p]) }
     }
 
+    //TODO: check if file exists and ask if overwrite it
     fun nextButton() {
         fileUri?.apply {
             if (newFile) {

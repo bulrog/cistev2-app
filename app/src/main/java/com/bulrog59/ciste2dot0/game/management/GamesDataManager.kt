@@ -25,7 +25,7 @@ class GamesDataManager(val context: Context) {
     }
 
     fun addLocalGames(gamesMetaData: MutableList<GameMetaData>) {
-        File(folderGame).listFiles().forEach {
+        File(folderGame).listFiles()?.forEach {
             if (it.isDirectory) {
                 try {
                     val gameData = mapper.readValue(
