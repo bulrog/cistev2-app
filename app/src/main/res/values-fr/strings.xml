@@ -62,8 +62,10 @@
     <string name="delete">effacer</string>
     <string name="select_element_to_delete">Sélectionnez l\'élément à effacer</string>
     <string name="update_inventory_editor_title">Sélectionnez la mise à jour à effectuer dans l\'inventaire</string>
-    <string name="remove_inventory_menu">Retirer un élément de l\'inventaire</string>
-    <string name="add_item_to_inventory_button">Ajouter un élément à l\'inventaire</string>
+    <string name="remove_inventory_menu">Gérer les éléments à enlever de l\'inventaire</string>
+    <string name="add_item_to_inventory_button">Gérer les éléments à ajouter à l\'inventaire</string>
     <string name="item_removal_help_text">Sélectionnez l\'élément à enlever de l\'inventaire</string>
     <string name="item_removal_cannot_edit">Vous ne pouvez pas éditer des items, vous pouvez seulement en ajouter ou en retirer</string>
+    <string name="first_item_selection_title">Sélectionnez le premier élément à combiner</string>
+    <string name="second_item_selection_title">Sélectionnez le deuxième élément à combiner</string>
 </resources>

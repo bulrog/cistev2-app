@@ -61,9 +61,11 @@
     <string name="delete">delete</string>
     <string name="select_element_to_delete">Select the element to delete</string>
     <string name="update_inventory_editor_title">Select what you want to do with the inventory</string>
-    <string name="remove_inventory_menu">Remove item from inventory</string>
-    <string name="add_item_to_inventory_button">Add an item to the inventory</string>
+    <string name="remove_inventory_menu">Manage the items to remove from inventory</string>
+    <string name="add_item_to_inventory_button">Manage the items to add to the inventory</string>
     <string name="item_removal_help_text">Select element to remove from the inventory</string>
     <string name="item_removal_cannot_edit">Cannot edit an item can just add or remove them from the list.</string>
+    <string name="first_item_selection_title">Select the first item to combine</string>
+    <string name="second_item_selection_title">Select the second item to combine</string>
 
 </resources>
