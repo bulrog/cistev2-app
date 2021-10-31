@@ -7,6 +7,8 @@ import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Item
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
+import com.bulrog59.ciste2dot0.scenes.inventory.Combination
+import com.bulrog59.ciste2dot0.scenes.inventory.InventoryOptions
 import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -59,7 +61,9 @@ class GameOptionHelper {
             gamePreviousElement<Int, T>(
                 gameData,
                 scenePosition
-            ) { getNextScene(it) }?.apply {
+            ) {
+                getNextScene(it)
+            }?.apply {
                 itemPicker.previousSelection =
                     otherScenes.indexOf(otherScenes.find { s -> s.sceneId == this })
             }
@@ -73,11 +77,19 @@ class GameOptionHelper {
 
         fun getItemList(gameData: GameData): List<Item> {
             return gameData.scenes.filter { it.sceneType == SceneType.updateInventory }
-                .filter { it.options != om.createObjectNode() }
-                .map { om.treeToValue<UpdateInventoryOptions>(it.options)?.itemsToAdd }
-                .filterNotNull()
-                .flatMap { it }
+                .filter { !it.options.isEmpty }
+                .mapNotNull { om.treeToValue<UpdateInventoryOptions>(it.options)?.itemsToAdd }
+                .flatten()
 
+        }
+
+        fun getOtherCombinationList(gameData: GameData, scenePosition: Int): List<Combination> {
+            return gameData.scenes
+                .filter { it.sceneId!=gameData.scenes[scenePosition].sceneId}
+                .filter { it.sceneType == SceneType.inventory }
+                .filter { !it.options.isEmpty }
+                .mapNotNull { om.treeToValue<InventoryOptions>(it.options)?.combinations }
+                .flatten()
         }
     }
 }

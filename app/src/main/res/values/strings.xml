@@ -67,5 +67,6 @@
     <string name="item_removal_cannot_edit">Cannot edit an item can just add or remove them from the list.</string>
     <string name="first_item_selection_title">Select the first item to combine</string>
     <string name="second_item_selection_title">Select the second item to combine</string>
+    <string name="combination_exists_error">Some combinations of items already exist</string>
 
 </resources>
