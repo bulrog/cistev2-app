@@ -16,10 +16,10 @@ import com.bulrog59.ciste2dot0.scenes.menu.MenuOptions
 import com.fasterxml.jackson.databind.JsonNode
 
 class MenuEditor(
-    val activity: Activity,
-    val gameData: GameData,
+    private val activity: Activity,
+    private val gameData: GameData,
     scenePosition: Int,
-    val done: (JsonNode) -> Unit
+    private val done: (JsonNode) -> Unit
 ) {
 
     private var menuItems = gamePreviousElement<List<MenuItem>, MenuOptions>(

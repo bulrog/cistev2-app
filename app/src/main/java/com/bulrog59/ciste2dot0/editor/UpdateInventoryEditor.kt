@@ -21,10 +21,10 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue
 
 class UpdateInventoryEditor(
-    val activity: Activity,
-    val gameData: GameData,
+    private val activity: Activity,
+    private val gameData: GameData,
     scenePosition: Int,
-    val done: (JsonNode) -> Unit
+    private val done: (JsonNode) -> Unit
 ) {
     private val om = ObjectMapper().apply { registerModule(KotlinModule()) }
     private var itemsToAdd =

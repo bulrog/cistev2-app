@@ -56,6 +56,10 @@ class ResourceManager(activity: Activity) {
         }
     }
 
+    fun fileExists(fileName: String):Boolean    {
+        return File("$rootFolder$fileName").exists()
+    }
+
     fun getOutputStreamForFile(fileName: String):OutputStream{
         return FileOutputStream(File("$rootFolder$fileName"))
     }

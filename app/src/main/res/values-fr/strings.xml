@@ -69,4 +69,5 @@
     <string name="first_item_selection_title">Sélectionnez le premier élément à combiner</string>
     <string name="second_item_selection_title">Sélectionnez le deuxième élément à combiner</string>
     <string name="combination_exists_error">Certaines combinaisons d\'élément existent déjà</string>
+    <string name="file_overwrite">Un fichier avec le même nom existe, êtes vous sûr de vouloir l\'écraser?</string>
 </resources>

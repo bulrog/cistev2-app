@@ -16,7 +16,6 @@ import com.bulrog59.ciste2dot0.scenes.inventory.InventoryOptions
 import com.fasterxml.jackson.databind.JsonNode
 
 class InventoryEditor(
-    //TODO: make them private on other editors:
     private val activity: Activity,
     private val gameData: GameData,
     private val scenePosition: Int,

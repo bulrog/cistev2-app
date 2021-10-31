@@ -18,10 +18,10 @@ import com.fasterxml.jackson.databind.JsonNode
 
 
 class PicMusicEditor(
-    val activity: Activity,
-    val gameData: GameData,
-    val scenePosition: Int,
-    val done: (JsonNode) -> Unit
+    private val activity: Activity,
+    private val gameData: GameData,
+    private val scenePosition: Int,
+    private val done: (JsonNode) -> Unit
 ) :
     CallBackActivityResult {
     val filePicker = FilePicker(activity)

@@ -14,10 +14,10 @@ import com.bulrog59.ciste2dot0.scenes.video.VideoOption
 import com.fasterxml.jackson.databind.JsonNode
 
 class VideoEditor(
-    val activity: Activity,
-    val gameData: GameData,
-    val scenePosition: Int,
-    val done: (JsonNode) -> Unit
+    private val activity: Activity,
+    private val gameData: GameData,
+    private val scenePosition: Int,
+    private val done: (JsonNode) -> Unit
 ) : CallBackActivityResult {
     private var filePicker = FilePicker(activity)
     private var videoName = gamePreviousElement<String, VideoOption>(

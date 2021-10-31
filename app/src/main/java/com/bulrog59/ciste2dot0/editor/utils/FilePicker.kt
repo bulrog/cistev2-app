@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.editor.utils
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
@@ -12,14 +13,15 @@ import androidx.core.app.ActivityCompat
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.ResourceManager
 import org.apache.commons.io.IOUtils
+import java.io.InputStream
 
 class FilePicker(val activity: Activity) : CallBackActivityResult {
 
-    var doneCallBack: (fileName: String) -> Unit = {}
-    var fileUri: Uri? = null
-    var newFile = false
-    val resourceFinder = ResourceManager(activity)
-    var previousFileName: String? = null
+    private var doneCallBack: (fileName: String) -> Unit = {}
+    private var fileUri: Uri? = null
+    private var newFile = false
+    private val resourceFinder = ResourceManager(activity)
+    var previousFileName: String?=null
 
 
     private fun getFileName(uri: Uri): String? {
@@ -65,7 +67,7 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         }
         val itemPicker = ItemPicker(activity)
         previousFileName?.apply {
-            itemPicker.previousSelection=files.indexOf(this)
+            itemPicker.previousSelection = files.indexOf(this)
         }
         itemPicker.init(
             R.string.select_picture_text_title,
@@ -73,30 +75,47 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         ) { p -> doneCallBack(files[p]) }
     }
 
-    //TODO: check if file exists and ask if overwrite it
-    fun nextButton() {
-        fileUri?.apply {
-            if (newFile) {
-                val ios = activity.contentResolver.openInputStream(this)
-                val fileName = getFileName(this)
-                fileName?.apply {
-                    ios?.use {
-                        IOUtils.copy(ios, resourceFinder.getOutputStreamForFile(this))
-                        doneCallBack(this)
-                        return
+    private fun copyFile(ios: InputStream?, fileName: String) {
+        ios?.use {
+            IOUtils.copy(ios, resourceFinder.getOutputStreamForFile(fileName))
+            doneCallBack(fileName)
+        }
+    }
+
+    private fun nextButton() {
+        if (fileUri != null) {
+            fileUri?.apply {
+                if (newFile) {
+                    val fileName = getFileName(this)
+                    val ios = activity.contentResolver.openInputStream(this)
+                    fileName?.apply {
+                        if (resourceFinder.fileExists(this)) {
+                            AlertDialog.Builder(activity)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setMessage(R.string.file_overwrite)
+                                .setPositiveButton(R.string.confirmation) { _, _ ->
+                                    copyFile(ios, this)
+                                }
+                                .setNegativeButton(R.string.denial) { _, _ -> }
+                                .show()
+                        } else {
+                            copyFile(ios, this)
+                        }
 
                     }
+                    Toast.makeText(activity, R.string.issue_to_copy_file, Toast.LENGTH_LONG).show()
                 }
-                Toast.makeText(activity, R.string.issue_to_copy_file, Toast.LENGTH_LONG)
-            }
 
-        }
-        val fileName = activity.findViewById<TextView>(R.id.selected_file_name).text
-        if (fileName.isNullOrEmpty()) {
-            Toast.makeText(activity, R.string.file_not_selected, Toast.LENGTH_LONG).show()
+            }
         } else {
-            doneCallBack(fileName.toString())
+            val fileName = activity.findViewById<TextView>(R.id.selected_file_name).text
+            if (fileName.isNullOrEmpty()) {
+                Toast.makeText(activity, R.string.file_not_selected, Toast.LENGTH_LONG).show()
+            } else {
+                doneCallBack(fileName.toString())
+            }
         }
+
 
     }
 
@@ -107,6 +126,10 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         previousItem: String?,
         doneCallBack: (fileName: String) -> Unit
     ) {
+        fileUri=null
+        newFile=false
+        previousFileName=null
+
         this.doneCallBack = doneCallBack
         activity.setContentView(R.layout.editor_file_picker)
         activity.findViewById<TextView>(R.id.upload_file_title).setText(titleText)
