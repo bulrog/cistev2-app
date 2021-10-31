@@ -103,7 +103,7 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
                         }
 
                     }
-                    Toast.makeText(activity, R.string.issue_to_copy_file, Toast.LENGTH_LONG).show()
+
                 }
 
             }

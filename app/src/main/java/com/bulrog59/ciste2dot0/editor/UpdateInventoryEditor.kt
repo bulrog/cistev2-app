@@ -13,12 +13,8 @@ import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.gamePrevi
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemList
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Item
-import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.module.kotlin.treeToValue
 
 class UpdateInventoryEditor(
     private val activity: Activity,
@@ -26,7 +22,6 @@ class UpdateInventoryEditor(
     scenePosition: Int,
     private val done: (JsonNode) -> Unit
 ) {
-    private val om = ObjectMapper().apply { registerModule(KotlinModule()) }
     private var itemsToAdd =
         gamePreviousElement<List<Item>, UpdateInventoryOptions>(
             gameData,
@@ -36,7 +31,8 @@ class UpdateInventoryEditor(
         gamePreviousElement<List<Item>, UpdateInventoryOptions>(
             gameData,
             scenePosition
-        ) { getItemList(gameData).filter { i -> it?.itemIdsToRemove!!.contains(i.id) } } ?: emptyList()
+        ) { getItemList(gameData).filter { i -> it?.itemIdsToRemove!!.contains(i.id) } }
+            ?: emptyList()
     private var nextScene = gamePreviousElement<Int, UpdateInventoryOptions>(
         gameData,
         scenePosition
@@ -65,9 +61,9 @@ class UpdateInventoryEditor(
             R.string.select_picture_text_title,
             FilePickerType.image,
             previousItem?.picture
-        ) {
+        ) { pic ->
             val id = (getItemList(gameData).map { it.id }.maxOrNull() ?: 0) + 1
-            done(Item(id, name, it))
+            done(Item(id, name, pic))
 
         }
     }
