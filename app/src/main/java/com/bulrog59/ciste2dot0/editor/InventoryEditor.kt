@@ -54,8 +54,7 @@ class InventoryEditor(
             addAll(getOtherCombinationList(gameData, scenePosition))
             addAll(localCombinations)
         }
-        return allCombinations.filter { c -> combinationAlreadyExists(c, allCombinations) }
-            .isNotEmpty()
+        return allCombinations.any { c -> combinationAlreadyExists(c, allCombinations) }
 
     }
 

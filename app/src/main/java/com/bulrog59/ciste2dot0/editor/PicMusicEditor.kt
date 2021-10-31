@@ -24,16 +24,16 @@ class PicMusicEditor(
     private val done: (JsonNode) -> Unit
 ) :
     CallBackActivityResult {
-    val filePicker = FilePicker(activity)
-    var picName = gamePreviousElement<String, PicMusicOption>(
+    private val filePicker = FilePicker(activity)
+    private var picName = gamePreviousElement<String, PicMusicOption>(
         gameData,
         scenePosition
     ) { it?.imageName }
-    var audioName = gamePreviousElement<String, PicMusicOption>(
+    private var audioName = gamePreviousElement<String, PicMusicOption>(
         gameData,
         scenePosition
     ) { it?.musicName }
-    var nextScene: Int? = null
+    private var nextScene: Int? = null
 
 
     override fun callBack(uri: Uri?, requestCode: Int) {

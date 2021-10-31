@@ -8,7 +8,7 @@ class Inventory {
     val size get() = items.size
 
     fun addItem(item: Item) {
-        if (items.map { it.id }.filter { it == item.id }.isEmpty()) {
+        if (items.map { it.id }.none { it == item.id }) {
             items.add(item)
         }
     }
@@ -29,7 +29,7 @@ class Inventory {
     }
 
     fun getItem(position: Int): Item {
-        return items.get(position)
+        return items[position]
     }
 
     fun removeItem(id: Int) {

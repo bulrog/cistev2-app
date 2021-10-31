@@ -33,7 +33,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
             gamesMetaData = it
             gameDataManager.addLocalGames(gamesMetaData as MutableList<GameMetaData>)
             notifyDataSetChanged()
-            gameMgtActivity.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = View.GONE;
+            gameMgtActivity.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = View.GONE
         }
     }
 
@@ -45,13 +45,13 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
 
 
     inner class ViewHolder(gameDetail: View) : RecyclerView.ViewHolder(gameDetail) {
-        val gameNameText = gameDetail.findViewById<TextView>(R.id.game_name)
+        val gameNameText:TextView = gameDetail.findViewById(R.id.game_name)
         var remoteGame = true
-        val progressBar = gameDetail.findViewById<ProgressBar>(R.id.load_progress)
-        val startButton = gameDetail.findViewById<ImageButton>(R.id.start_game)
-        val loadDeleteButton = gameDetail.findViewById<ImageButton>(R.id.download_delete)
-        val detailButton = gameDetail.findViewById<ImageButton>(R.id.detail_button)
-        val editButton = gameDetail.findViewById<ImageButton>(R.id.edit_game)
+        val progressBar:ProgressBar = gameDetail.findViewById(R.id.load_progress)
+        val startButton:ImageButton = gameDetail.findViewById(R.id.start_game)
+        val loadDeleteButton:ImageButton = gameDetail.findViewById(R.id.download_delete)
+        val detailButton:ImageButton = gameDetail.findViewById(R.id.detail_button)
+        val editButton:ImageButton = gameDetail.findViewById(R.id.edit_game)
 
     }
 

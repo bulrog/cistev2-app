@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.R
 
 class ListEditor<T>(
-    val activity: Activity,
-    var items: List<T>,
-    val getItemText: (List<T>) -> List<String>,
-    val editMenuItem: (
+    private val activity: Activity,
+    private var items: List<T>,
+    private val getItemText: (List<T>) -> List<String>,
+    private val editMenuItem: (
         T?,
         done: (T) -> Unit
     ) -> Unit,
-    val done: (List<T>) -> Unit
+    private val done: (List<T>) -> Unit
 ) {
 
     private fun updateMenuItems(

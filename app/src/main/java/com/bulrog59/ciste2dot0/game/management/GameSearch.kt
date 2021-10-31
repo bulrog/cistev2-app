@@ -1,6 +1,5 @@
 package com.bulrog59.ciste2dot0.game.management
 
-import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -8,7 +7,7 @@ import java.lang.IllegalArgumentException
 import java.util.*
 
 class GameSearch {
-    val db = Firebase.firestore
+    private val db = Firebase.firestore
 
     fun mapToGame(document: QueryDocumentSnapshot): GameMetaData {
         val uuidAsString = document.getString("id")

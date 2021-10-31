@@ -8,7 +8,7 @@ class FieldValidator(val activity: Activity) {
 
 
     companion object {
-        val MAX_CHAR=50
+        const val MAX_CHAR=50
     }
 
     private fun validateField(

@@ -10,8 +10,8 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.io.InputStream
 
 class GameDataLoader(activity: Activity) {
-    val resourceFinder=ResourceManager(activity)
-    val mapper=ObjectMapper().apply { registerModule(KotlinModule()) }
+    private val resourceFinder=ResourceManager(activity)
+    private val mapper=ObjectMapper().apply { registerModule(KotlinModule()) }
 
     fun loadGameDataFromIntent():GameData{
         val ios = resourceFinder.getStreamFromUri(GAME_RESOURCE_NAME)

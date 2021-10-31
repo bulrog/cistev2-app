@@ -2,7 +2,6 @@ package com.bulrog59.ciste2dot0.game.management
 
 import android.content.Context
 import android.widget.Toast
-import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -25,11 +24,11 @@ class GamesDataManager(val context: Context) {
     }
 
     fun addLocalGames(gamesMetaData: MutableList<GameMetaData>) {
-        File(folderGame).listFiles()?.forEach {
-            if (it.isDirectory) {
+        File(folderGame).listFiles()?.forEach {file->
+            if (file.isDirectory) {
                 try {
                     val gameData = mapper.readValue(
-                        File("${it.canonicalPath}/$GAMEDATA_FILE"),
+                        File("${file.canonicalPath}/$GAMEDATA_FILE"),
                         GameData::class.java
                     )
                     if (!gamesMetaData.map { it.id }.contains(gameData.gameMetaData?.id)) {
@@ -41,7 +40,7 @@ class GamesDataManager(val context: Context) {
                         context,
                         "got following error when reading game data:${e.message}, please report this to the developer",
                         Toast.LENGTH_LONG
-                    )
+                    ).show()
                 }
 
             }
@@ -87,9 +86,14 @@ class GamesDataManager(val context: Context) {
 
 
     private fun deleteRecursive(fileOrDirectory: File) {
-        if (fileOrDirectory.isDirectory) for (child in fileOrDirectory.listFiles()) deleteRecursive(
-            child
-        )
+        if (fileOrDirectory.isDirectory){
+            fileOrDirectory.listFiles()?.apply {
+                for (child in this) deleteRecursive(
+                    child
+                )
+            }
+
+        }
         fileOrDirectory.delete()
     }
 
@@ -126,8 +130,8 @@ class GamesDataManager(val context: Context) {
     }
 
     companion object {
-        val FOLDER_FOR_GAME_DATA = "/gameData/"
-        private val URL_FIRESTORE =
+        const val FOLDER_FOR_GAME_DATA = "/gameData/"
+        private const val URL_FIRESTORE =
             "https://firebasestorage.googleapis.com/v0/b/cistes2dot0.appspot.com/o/"
     }
 }
