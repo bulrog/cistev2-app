@@ -68,5 +68,6 @@
     <string name="second_item_selection_title">Select the second item to combine</string>
     <string name="combination_exists_error">Some combinations of items already exist</string>
     <string name="file_overwrite">A resource with same filename is already loaded, are you sure you want to overwrite it?</string>
+    <string name="ref_pic">Select the picture to compare to</string>
 
 </resources>

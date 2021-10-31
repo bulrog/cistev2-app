@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.gamePreviousElement
+import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getSceneDescription
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.sceneDescriptions
 import com.bulrog59.ciste2dot0.editor.utils.ItemPicker
 import com.bulrog59.ciste2dot0.editor.utils.ListEditor
@@ -28,10 +29,10 @@ class MenuEditor(
     ) { it?.menuItems } ?: emptyList()
 
 
+
     private fun getMenuItemsText(gameData: GameData, menuItems: List<MenuItem>): List<String> {
         return menuItems.map { menuItem ->
-            val nextScene = gameData.scenes.filter { it.sceneId == menuItem.nextScene }[0]
-            "${menuItem.buttonText}->${nextScene.sceneId}:${nextScene.name}"
+            "${menuItem.buttonText}->${getSceneDescription(gameData,menuItem.nextScene)}"
         }
     }
 

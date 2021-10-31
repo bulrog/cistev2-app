@@ -37,6 +37,12 @@ class GameOptionHelper {
             }
         }
 
+        fun getSceneDescription(gameData: GameData,sceneId:Int):String{
+            val scene = gameData.scenes.filter { it.sceneId == sceneId }[0]
+            return "${scene.sceneId}:${scene.name}"
+
+        }
+
         fun <T> convertToJsonNode(data: T): JsonNode {
             return om.readTree(
                 om.writeValueAsString(
