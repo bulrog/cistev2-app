@@ -17,7 +17,7 @@ class DetectorEditor(
     private val done: (JsonNode) -> Unit
 ) : CallBackActivityResult {
 
-    private val filePicker=FilePicker(activity)
+    private val filePicker = FilePicker(activity)
 
     private val options = GameOptionHelper.gamePreviousElement<Map<String, Int>, DetectorOption>(
         gameData,
@@ -25,7 +25,7 @@ class DetectorEditor(
     ) { it?.pic2Scene } ?: emptyMap()
 
     private fun getItemText(pic2SceneEntries: List<Map.Entry<String, Int>>): List<String> {
-        return pic2SceneEntries.map { "${it.key}->${getSceneDescription(gameData,it.value)}" }
+        return pic2SceneEntries.map { "${it.key}->${getSceneDescription(gameData, it.value)}" }
     }
 
     override fun callBack(uri: Uri?, requestCode: Int) {
@@ -37,7 +37,7 @@ class DetectorEditor(
         previousItem: Map.Entry<String, Int>?,
         done: (Map.Entry<String, Int>) -> Unit
     ) {
-        filePicker.init(R.string.ref_pic,FilePickerType.image,previousItem?.key){picName->
+        filePicker.init(R.string.ref_pic, FilePickerType.image, previousItem?.key) { picName ->
             //TODO: need to compress the picture as issue when read back (app freeze when detector starts)
             GameOptionHelper.getItemPickerNextScene<DetectorOption>(
                 activity,
@@ -60,7 +60,7 @@ class DetectorEditor(
         ) { entries ->
             done(GameOptionHelper.convertToJsonNode(DetectorOption(entries.associate {
                 Pair(it.key, it.value)
-            },false)))
+            }, false)))
         }.init()
     }
 }

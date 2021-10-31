@@ -5,7 +5,9 @@ import android.widget.TextView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
 import org.opencv.core.*
-import org.opencv.features2d.*
+import org.opencv.features2d.DescriptorMatcher
+import org.opencv.features2d.Features2d
+import org.opencv.features2d.SIFT
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
 import java.util.*
@@ -15,6 +17,8 @@ import kotlin.collections.ArrayList
 class FeatureMatching(detectorOption: DetectorOption, private val cisteActivity: CisteActivity) {
     private val pic2Scene = HashMap<PictureDescriptors, Int>()
     private val sift = SIFT.create()
+    private val CAPTURE_DEFAULT_HEIGHT=640.0
+    private val CAPTURE_DEFAULT_WIDTH=480.0
 
 
     init {
@@ -27,8 +31,11 @@ class FeatureMatching(detectorOption: DetectorOption, private val cisteActivity:
 
             ios.read(targetArray)
             ios.close()
-            val img = Imgcodecs.imdecode(MatOfByte(*targetArray), Imgcodecs.IMREAD_UNCHANGED)
+            val originalImg = Imgcodecs.imdecode(MatOfByte(*targetArray), Imgcodecs.IMREAD_UNCHANGED)
+            val img = Mat()
 
+            val sz = Size(CAPTURE_DEFAULT_WIDTH, CAPTURE_DEFAULT_HEIGHT)
+            Imgproc.resize( originalImg, img, sz );
 
             val keypointsObject = MatOfKeyPoint()
             val descriptorsObject = Mat()
