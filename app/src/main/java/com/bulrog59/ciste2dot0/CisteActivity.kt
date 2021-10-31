@@ -1,7 +1,6 @@
 package com.bulrog59.ciste2dot0
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
@@ -27,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import org.opencv.android.OpenCVLoader
+import kotlin.system.exitProcess
 
 
 class CisteActivity : AppCompatActivity() {
@@ -80,7 +80,7 @@ class CisteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
+        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this))
         gameDataLoader=GameDataLoader(this)
         reviewPermissions()
         gameData = gameDataLoader.loadGameDataFromIntent()
@@ -104,10 +104,10 @@ class CisteActivity : AppCompatActivity() {
             val builder: AlertDialog.Builder = AlertDialog.Builder(this)
             builder.setMessage("OpenCV is required to run this application and is not supported on this device!")
                 .setCancelable(false)
-                .setPositiveButton("OK", DialogInterface.OnClickListener { _, _ ->
+                .setPositiveButton("OK") { _, _ ->
                     finish()
-                    System.exit(10)
-                }).create().show()
+                    exitProcess(10)
+                }.create().show()
         }
     }
 
@@ -139,7 +139,7 @@ class CisteActivity : AppCompatActivity() {
             }
             SceneType.exit -> {
                 finish()
-                System.exit(0)
+                exitProcess(0)
             }
             SceneType.picMusic -> {
                 currentScene = loadScene(::PicMusicScene, sceneData)

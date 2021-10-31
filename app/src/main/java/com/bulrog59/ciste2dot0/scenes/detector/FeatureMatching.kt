@@ -12,15 +12,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class FeatureMatching {
+class FeatureMatching(detectorOption: DetectorOption, private val cisteActivity: CisteActivity) {
     private val pic2Scene = HashMap<PictureDescriptors, Int>()
     private val sift = SIFT.create()
-    private val cisteActivity: CisteActivity
 
 
-
-    constructor(detectorOption: DetectorOption, cisteActivity: CisteActivity) {
-        this.cisteActivity = cisteActivity
+    init {
         detectorOption.pic2Scene.map {
 
 
@@ -42,7 +39,6 @@ class FeatureMatching {
 
             pic2Scene.put(PictureDescriptors(img, keypointsObject, descriptorsObject), it.value)
         }
-
     }
 
 

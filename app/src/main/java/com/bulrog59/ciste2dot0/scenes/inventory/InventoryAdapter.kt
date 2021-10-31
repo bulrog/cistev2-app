@@ -26,8 +26,8 @@ class InventoryAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
-        val itemName = itemView.findViewById<TextView>(R.id.itemDescription)
-        val itemIcon = itemView.findViewById<ImageView>(R.id.itemIcon)
+        val itemName:TextView = itemView.findViewById(R.id.itemDescription)
+        val itemIcon:ImageView = itemView.findViewById(R.id.itemIcon)
 
         init {
             itemView.setOnClickListener(this)
@@ -60,10 +60,10 @@ class InventoryAdapter(
                 inventoryOptions.combinations.filter { matchOneId(it, firstObject!!.id) }
                     .filter { matchOneId(it, secondObject.id) }
             if (matchingCombinations.size > 1) {
-                throw IllegalStateException("found 2 matching combinations:${matchingCombinations} when use object: ${firstObject} with ${secondObject}, this is not allowed. Please fix the game settings.")
+                throw IllegalStateException("found 2 matching combinations:$matchingCombinations when use object: $firstObject with $secondObject, this is not allowed. Please fix the game settings.")
             }
 
-            if (!matchingCombinations.isEmpty()) {
+            if (matchingCombinations.isNotEmpty()) {
                 cisteActivity.setScene(matchingCombinations.first().nextScene)
                 return
             }

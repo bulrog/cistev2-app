@@ -7,11 +7,12 @@ import android.os.Process
 import com.bulrog59.ciste2dot0.CrashActivity.Companion.ERROR
 import java.io.PrintWriter
 import java.io.StringWriter
+import kotlin.system.exitProcess
 
 
 class ExceptionHandler(private val myContext: Activity) : Thread.UncaughtExceptionHandler {
 
-    val LINE_SEPARATOR='\n'
+    private val LINE_SEPARATOR='\n'
 
     override fun uncaughtException(t: Thread, exception: Throwable) {
         val stackTrace = StringWriter()
@@ -53,6 +54,6 @@ class ExceptionHandler(private val myContext: Activity) : Thread.UncaughtExcepti
         myContext.startActivity(intent)
 
         Process.killProcess(Process.myPid())
-        System.exit(10)
+        exitProcess(10)
     }
 }

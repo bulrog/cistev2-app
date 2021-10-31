@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: CisteActivity) : Scene {
+class DetectorScene(private val detectorOption: DetectorOption, private val cisteActivity: CisteActivity) : Scene {
 
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var picDetector: PictureDetector
@@ -72,7 +72,7 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         cisteActivity.setContentView(R.layout.scene_detector)
-        cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         startCamera()
 
     }
@@ -80,7 +80,7 @@ class DetectorScene(val detectorOption: DetectorOption, val cisteActivity: Ciste
     fun stopAndSetScene(sceneID: Int) {
         cameraExecutor.shutdown()
         if (cameraExecutor.awaitTermination(2, TimeUnit.SECONDS)) {
-            System.out.println("task completed");
+            println("camera is shutdown")
         } else {
             throw IllegalStateException("cannot shutdown the camera executor, please inform the developer")
         }

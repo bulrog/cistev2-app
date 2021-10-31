@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
 
-class MenuAdapter(private val menuOptions: MenuOptions, private val cisteActivity: CisteActivity):RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
+class MenuAdapter(private val menuOptions: MenuOptions, private val cisteActivity: CisteActivity) :
+    RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
 
-    inner class ViewHolder(menuRow: View) : RecyclerView.ViewHolder(menuRow),View.OnClickListener {
-        val button=menuRow.findViewById<Button>(R.id.menu_button)
+    inner class ViewHolder(menuRow: View) : RecyclerView.ViewHolder(menuRow), View.OnClickListener {
+        val button: Button = menuRow.findViewById(R.id.menu_button)
+
         init {
             button.setOnClickListener(this)
         }
@@ -30,7 +32,7 @@ class MenuAdapter(private val menuOptions: MenuOptions, private val cisteActivit
     }
 
     override fun onBindViewHolder(holder: MenuAdapter.ViewHolder, position: Int) {
-        holder.button.text=menuOptions.menuItems[position].buttonText
+        holder.button.text = menuOptions.menuItems[position].buttonText
     }
 
     override fun getItemCount(): Int {

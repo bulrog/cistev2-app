@@ -2,27 +2,26 @@ package com.bulrog59.ciste2dot0.scenes.detector
 
 import android.graphics.ImageFormat
 import android.graphics.YuvImage
-import android.media.Image
 import androidx.camera.core.ImageProxy
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 
 class ConvertPicture {
-    fun NV21toJPEG(nv21: ByteArray, width: Int, height: Int, quality: Int): ByteArray {
+    fun nV21toJPEG(nv21: ByteArray, width: Int, height: Int, quality: Int): ByteArray {
         val out = ByteArrayOutputStream()
         val yuv = YuvImage(nv21, ImageFormat.NV21, width, height, null)
         yuv.compressToJpeg(android.graphics.Rect(0, 0, width, height), quality, out)
         return out.toByteArray()
     }
 
-    fun YUV420toNV21(imageProxy: ImageProxy): ByteArray {
+    fun yUV420toNV21(imageProxy: ImageProxy): ByteArray {
         val crop: android.graphics.Rect = imageProxy.cropRect
         val format: Int = imageProxy.format
         val width: Int = crop.width()
         val height: Int = crop.height()
-        val planes: Array<ImageProxy.PlaneProxy> = imageProxy.getPlanes()
+        val planes: Array<ImageProxy.PlaneProxy> = imageProxy.planes
         val data = ByteArray(width * height * ImageFormat.getBitsPerPixel(format) / 8)
-        val rowData = ByteArray(planes[0].getRowStride())
+        val rowData = ByteArray(planes[0].rowStride)
         var channelOffset = 0
         var outputStride = 1
         for (i in planes.indices) {
@@ -40,9 +39,9 @@ class ConvertPicture {
                     outputStride = 2
                 }
             }
-            val buffer: ByteBuffer = planes[i].getBuffer()
-            val rowStride: Int = planes[i].getRowStride()
-            val pixelStride: Int = planes[i].getPixelStride()
+            val buffer: ByteBuffer = planes[i].buffer
+            val rowStride: Int = planes[i].rowStride
+            val pixelStride: Int = planes[i].pixelStride
             val shift = if (i == 0) 0 else 1
             val w = width shr shift
             val h = height shr shift

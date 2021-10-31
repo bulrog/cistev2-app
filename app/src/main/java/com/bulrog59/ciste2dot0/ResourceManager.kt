@@ -23,7 +23,7 @@ class ResourceManager(activity: Activity) {
     }
 
     private fun findFileWithName(name:String):String {
-        val matchingFiles=File(rootFolder).listFiles()?.filter { it.name.startsWith("$name") }
+        val matchingFiles=File(rootFolder).listFiles()?.filter { it.name.startsWith(name) }
         if (matchingFiles?.size!=1){
             throw IllegalStateException("cannot find a unique file in the folder$rootFolder for name:$name")
         }
@@ -32,12 +32,12 @@ class ResourceManager(activity: Activity) {
 
     fun getUri(resourceName: String): Uri {
         if (id==null){
-            return Uri.parse(rootFolder + resourceName);
+            return Uri.parse(rootFolder + resourceName)
         }
-        return Uri.parse(rootFolder + findFileWithName(resourceName));
+        return Uri.parse(rootFolder + findFileWithName(resourceName))
     }
 
-    inline fun <reified T : Class<*>> T.getId(resourceName: String): Int {
+    private inline fun <reified T : Class<*>> T.getId(resourceName: String): Int {
         return try {
             val idField = getDeclaredField(resourceName)
             idField.getInt(idField)
@@ -80,8 +80,8 @@ class ResourceManager(activity: Activity) {
     }
 
     companion object {
-        val GAME_ID = "game_id"
-        val GAME_RESOURCE_NAME="game"
+        const val GAME_ID = "game_id"
+        const val GAME_RESOURCE_NAME="game"
     }
 
 

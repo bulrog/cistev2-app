@@ -20,7 +20,7 @@ class MenuScene(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         cisteActivity.setContentView(R.layout.scene_menu)
-        cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         val recyclerView = cisteActivity.findViewById<RecyclerView>(R.id.menu)
         recyclerView.adapter = MenuAdapter(menuOptions, cisteActivity)
         recyclerView.layoutManager = LinearLayoutManager(cisteActivity)

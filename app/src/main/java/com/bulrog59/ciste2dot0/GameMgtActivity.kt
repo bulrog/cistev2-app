@@ -15,6 +15,7 @@ import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.*
+import kotlin.system.exitProcess
 
 class GameMgtActivity : AppCompatActivity() {
     private val fieldValidator = FieldValidator(this)
@@ -28,7 +29,7 @@ class GameMgtActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         findViewById<ImageButton>(R.id.close_game).setOnClickListener {
             finish()
-            System.exit(0)
+            exitProcess(0)
         }
         findViewById<ImageButton>(R.id.new_game).setOnClickListener {
             gameCreationScreen()
@@ -102,8 +103,8 @@ class GameMgtActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this));
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this))
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         gameSelectionScreen()
 
 
