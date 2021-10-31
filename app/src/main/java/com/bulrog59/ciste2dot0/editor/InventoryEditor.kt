@@ -68,12 +68,17 @@ class InventoryEditor(
         val allItems = getItemList(gameData)
         val remainingItems =
             allItems.filter { item -> item.id != allItems[firstItemPosition].id }
-        ItemPicker(activity).init(
+        val itemPicker=ItemPicker(activity)
+        combination?.apply {
+            itemPicker.previousSelection=remainingItems.indexOf(remainingItems.findLast { it.id==combination.id2 })
+        }
+
+        itemPicker.init(
             R.string.second_item_selection_title,
             remainingItems.map { it.name }) { secondItem ->
             val firstItemId = allItems[firstItemPosition].id
             val secondItemId = remainingItems[secondItem].id
-            val expectedCount = if (combination == null) 0 else 1
+
             getItemPickerNextScene<InventoryOptions>(
                 activity,
                 gameData,
@@ -87,10 +92,14 @@ class InventoryEditor(
     }
 
     private fun editCombination(combination: Combination?, done: (Combination) -> Unit) {
-        //TODO: if edit existing one to show previous selected item
-        ItemPicker(activity).init(
+        val allItems=getItemList(gameData)
+        val itemPicker=ItemPicker(activity)
+        combination?.apply {
+            itemPicker.previousSelection=allItems.indexOf(allItems.findLast { it.id==combination.id1 })
+        }
+        itemPicker.init(
             R.string.first_item_selection_title,
-            getItemList(gameData).map { it.name }) {
+            allItems.map { it.name }) {
             getSecondItem(it, combination, done)
         }
     }
