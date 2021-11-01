@@ -5,7 +5,6 @@ import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
-import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getOtherCombinationList
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemList
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemPickerNextScene
 import com.bulrog59.ciste2dot0.editor.utils.ItemPicker
@@ -49,13 +48,8 @@ class InventoryEditor(
             .count() > 1
     }
 
-    private fun areSomeCombinationsRedundant(localCombinations: List<Combination>): Boolean {
-        val allCombinations = mutableListOf<Combination>().apply {
-            addAll(getOtherCombinationList(gameData, scenePosition))
-            addAll(localCombinations)
-        }
-        return allCombinations.any { c -> combinationAlreadyExists(c, allCombinations) }
-
+    private fun areSomeCombinationsRedundant(combinations: List<Combination>): Boolean {
+        return combinations.any { c -> combinationAlreadyExists(c, combinations) }
     }
 
     private fun getSecondItem(

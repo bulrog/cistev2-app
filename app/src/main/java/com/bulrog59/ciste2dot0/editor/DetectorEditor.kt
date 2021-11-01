@@ -2,6 +2,7 @@ package com.bulrog59.ciste2dot0.editor
 
 import android.app.Activity
 import android.net.Uri
+import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.*
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getSceneDescription
@@ -37,8 +38,8 @@ class DetectorEditor(
         previousItem: Map.Entry<String, Int>?,
         done: (Map.Entry<String, Int>) -> Unit
     ) {
+        //TODO: to review if detector work as good as with the other way to capture images:
         filePicker.init(R.string.ref_pic, FilePickerType.image, previousItem?.key) { picName ->
-            //TODO: need to compress the picture as issue when read back (app freeze when detector starts)
             GameOptionHelper.getItemPickerNextScene<DetectorOption>(
                 activity,
                 gameData,
@@ -58,9 +59,14 @@ class DetectorEditor(
             this::getItemText,
             this::editMenuItem
         ) { entries ->
-            done(GameOptionHelper.convertToJsonNode(DetectorOption(entries.associate {
-                Pair(it.key, it.value)
-            }, false)))
+            if (entries.map { it.key }.distinct().size != entries.size) {
+                Toast.makeText(activity, R.string.duplicate_pic, Toast.LENGTH_LONG).show()
+            } else {
+                done(GameOptionHelper.convertToJsonNode(DetectorOption(entries.associate {
+                    Pair(it.key, it.value)
+                }, false)))
+            }
+
         }.init()
     }
 }

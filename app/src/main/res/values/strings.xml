@@ -69,5 +69,6 @@
     <string name="combination_exists_error">Some combinations of items already exist</string>
     <string name="file_overwrite">A resource with same filename is already loaded, are you sure you want to overwrite it?</string>
     <string name="ref_pic">Select the picture to compare to</string>
+    <string name="duplicate_pic">There are several times the same pictures, please remove the duplicates.</string>
 
 </resources>

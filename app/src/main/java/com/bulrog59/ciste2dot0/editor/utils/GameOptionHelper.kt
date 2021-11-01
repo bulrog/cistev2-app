@@ -88,14 +88,5 @@ class GameOptionHelper {
                 .flatten()
 
         }
-
-        fun getOtherCombinationList(gameData: GameData, scenePosition: Int): List<Combination> {
-            return gameData.scenes
-                .filter { it.sceneId != gameData.scenes[scenePosition].sceneId
-                        && it.sceneType == SceneType.inventory
-                        && !it.options.isEmpty }
-                .mapNotNull { om.treeToValue<InventoryOptions>(it.options)?.combinations }
-                .flatten()
-        }
     }
 }
