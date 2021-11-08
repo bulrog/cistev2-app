@@ -16,7 +16,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 
-class GameListAdapter(private val gameMgtActivity: Activity, private val anonymous: Boolean) :
+class GameListAdapter(private val gameMgtActivity: Activity) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
     private var gamesMetaData: List<GameMetaData> = listOf()
 
@@ -86,10 +86,8 @@ class GameListAdapter(private val gameMgtActivity: Activity, private val anonymo
         holder.startButton.visibility = View.INVISIBLE
         holder.editButton.visibility = View.INVISIBLE
         if (holder.remoteGame) {
-            if (!anonymous){
-                holder.loadDeleteButton.visibility = View.VISIBLE
-            }
 
+            holder.loadDeleteButton.visibility = View.VISIBLE
             holder.loadDeleteButton.setOnClickListener {
                 gameDataManager.loadGame(gameMetaData.id,
                     { transfer, total ->

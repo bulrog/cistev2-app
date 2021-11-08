@@ -14,10 +14,6 @@ import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -31,7 +27,7 @@ class GameMgtActivity : AppCompatActivity() {
         setContentView(R.layout.game_management)
         val recyclerView = findViewById<RecyclerView>(R.id.games_list)
         recyclerView.adapter =
-            GameListAdapter(this, this.intent.getStringExtra(SignInActivity.EMAIL_USER) == null)
+            GameListAdapter(this)
         recyclerView.layoutManager = LinearLayoutManager(this)
         findViewById<ImageButton>(R.id.close_game).setOnClickListener {
             finish()
@@ -64,7 +60,8 @@ class GameMgtActivity : AppCompatActivity() {
             description = description,
             location = location,
             id = id,
-            sizeInMB = null
+            sizeInMB = null,
+            userId = this.intent.getStringExtra(SignInActivity.EMAIL_USER)
         )
         val gameData = GameData(
             scenes = listOf(

@@ -9,7 +9,8 @@ data class GameMetaData(
     val description: String?,
     val location: String,
     val language: String?,
-    val sizeInMB: Long?
+    val sizeInMB: Long?,
+    val userId: String?
 ) {
     fun gameDetails(): String {
         val detailBuilder = StringBuilder()
@@ -18,6 +19,7 @@ data class GameMetaData(
         detailBuilder.append("Location:\n$location\n\n")
         language?.apply { detailBuilder.append("Language:\n$language\n\n") }
         sizeInMB?.apply { detailBuilder.append("Size:\n${sizeInMB}MB\n\n") }
+        userId?.apply { detailBuilder.append("Author:\n${userId}\n\n") }
         return detailBuilder.toString()
     }
 }

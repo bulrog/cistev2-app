@@ -13,13 +13,16 @@
         android:roundIcon="@mipmap/ic_treasure"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ciste2dot0">
-        <activity android:name=".SignInActivity">
+        <activity
+            android:name=".SignInActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".CrashActivity" />
         <activity
             android:name=".CisteActivity"
@@ -29,8 +32,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".GameMgtActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
-        </activity>
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
     </application>
 
 </manifest>
