@@ -16,7 +16,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 
-class GameListAdapter(private val gameMgtActivity: Activity) :
+class GameListAdapter(private val gameMgtActivity: Activity, private val anonymous: Boolean) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
     private var gamesMetaData: List<GameMetaData> = listOf()
 
@@ -45,13 +45,13 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
 
 
     inner class ViewHolder(gameDetail: View) : RecyclerView.ViewHolder(gameDetail) {
-        val gameNameText:TextView = gameDetail.findViewById(R.id.game_name)
+        val gameNameText: TextView = gameDetail.findViewById(R.id.game_name)
         var remoteGame = true
-        val progressBar:ProgressBar = gameDetail.findViewById(R.id.load_progress)
-        val startButton:ImageButton = gameDetail.findViewById(R.id.start_game)
-        val loadDeleteButton:ImageButton = gameDetail.findViewById(R.id.download_delete)
-        val detailButton:ImageButton = gameDetail.findViewById(R.id.detail_button)
-        val editButton:ImageButton = gameDetail.findViewById(R.id.edit_game)
+        val progressBar: ProgressBar = gameDetail.findViewById(R.id.load_progress)
+        val startButton: ImageButton = gameDetail.findViewById(R.id.start_game)
+        val loadDeleteButton: ImageButton = gameDetail.findViewById(R.id.download_delete)
+        val detailButton: ImageButton = gameDetail.findViewById(R.id.detail_button)
+        val editButton: ImageButton = gameDetail.findViewById(R.id.edit_game)
 
     }
 
@@ -86,7 +86,10 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
         holder.startButton.visibility = View.INVISIBLE
         holder.editButton.visibility = View.INVISIBLE
         if (holder.remoteGame) {
-            holder.loadDeleteButton.visibility = View.VISIBLE
+            if (!anonymous){
+                holder.loadDeleteButton.visibility = View.VISIBLE
+            }
+
             holder.loadDeleteButton.setOnClickListener {
                 gameDataManager.loadGame(gameMetaData.id,
                     { transfer, total ->

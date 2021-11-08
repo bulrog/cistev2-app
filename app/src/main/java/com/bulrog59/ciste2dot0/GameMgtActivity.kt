@@ -14,6 +14,10 @@ import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -22,10 +26,12 @@ class GameMgtActivity : AppCompatActivity() {
     private val languages =
         HashSet(Locale.getAvailableLocales().map { it.displayLanguage }).sorted()
 
+
     private fun gameSelectionScreen() {
         setContentView(R.layout.game_management)
         val recyclerView = findViewById<RecyclerView>(R.id.games_list)
-        recyclerView.adapter = GameListAdapter(this)
+        recyclerView.adapter =
+            GameListAdapter(this, this.intent.getStringExtra(SignInActivity.EMAIL_USER) == null)
         recyclerView.layoutManager = LinearLayoutManager(this)
         findViewById<ImageButton>(R.id.close_game).setOnClickListener {
             finish()
@@ -38,10 +44,10 @@ class GameMgtActivity : AppCompatActivity() {
 
 
     private fun errorInNewGameFields(): Boolean {
-        var error=fieldValidator.notEmptyField(R.id.menu_title_input)
-        error=fieldValidator.maxSizeField(R.id.menu_title_input)|| error
-        error=fieldValidator.notEmptyField(R.id.game_location_input)|| error
-        error=fieldValidator.inList(R.id.game_language_input, languages)|| error
+        var error = fieldValidator.notEmptyField(R.id.menu_title_input)
+        error = fieldValidator.maxSizeField(R.id.menu_title_input) || error
+        error = fieldValidator.notEmptyField(R.id.game_location_input) || error
+        error = fieldValidator.inList(R.id.game_language_input, languages) || error
         return error
     }
 

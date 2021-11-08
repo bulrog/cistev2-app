@@ -3,6 +3,7 @@
     package="com.bulrog59.ciste2dot0">
 
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -12,20 +13,23 @@
         android:roundIcon="@mipmap/ic_treasure"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ciste2dot0">
-
-        <activity android:name=".CrashActivity"></activity>
-        <activity android:name=".CisteActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity android:name=".EditActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity
-            android:name=".GameMgtActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+        <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".CrashActivity" />
+        <activity
+            android:name=".CisteActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".EditActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".GameMgtActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
     </application>
 
