@@ -21,9 +21,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
         if (result?.resultCode == RESULT_OK) {
-            val intent=Intent(this, GameMgtActivity::class.java)
-            intent.putExtra(EMAIL_USER,result.idpResponse?.email)
-            this.startActivity(intent)
+            startActivity(Intent(this, GameMgtActivity::class.java))
         } else {
             Toast.makeText(this,R.string.login_failure,Toast.LENGTH_LONG).show()
         }
@@ -40,9 +38,5 @@ class SignInActivity : AppCompatActivity() {
             .setAvailableProviders(providers)
             .build()
         signInLauncher.launch(signInIntent)
-    }
-
-    companion object {
-        const val EMAIL_USER="email"
     }
 }

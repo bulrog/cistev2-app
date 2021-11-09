@@ -5,6 +5,7 @@ import android.widget.Toast
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
@@ -21,6 +22,21 @@ class GamesDataManager(val context: Context) {
     init {
         createFolderIfNotExists(folderGame)
         mapper.registerModule(KotlinModule())
+    }
+
+    fun debugUploadFile(){
+        val userID=FirebaseAuth.getInstance().currentUser?.uid
+        //is anonymous does not work so if email is null should not allow the upload.
+
+        storage.getReferenceFromUrl("${URL_FIRESTORE}/$userID/trial.txt")
+            .putBytes("some text".toByteArray())
+            .addOnFailureListener {
+                println("error:$it")
+            }
+            .addOnSuccessListener {
+                println("file uploaded ok")
+            }
+
     }
 
     fun addLocalGames(gamesMetaData: MutableList<GameMetaData>) {
@@ -66,6 +82,7 @@ class GamesDataManager(val context: Context) {
         callOnFailure: (e: Exception) -> Unit,
         onSuccessAction: () -> Unit
     ) {
+        debugUploadFile()
         if (id == null || gameIsAvailable(id)) {
             return
         }

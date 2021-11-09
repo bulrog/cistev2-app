@@ -14,6 +14,7 @@ import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -61,7 +62,7 @@ class GameMgtActivity : AppCompatActivity() {
             location = location,
             id = id,
             sizeInMB = null,
-            userId = this.intent.getStringExtra(SignInActivity.EMAIL_USER)
+            userId = FirebaseAuth.getInstance().currentUser?.displayName
         )
         val gameData = GameData(
             scenes = listOf(

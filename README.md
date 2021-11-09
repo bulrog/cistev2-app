@@ -35,14 +35,18 @@ When starting in debug mode the console will show:
 
 #How to setup download of data from firestore:
 
-Create a project in firebase and generate as mentioned the key to access the project. For the sake of the development just change the security rules on the store to allow everrybody to download data (as anyway I have a free account so if abuse then no issue for me). Here the rule I set:
+Create a project in firebase and generate as mentioned the key to access the project. Then change the security rule:
 
     rules_version = '2';
     service firebase.storage {
       match /b/{bucket}/o {
         match /{allPaths=**} {
         allow read;
-          
+        }
+        
+        match /{userId}/{allPaths=**} {
+        allow read;
+        allow write: if request.auth.uid == userId;
         }
       }
     }
