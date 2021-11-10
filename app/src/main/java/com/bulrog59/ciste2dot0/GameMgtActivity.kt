@@ -62,7 +62,9 @@ class GameMgtActivity : AppCompatActivity() {
             location = location,
             id = id,
             sizeInMB = null,
-            userId = FirebaseAuth.getInstance().currentUser?.displayName
+            userId = FirebaseAuth.getInstance().currentUser?.uid,
+            author = FirebaseAuth.getInstance().currentUser?.displayName
+
         )
         val gameData = GameData(
             scenes = listOf(

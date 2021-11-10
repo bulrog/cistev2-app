@@ -24,8 +24,8 @@ class GamesDataManager(val context: Context) {
         mapper.registerModule(KotlinModule())
     }
 
-    fun debugUploadFile(){
-        val userID=FirebaseAuth.getInstance().currentUser?.uid
+    fun debugUploadFile() {
+        val userID = FirebaseAuth.getInstance().currentUser?.uid
         //is anonymous does not work so if email is null should not allow the upload.
 
         storage.getReferenceFromUrl("${URL_FIRESTORE}/$userID/trial.txt")
@@ -40,7 +40,7 @@ class GamesDataManager(val context: Context) {
     }
 
     fun addLocalGames(gamesMetaData: MutableList<GameMetaData>) {
-        File(folderGame).listFiles()?.forEach {file->
+        File(folderGame).listFiles()?.forEach { file ->
             if (file.isDirectory) {
                 try {
                     val gameData = mapper.readValue(
@@ -78,16 +78,17 @@ class GamesDataManager(val context: Context) {
 
     fun loadGame(
         id: UUID?,
+        userID: String?,
         callOnProgress: (transferBytes: Long, totalBytes: Long) -> Unit,
         callOnFailure: (e: Exception) -> Unit,
         onSuccessAction: () -> Unit
     ) {
-        debugUploadFile()
-        if (id == null || gameIsAvailable(id)) {
+//        debugUploadFile()
+        if (id == null || userID == null || gameIsAvailable(id)) {
             return
         }
 
-        loadFileFireStore(id, callOnProgress, callOnFailure, onSuccessAction)
+        loadFileFireStore(id, userID, callOnProgress, callOnFailure, onSuccessAction)
 
     }
 
@@ -103,7 +104,7 @@ class GamesDataManager(val context: Context) {
 
 
     private fun deleteRecursive(fileOrDirectory: File) {
-        if (fileOrDirectory.isDirectory){
+        if (fileOrDirectory.isDirectory) {
             fileOrDirectory.listFiles()?.apply {
                 for (child in this) deleteRecursive(
                     child
@@ -125,13 +126,14 @@ class GamesDataManager(val context: Context) {
 
     private fun loadFileFireStore(
         id: UUID,
+        userID: String,
         callOnProgress: (transferBytes: Long, totalBytes: Long) -> Unit,
         callOnFailure: (e: Exception) -> Unit,
         callOnSuccess: () -> Unit
     ) {
         val localZipFile = File("$folderGame$id.zip")
         val referenceData =
-            storage.getReferenceFromUrl("$URL_FIRESTORE$id.zip")
+            storage.getReferenceFromUrl("$URL_FIRESTORE$userID/$id.zip")
         referenceData.getFile(localZipFile)
             .addOnSuccessListener {
                 UnzipUtils.unzip(localZipFile, "$folderGame$id")

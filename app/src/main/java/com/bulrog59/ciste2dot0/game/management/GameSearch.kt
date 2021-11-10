@@ -28,7 +28,9 @@ class GameSearch {
             location = document.getString("location")!!,
             language = document.getString("language"),
             sizeInMB = document.getLong("sizeInMB"),
-            userId = document.getString("userId")
+            userId = document.getString("userID"),
+            author = document.getString("author")
+
         )
     }
 

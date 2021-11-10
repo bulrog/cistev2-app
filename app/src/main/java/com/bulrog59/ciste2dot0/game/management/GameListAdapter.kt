@@ -89,7 +89,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
 
             holder.loadDeleteButton.visibility = View.VISIBLE
             holder.loadDeleteButton.setOnClickListener {
-                gameDataManager.loadGame(gameMetaData.id,
+                gameDataManager.loadGame(gameMetaData.id,gameMetaData.userId,
                     { transfer, total ->
                         holder.progressBar.visibility = View.VISIBLE
                         val progressValue = transfer * 100.0f / total
