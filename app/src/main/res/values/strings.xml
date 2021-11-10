@@ -12,6 +12,7 @@
     <string name="delete_item_message">Are you sure you want to delete it?</string>
     <string name="matching_text">Matching</string>
     <string name="error_downloading_game">Error to download the game</string>
+    <string name="error_uploading_game">Error to upload the game</string>
     <string name="error_searching_game">Error during the search</string>
     <string name="title_new_game">Create new game</string>
     <string name="game_title">Game title</string>

@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.game.management
 
 import android.content.Context
+import android.net.Uri
 import android.widget.Toast
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -22,21 +23,6 @@ class GamesDataManager(val context: Context) {
     init {
         createFolderIfNotExists(folderGame)
         mapper.registerModule(KotlinModule())
-    }
-
-    fun debugUploadFile() {
-        val userID = FirebaseAuth.getInstance().currentUser?.uid
-        //is anonymous does not work so if email is null should not allow the upload.
-
-        storage.getReferenceFromUrl("${URL_FIRESTORE}/$userID/trial.txt")
-            .putBytes("some text".toByteArray())
-            .addOnFailureListener {
-                println("error:$it")
-            }
-            .addOnSuccessListener {
-                println("file uploaded ok")
-            }
-
     }
 
     fun addLocalGames(gamesMetaData: MutableList<GameMetaData>) {
@@ -76,6 +62,29 @@ class GamesDataManager(val context: Context) {
     }
 
 
+    fun shareGame(
+        gameMetaData: GameMetaData,
+        callOnProgress: (transferBytes: Long, totalBytes: Long) -> Unit,
+        callOnFailure: (e: Exception) -> Unit,
+        onSuccessAction: () -> Unit
+    ) {
+        val zipFileName = "$folderGame${gameMetaData.id}.zip"
+        ZipUtils.zipAll("$folderGame${gameMetaData.id}", zipFileName)
+        storage.getReferenceFromUrl("${URL_FIRESTORE}/${gameMetaData.userId}/${gameMetaData.id}.zip")
+            .putFile(Uri.fromFile(File(zipFileName)))
+            .addOnProgressListener {callOnProgress(it.bytesTransferred,it.totalByteCount) }
+            .addOnFailureListener {
+                callOnFailure(it)
+            }
+            .addOnSuccessListener {
+                //TODO: to add it on the DB as well (or update)
+                File(zipFileName).delete()
+                onSuccessAction()
+            }
+
+
+    }
+
     fun loadGame(
         id: UUID?,
         userID: String?,
@@ -83,7 +92,6 @@ class GamesDataManager(val context: Context) {
         callOnFailure: (e: Exception) -> Unit,
         onSuccessAction: () -> Unit
     ) {
-//        debugUploadFile()
         if (id == null || userID == null || gameIsAvailable(id)) {
             return
         }
@@ -136,7 +144,7 @@ class GamesDataManager(val context: Context) {
             storage.getReferenceFromUrl("$URL_FIRESTORE$userID/$id.zip")
         referenceData.getFile(localZipFile)
             .addOnSuccessListener {
-                UnzipUtils.unzip(localZipFile, "$folderGame$id")
+                ZipUtils.unzip(localZipFile, "$folderGame$id")
                 localZipFile.delete()
                 callOnSuccess()
             }

@@ -15,6 +15,7 @@
     <string name="game_title">Titre du jeu</string>
     <string name="game_title_help_text">Entrez le titre du jeu</string>
     <string name="error_downloading_game">Erreur pour telecharger le jeu</string>
+    <string name="error_uploading_game">Erreur pour partager le jeu</string>
     <string name="error_searching_game">Erreur pendant la recherche</string>
     <string name="title_new_game">Créer un nouveau jeu</string>
     <string name="game_language_help_text">Language</string>
