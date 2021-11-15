@@ -35,7 +35,9 @@ When starting in debug mode the console will show:
 
 #How to setup download of data from firestore:
 
-Create a project in firebase and generate as mentioned the key to access the project. Then change the security rule:
+Create a project in firebase and generate as mentioned the key to access the project.
+
+Then change the security rule for the storage:
 
     rules_version = '2';
     service firebase.storage {
@@ -50,4 +52,14 @@ Create a project in firebase and generate as mentioned the key to access the pro
         }
       }
     }
+ And in firestore DB, add a collection games and set the permission as follow:
  
+    rules_version = '2';
+    service cloud.firestore {
+      match /databases/{database}/documents {
+        match /games/{gameId} {
+          allow read;
+          allow write :if request.auth != null;
+        }
+      }
+    }

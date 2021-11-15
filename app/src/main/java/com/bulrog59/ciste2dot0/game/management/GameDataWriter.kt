@@ -13,6 +13,7 @@ class GameDataWriter(activity: Activity) {
     private val mapper=ObjectMapper().apply { registerModule(KotlinModule()) }
     var gameData= GameDataLoader(activity).loadGameDataFromIntent()
 
+    //TODO: add logic to zip the game and check its size when saving it and if too big then give a warning to the user that it cannot be uploaded.
     private fun saveGameData(){
         mapper.writeValue(resourceFinder.getOutputStreamFromURI(ResourceManager.GAME_RESOURCE_NAME),gameData)
     }

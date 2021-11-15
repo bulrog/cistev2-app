@@ -19,12 +19,14 @@ import kotlin.math.roundToInt
 
 class GameListAdapter(private val gameMgtActivity: Activity) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
+
+    private val gameDao = GameDao()
     private var gamesMetaData: List<GameMetaData> = listOf()
 
     private val gameDataManager = GamesDataManager(gameMgtActivity)
 
     private fun getListOfGames() {
-        GameSearch().getGames({
+        gameDao.getGames({
             Toast.makeText(
                 gameMgtActivity,
                 "${gameMgtActivity.getText(R.string.error_searching_game)}:${it.message}",
@@ -80,7 +82,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
 
     }
 
-    private fun displayError(errorMessage:Int,ex: Exception){
+    private fun displayError(errorMessage: Int, ex: Exception) {
         Toast.makeText(
             gameMgtActivity,
             "${gameMgtActivity.getText(errorMessage)}:${ex.message}",
@@ -96,10 +98,20 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
                 transferUpdate(holder.progressBar, transfer, total)
             },
             { e ->
-                displayError(R.string.error_uploading_game,e)
+                displayError(R.string.error_uploading_game, e)
                 loadedGameButtons(holder, gameMetaData)
             }
-        ) {loadedGameButtons(holder, gameMetaData) }
+        ) {
+
+            gameDao.updateGameEntry(it,gameMetaData, { e ->
+                displayError(R.string.error_uploading_game, e)
+                loadedGameButtons(holder, gameMetaData)
+            }) {
+                Toast.makeText(gameMgtActivity,R.string.success_uploading_game,Toast.LENGTH_LONG).show()
+                loadedGameButtons(holder, gameMetaData)
+            }
+
+        }
     }
 
     private fun transferUpdate(progressBar: ProgressBar, transferBytes: Long, totalBytes: Long) {
@@ -112,6 +124,7 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
         holder: GameListAdapter.ViewHolder,
         gameMetaData: GameMetaData
     ) {
+        //TODO: review when download and upload game to give warning if people launch a game or quit
         holder.startButton.visibility = View.INVISIBLE
         holder.editButton.visibility = View.INVISIBLE
         holder.shareButton.visibility = View.INVISIBLE
@@ -122,7 +135,8 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
                 gameDataManager.loadGame(gameMetaData.id, gameMetaData.userId,
                     { transfer, total ->
                         transferUpdate(holder.progressBar, transfer, total)
-                    }, { e -> displayError(R.string.error_downloading_game,e)
+                    }, { e ->
+                        displayError(R.string.error_downloading_game, e)
                         downloadGameButtons(holder, gameMetaData)
                     }
                 ) { loadedGameButtons(holder, gameMetaData) }

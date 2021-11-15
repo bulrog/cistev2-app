@@ -66,10 +66,10 @@ class GamesDataManager(val context: Context) {
         gameMetaData: GameMetaData,
         callOnProgress: (transferBytes: Long, totalBytes: Long) -> Unit,
         callOnFailure: (e: Exception) -> Unit,
-        onSuccessAction: () -> Unit
+        onSuccessAction: (Long) -> Unit
     ) {
         val zipFileName = "$folderGame${gameMetaData.id}.zip"
-        ZipUtils.zipAll("$folderGame${gameMetaData.id}", zipFileName)
+        val zipSize=ZipUtils.zipAll("$folderGame${gameMetaData.id}", zipFileName)
         storage.getReferenceFromUrl("${URL_FIRESTORE}/${gameMetaData.userId}/${gameMetaData.id}.zip")
             .putFile(Uri.fromFile(File(zipFileName)))
             .addOnProgressListener {callOnProgress(it.bytesTransferred,it.totalByteCount) }
@@ -77,9 +77,8 @@ class GamesDataManager(val context: Context) {
                 callOnFailure(it)
             }
             .addOnSuccessListener {
-                //TODO: to add it on the DB as well (or update)
                 File(zipFileName).delete()
-                onSuccessAction()
+                onSuccessAction(zipSize)
             }
 
 

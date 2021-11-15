@@ -73,5 +73,6 @@
     <string name="ref_pic">Sélectionnez la photo a utiliser en référence</string>
     <string name="duplicate_pic">Il y a plusieurs fois la même image, enelver les duplicats</string>
     <string name="login_failure">Vous devez vous enregistrer pour avoir accès a ce jeu</string>
+    <string name="success_uploading_game">Jeu partagé</string>
 
 </resources>

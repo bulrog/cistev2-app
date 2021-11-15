@@ -65,7 +65,7 @@ object ZipUtils {
         bos.close()
     }
 
-    fun zipAll(directory: String, zipFile: String) {
+    fun zipAll(directory: String, zipFile: String): Long {
         val sourceFile = File(directory)
 
         ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use {
@@ -73,6 +73,7 @@ object ZipUtils {
                 zipFiles(it, sourceFile, "")
             }
         }
+        return File(zipFile).length()
     }
 
     private fun zipFiles(zipOut: ZipOutputStream, sourceFile: File, parentDirPath: String) {
