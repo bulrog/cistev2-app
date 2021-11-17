@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.game.management
 
 import android.app.Activity
+import android.content.Context
 import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.ResourceManager
@@ -23,15 +24,23 @@ class GameDataWriter(val activity: Activity) {
         mapper.writeValue(resourceFinder.getOutputStreamFromURI(ResourceManager.GAME_RESOURCE_NAME),gameData)
         gameData.gameMetaData?.id?.apply { reportGameSize(this) }
     }
+    companion object {
+        fun makeSizeString(context: Context, stringTemplate:Int, size:Long):String{
+            context.getText(stringTemplate)
+                .replace(Regex("VARSIZE"),(size/1e6).toInt().toString())
+                .replace(Regex("MAXSIZE"),MAX_SIZE_IN_MB.toString())
+        }
+    }
+
 
     private fun reportGameSize(gameId: UUID){
         val zipFileName="${folderGame}dummy.zip"
         val zipSize=ZipUtils.zipAll("$folderGame$gameId", zipFileName)
         File(zipFileName).delete()
-        val sizeString=activity.getText(R.string.game_size_info)
-            .replace(Regex("VARSIZE"),(zipSize/1e6).toInt().toString())
-            .replace(Regex("MAXSIZE"),MAX_SIZE_IN_MB.toString())
-        Toast.makeText(activity,sizeString,Toast.LENGTH_LONG).show()
+
+        Toast.makeText(activity,
+            makeSizeString(activity,R.string.game_size_info,zipSize),
+            Toast.LENGTH_LONG).show()
 
     }
 

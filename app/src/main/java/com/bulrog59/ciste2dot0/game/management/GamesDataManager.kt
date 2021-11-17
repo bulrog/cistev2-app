@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.game.management.GameDataWriter.Companion.makeSizeString
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -73,11 +74,7 @@ class GamesDataManager(val context: Context) {
         val zipFileName = "$folderGame${gameMetaData.id}.zip"
         val zipSize=ZipUtils.zipAll("$folderGame${gameMetaData.id}", zipFileName)
         if (zipSize> MAX_SIZE_IN_MB*1e6){
-            val sizeString=context.getText(R.string.game_too_big)
-                .replace(Regex("VARSIZE"),(zipSize/1e6).toInt().toString())
-                .replace(Regex("MAXSIZE"),MAX_SIZE_IN_MB.toString())
-
-            callOnFailure(IllegalArgumentException(sizeString))
+            callOnFailure(IllegalArgumentException(makeSizeString(context,R.string.game_too_big,zipSize)))
         } else {
             storage.getReferenceFromUrl("${URL_FIRESTORE}/${gameMetaData.userId}/${gameMetaData.id}.zip")
                 .putFile(Uri.fromFile(File(zipFileName)))
