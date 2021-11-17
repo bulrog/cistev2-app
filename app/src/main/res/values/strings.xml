@@ -73,5 +73,7 @@
     <string name="ref_pic">Select the picture to compare to</string>
     <string name="duplicate_pic">There are several times the same pictures, please remove the duplicates.</string>
     <string name="login_failure">You need to login to play this game.</string>
+    <string name="game_size_info">The actual game size is VARSIZE MB, the maximum size to share the game is MAX_SIZE MB</string>
+    <string name="game_too_big">The maximum game size is VARSIZE MB, the maximum size to share the game is MAX_SIZE MB</string>
 
 </resources>

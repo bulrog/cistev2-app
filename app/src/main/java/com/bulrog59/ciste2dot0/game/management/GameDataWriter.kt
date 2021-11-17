@@ -1,21 +1,38 @@
 package com.bulrog59.ciste2dot0.game.management
 
 import android.app.Activity
+import android.widget.Toast
+import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.ResourceManager
+import com.bulrog59.ciste2dot0.game.management.GamesDataManager.Companion.MAX_SIZE_IN_MB
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import java.io.File
+import java.util.*
 
-class GameDataWriter(activity: Activity) {
+class GameDataWriter(val activity: Activity) {
     private val resourceFinder=ResourceManager(activity)
+    private val folderGame = activity.filesDir.absolutePath + GamesDataManager.FOLDER_FOR_GAME_DATA
     private val mapper=ObjectMapper().apply { registerModule(KotlinModule()) }
     var gameData= GameDataLoader(activity).loadGameDataFromIntent()
 
-    //TODO: add logic to zip the game and check its size when saving it and if too big then give a warning to the user that it cannot be uploaded.
     private fun saveGameData(){
         mapper.writeValue(resourceFinder.getOutputStreamFromURI(ResourceManager.GAME_RESOURCE_NAME),gameData)
+        gameData.gameMetaData?.id?.apply { reportGameSize(this) }
+    }
+
+    private fun reportGameSize(gameId: UUID){
+        val zipFileName="${folderGame}dummy.zip"
+        val zipSize=ZipUtils.zipAll("$folderGame$gameId", zipFileName)
+        File(zipFileName).delete()
+        val sizeString=activity.getText(R.string.game_size_info)
+            .replace(Regex("VARSIZE"),(zipSize/1e6).toInt().toString())
+            .replace(Regex("MAXSIZE"),MAX_SIZE_IN_MB.toString())
+        Toast.makeText(activity,sizeString,Toast.LENGTH_LONG).show()
+
     }
 
     private fun updateGameDataWithScenes(scenesData: List<SceneData>){

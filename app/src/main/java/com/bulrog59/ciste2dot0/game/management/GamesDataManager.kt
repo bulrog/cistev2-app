@@ -3,6 +3,7 @@ package com.bulrog59.ciste2dot0.game.management
 import android.content.Context
 import android.net.Uri
 import android.widget.Toast
+import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -10,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
+import java.lang.IllegalArgumentException
 import java.nio.file.Files
 import java.util.*
 
@@ -70,17 +72,24 @@ class GamesDataManager(val context: Context) {
     ) {
         val zipFileName = "$folderGame${gameMetaData.id}.zip"
         val zipSize=ZipUtils.zipAll("$folderGame${gameMetaData.id}", zipFileName)
-        storage.getReferenceFromUrl("${URL_FIRESTORE}/${gameMetaData.userId}/${gameMetaData.id}.zip")
-            .putFile(Uri.fromFile(File(zipFileName)))
-            .addOnProgressListener {callOnProgress(it.bytesTransferred,it.totalByteCount) }
-            .addOnFailureListener {
-                callOnFailure(it)
-            }
-            .addOnSuccessListener {
-                File(zipFileName).delete()
-                onSuccessAction(zipSize)
-            }
+        if (zipSize> MAX_SIZE_IN_MB*1e6){
+            val sizeString=context.getText(R.string.game_too_big)
+                .replace(Regex("VARSIZE"),(zipSize/1e6).toInt().toString())
+                .replace(Regex("MAXSIZE"),MAX_SIZE_IN_MB.toString())
 
+            callOnFailure(IllegalArgumentException(sizeString))
+        } else {
+            storage.getReferenceFromUrl("${URL_FIRESTORE}/${gameMetaData.userId}/${gameMetaData.id}.zip")
+                .putFile(Uri.fromFile(File(zipFileName)))
+                .addOnProgressListener {callOnProgress(it.bytesTransferred,it.totalByteCount) }
+                .addOnFailureListener {
+                    callOnFailure(it)
+                }
+                .addOnSuccessListener {
+                    File(zipFileName).delete()
+                    onSuccessAction(zipSize)
+                }
+        }
 
     }
 
@@ -157,6 +166,7 @@ class GamesDataManager(val context: Context) {
 
     companion object {
         const val FOLDER_FOR_GAME_DATA = "/gameData/"
+        const val MAX_SIZE_IN_MB=100
         private const val URL_FIRESTORE =
             "https://firebasestorage.googleapis.com/v0/b/cistes2dot0.appspot.com/o/"
     }

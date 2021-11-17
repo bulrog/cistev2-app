@@ -74,5 +74,7 @@
     <string name="duplicate_pic">Il y a plusieurs fois la même image, enelver les duplicats</string>
     <string name="login_failure">Vous devez vous enregistrer pour avoir accès a ce jeu</string>
     <string name="success_uploading_game">Jeu partagé</string>
+    <string name="game_size_info">La taille du jeu est de VARSIZE MB, le maximum pour partager le jeu est de MAXSIZE MB</string>
+    <string name="game_too_big">La taille du jeu est trop grande (VARSIZE MB) (le maximum pour partager le jeu est de MAXSIZE MB)</string>
 
 </resources>
