@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.editor
 
 import android.app.Activity
+import android.hardware.camera2.CameraManager
 import android.net.Uri
 import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
@@ -38,7 +39,7 @@ class DetectorEditor(
         previousItem: Map.Entry<String, Int>?,
         done: (Map.Entry<String, Int>) -> Unit
     ) {
-        //TODO: to review if detector work as good as with the other way to capture images:
+        //TODO: Use pictaker to take a picture like the detector and 1st request the picture name:
         filePicker.init(R.string.ref_pic, FilePickerType.image, previousItem?.key) { picName ->
             GameOptionHelper.getItemPickerNextScene<DetectorOption>(
                 activity,

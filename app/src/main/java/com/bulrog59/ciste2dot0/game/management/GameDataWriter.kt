@@ -26,7 +26,7 @@ class GameDataWriter(val activity: Activity) {
     }
     companion object {
         fun makeSizeString(context: Context, stringTemplate:Int, size:Long):String{
-            context.getText(stringTemplate)
+            return context.getText(stringTemplate)
                 .replace(Regex("VARSIZE"),(size/1e6).toInt().toString())
                 .replace(Regex("MAXSIZE"),MAX_SIZE_IN_MB.toString())
         }

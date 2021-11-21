@@ -28,6 +28,7 @@
         android:scaleType="fitCenter"
         android:text="Take Photo"
 
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

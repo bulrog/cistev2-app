@@ -111,6 +111,7 @@ class EditActivity : AppCompatActivity() {
 
 
     private fun sceneSelectionScreen() {
+        //TODO: also add an icon to copy the game
         val scenesDescription = sceneDescriptions(gameDataWriter.gameData.scenes, this)
         //TODO: to add also a button next to the scene selection to edit the game metadata
         setContentView(R.layout.editor_scene_selection)

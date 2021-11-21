@@ -11,7 +11,7 @@ import org.opencv.android.Utils
 import org.opencv.core.Mat
 import java.io.IOException
 
-
+//TODO: to review to remove as not used anymore
 class SaveImage(private val context: Context) {
 
 
