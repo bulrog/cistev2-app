@@ -16,11 +16,12 @@ import java.util.concurrent.TimeUnit
 
 abstract class CameraManager(val activity: AppCompatActivity) {
     private lateinit var cameraExecutor: ExecutorService
-    private val picAnalyzer = initPicAnalyzer()
+    private lateinit var picAnalyzer:ImageAnalysis.Analyzer
 
     abstract fun initPicAnalyzer(): ImageAnalysis.Analyzer
 
     private fun startCamera() {
+        picAnalyzer=initPicAnalyzer()
         cameraExecutor = Executors.newSingleThreadExecutor()
         val cameraProviderFuture = ProcessCameraProvider.getInstance(activity)
 

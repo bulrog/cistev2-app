@@ -7,7 +7,7 @@ import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.camera.util.CameraManager
 import com.bulrog59.ciste2dot0.scenes.Scene
 
-class DetectorScene(private val detectorOption: DetectorOption, private val cisteActivity: CisteActivity) : CameraManager(cisteActivity),Scene {
+class DetectorScene(private val detectorOption: DetectorOption, private val cisteActivity: CisteActivity) : Scene,CameraManager(cisteActivity) {
 
     override fun initPicAnalyzer():ImageAnalysis.Analyzer {
         return PictureDetector(detectorOption, cisteActivity, this)
