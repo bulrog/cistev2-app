@@ -40,6 +40,7 @@ class DetectorEditor(
         done: (Map.Entry<String, Int>) -> Unit
     ) {
         //TODO: Use pictaker to take a picture like the detector and 1st request the picture name (or keep existing picture):
+        //TODO: when image name is provided need also to check the name does not contain crap characters
         filePicker.init(R.string.ref_pic, FilePickerType.image, previousItem?.key) { picName ->
             GameOptionHelper.getItemPickerNextScene<DetectorOption>(
                 activity,
