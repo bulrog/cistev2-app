@@ -39,6 +39,7 @@
     <string name="scene_type_selection_title_help">Select the type of scene you want to create</string>
     <string name="create_button">Create</string>
     <string name="next_button">Next</string>
+    <string name="keep_same_pic">Keep same pic</string>
     <string name="empty_field_error">field cannot be empty</string>
     <string name="tool_long_field">field cannot be longer than </string>
     <string name="element_not_in_list">please select an element from the list</string>
@@ -75,5 +76,8 @@
     <string name="login_failure">You need to login to play this game.</string>
     <string name="game_size_info">The actual game size is VARSIZE MB, the maximum size to share the game is MAX_SIZE MB</string>
     <string name="game_too_big">The maximum game size is VARSIZE MB, the maximum size to share the game is MAX_SIZE MB</string>
+    <string name="update_detector_pic">Add/Update pic to detect</string>
+    <string name="detector_file_name">Enter file name of the picture of the detector</string>
+    <string name="filename_error">Filename can only have digits and letters</string>
 
 </resources>

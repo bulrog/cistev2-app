@@ -1,10 +1,16 @@
 package com.bulrog59.ciste2dot0.editor
 
 import android.app.Activity
-import android.hardware.camera2.CameraManager
+import android.content.pm.ActivityInfo
 import android.net.Uri
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.editor.detector.DetectorPic
 import com.bulrog59.ciste2dot0.editor.utils.*
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getSceneDescription
 import com.bulrog59.ciste2dot0.gamedata.GameData
@@ -13,13 +19,14 @@ import com.fasterxml.jackson.databind.JsonNode
 import java.util.AbstractMap
 
 class DetectorEditor(
-    private val activity: Activity,
+    private val activity: AppCompatActivity,
     private val gameData: GameData,
     private val scenePosition: Int,
     private val done: (JsonNode) -> Unit
 ) : CallBackActivityResult {
 
     private val filePicker = FilePicker(activity)
+    private val fieldValidator = FieldValidator(activity)
 
     private val options = GameOptionHelper.gamePreviousElement<Map<String, Int>, DetectorOption>(
         gameData,
@@ -34,24 +41,51 @@ class DetectorEditor(
         filePicker.callBack(uri, requestCode)
     }
 
+    private fun selectNextScene(
+        picName: String,
+        previousSceneEntry: Int?,
+        done: (Map.Entry<String, Int>) -> Unit
+    ) {
+        GameOptionHelper.getItemPickerNextScene<DetectorOption>(
+            activity,
+            gameData,
+            scenePosition,
+            { previousSceneEntry }) { nextScene ->
+            done(
+                AbstractMap.SimpleEntry(picName, nextScene)
+            )
+        }
+    }
+
 
     private fun editMenuItem(
         previousItem: Map.Entry<String, Int>?,
         done: (Map.Entry<String, Int>) -> Unit
     ) {
-        //TODO: Use pictaker to take a picture like the detector and 1st request the picture name (or keep existing picture):
-        //TODO: when image name is provided need also to check the name does not contain crap characters
-        filePicker.init(R.string.ref_pic, FilePickerType.image, previousItem?.key) { picName ->
-            GameOptionHelper.getItemPickerNextScene<DetectorOption>(
-                activity,
-                gameData,
-                scenePosition,
-                { previousItem?.value }) { nextScene ->
-                done(
-                    AbstractMap.SimpleEntry(picName, nextScene)
-                )
+        activity.setContentView(R.layout.editor_detector)
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        val keepSamePicButton = activity.findViewById<Button>(R.id.keep_same_picture)
+        val previousItemTextField = activity.findViewById<TextView>(R.id.previous_file_name)
+
+        previousItem?.apply {
+            previousItemTextField.text = this.key
+            keepSamePicButton.setOnClickListener {
+                selectNextScene(this.key, this.value, done)
             }
+        } ?: run {
+            keepSamePicButton.visibility = View.INVISIBLE
         }
+        activity.findViewById<Button>(R.id.replace_pic).setOnClickListener {
+            if (!fieldValidator.onlyDigitsAndCharacters(R.id.detector_file_name)) {
+                val picName = activity.findViewById<EditText>(R.id.detector_file_name).text
+                DetectorPic(activity, picName.toString()) {
+                    selectNextScene(picName.toString(), previousItem?.value, done)
+                }.init()
+            }
+
+
+        }
+
     }
 
     fun init() {

@@ -8,7 +8,7 @@ class FieldValidator(val activity: Activity) {
 
 
     companion object {
-        const val MAX_CHAR=50
+        const val MAX_CHAR = 50
     }
 
     private fun validateField(
@@ -31,12 +31,31 @@ class FieldValidator(val activity: Activity) {
             activity.getString(R.string.empty_field_error)
         )
     }
-    fun maxSizeField(fieldId: Int):Boolean {
-        return validateField(fieldId,{v-> v.length > MAX_CHAR },activity.getString(R.string.tool_long_field)+ MAX_CHAR)
+
+    fun onlyDigitsAndCharacters(fieldID: Int): Boolean {
+        return validateField(
+            fieldID,
+            {
+                    v -> !"[A-Za-z0-9]+".toRegex().matches(v)
+            },
+            activity.getString(R.string.filename_error)
+        )
     }
 
-    fun inList(fieldId: Int,elements:List<String>):Boolean{
-        return validateField(fieldId,{ v -> !elements.contains(v) },activity.getString(R.string.element_not_in_list))
+    fun maxSizeField(fieldId: Int): Boolean {
+        return validateField(
+            fieldId,
+            { v -> v.length > MAX_CHAR },
+            activity.getString(R.string.tool_long_field) + MAX_CHAR
+        )
+    }
+
+    fun inList(fieldId: Int, elements: List<String>): Boolean {
+        return validateField(
+            fieldId,
+            { v -> !elements.contains(v) },
+            activity.getString(R.string.element_not_in_list)
+        )
     }
 
 }

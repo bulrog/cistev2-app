@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -25,7 +24,6 @@ import com.bulrog59.ciste2dot0.scenes.video.VideoScene
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue
-import org.opencv.android.OpenCVLoader
 import kotlin.system.exitProcess
 
 
@@ -84,7 +82,6 @@ class CisteActivity : AppCompatActivity() {
         gameDataLoader=GameDataLoader(this)
         reviewPermissions()
         gameData = gameDataLoader.loadGameDataFromIntent()
-        initOpenCV()
 
         if (currentScene == null) {
             setScene(gameData.starting)
@@ -96,18 +93,6 @@ class CisteActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
-        }
-    }
-
-    private fun initOpenCV() {
-        if (!OpenCVLoader.initDebug()) {
-            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-            builder.setMessage("OpenCV is required to run this application and is not supported on this device!")
-                .setCancelable(false)
-                .setPositiveButton("OK") { _, _ ->
-                    finish()
-                    exitProcess(10)
-                }.create().show()
         }
     }
 

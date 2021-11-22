@@ -1,8 +1,10 @@
-package com.bulrog59.ciste2dot0.editor
+package com.bulrog59.ciste2dot0.editor.detector
 
 import android.graphics.Bitmap
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageAnalysis
@@ -16,23 +18,23 @@ import org.opencv.core.Mat
 
 class PictureTaker(
     val activity: AppCompatActivity,
-    private val fileName:String,
+    private val fileName: String,
     private val cameraManager: CameraManager,
     private val callBack: () -> Unit
 
 ) : ImageAnalysis.Analyzer {
     private var capture = false
-    private val resourceManager=ResourceManager(activity)
+    private val resourceManager = ResourceManager(activity)
+
     init {
+        activity.findViewById<TextView>(R.id.maximumFound).visibility = View.INVISIBLE
+        activity.findViewById<ProgressBar>(R.id.detectorValue).visibility = View.INVISIBLE
+
         val button = activity.findViewById<Button>(R.id.camera_capture_button)
-        button.visibility=View.VISIBLE
-        button.setOnClickListener { takePhoto() }
+        button.visibility = View.VISIBLE
+        button.setOnClickListener { capture = true }
     }
 
-
-    fun takePhoto() {
-        capture = true
-    }
 
     private fun createBitmapfromMat(snap: Mat): Bitmap? {
         val bp = Bitmap.createBitmap(snap.cols(), snap.rows(), Bitmap.Config.ARGB_8888)
@@ -42,14 +44,21 @@ class PictureTaker(
 
     override fun analyze(imageProxy: ImageProxy) {
 
-        val img = ConvertPicture.getPicture(imageProxy)
         if (capture) {
+            val img = ConvertPicture.getPicture(imageProxy)
             resourceManager.getOutputStreamForFile("$fileName.jpg").use {
                 createBitmapfromMat(img)?.compress(Bitmap.CompressFormat.JPEG, 95, it)
-                    //TODO: replace with string resource
-                    ?:Toast.makeText(activity,"Failed to save the bitmap, cannot create a new file", Toast.LENGTH_LONG).show()
-                cameraManager.stopCamera()
-                callBack()}
+                //TODO: replace with string resource
+                    ?: Toast.makeText(
+                        activity,
+                        "Failed to save the bitmap, cannot create a new file",
+                        Toast.LENGTH_LONG
+                    ).show()
+                activity.runOnUiThread {
+                    cameraManager.stopCamera()
+                    callBack()
+                }
+            }
 
         }
 

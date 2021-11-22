@@ -76,5 +76,9 @@
     <string name="success_uploading_game">Jeu partagé</string>
     <string name="game_size_info">La taille du jeu est de VARSIZE MB, le maximum pour partager le jeu est de MAXSIZE MB</string>
     <string name="game_too_big">La taille du jeu est trop grande (VARSIZE MB) (le maximum pour partager le jeu est de MAXSIZE MB)</string>
+    <string name="keep_same_pic">Garder la meme image</string>
+    <string name="update_detector_pic">Ajouter/Mettre à jour l\'image</string>
+    <string name="detector_file_name">Entrez le nom de la photo à détecter</string>
+    <string name="filename_error">Le nom de fichier ne peut avoir que des lettres et des chiffres</string>
 
 </resources>

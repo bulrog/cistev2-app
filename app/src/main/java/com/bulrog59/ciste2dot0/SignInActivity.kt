@@ -19,6 +19,8 @@ class SignInActivity : AppCompatActivity() {
 
 
 
+
+
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
         if (result?.resultCode == RESULT_OK) {
             startActivity(Intent(this, GameMgtActivity::class.java))
