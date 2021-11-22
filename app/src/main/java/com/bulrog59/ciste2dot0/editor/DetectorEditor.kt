@@ -66,7 +66,7 @@ class DetectorEditor(
             } else {
                 done(GameOptionHelper.convertToJsonNode(DetectorOption(entries.associate {
                     Pair(it.key, it.value)
-                }, false)))
+                })))
             }
 
         }.init()
