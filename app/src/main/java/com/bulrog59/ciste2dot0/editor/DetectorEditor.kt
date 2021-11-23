@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.editor
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.view.View
@@ -10,7 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.ResourceManager
 import com.bulrog59.ciste2dot0.editor.detector.DetectorPic
+import com.bulrog59.ciste2dot0.editor.detector.PictureTaker.Companion.PIC_EXTENSION
 import com.bulrog59.ciste2dot0.editor.utils.*
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getSceneDescription
 import com.bulrog59.ciste2dot0.gamedata.GameData
@@ -57,6 +60,16 @@ class DetectorEditor(
         }
     }
 
+    private fun proceedWithPicture(
+        picName: String,
+        previousNextScene: Int?,
+        done: (Map.Entry<String, Int>) -> Unit
+    ) {
+        DetectorPic(activity, picName) {
+            selectNextScene(picName, previousNextScene, done)
+        }.init()
+
+    }
 
     private fun editMenuItem(
         previousItem: Map.Entry<String, Int>?,
@@ -76,16 +89,26 @@ class DetectorEditor(
             keepSamePicButton.visibility = View.INVISIBLE
         }
         activity.findViewById<Button>(R.id.replace_pic).setOnClickListener {
+
             if (!fieldValidator.onlyDigitsAndCharacters(R.id.detector_file_name)) {
-                val picName = activity.findViewById<EditText>(R.id.detector_file_name).text
-                DetectorPic(activity, picName.toString()) {
-                    selectNextScene(picName.toString(), previousItem?.value, done)
-                }.init()
+                val picName =
+                    activity.findViewById<EditText>(R.id.detector_file_name).text.toString()
+                if (ResourceManager(activity).fileExists("$picName$PIC_EXTENSION")) {
+                    AlertDialog.Builder(activity)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setMessage(R.string.file_overwrite)
+                        .setPositiveButton(R.string.confirmation) { _, _ ->
+                            proceedWithPicture(picName, previousItem?.value, done)
+                        }
+                        .setNegativeButton(R.string.denial, null)
+                        .show()
+                } else {
+                    DetectorPic(activity, picName) {
+                        selectNextScene(picName, previousItem?.value, done)
+                    }.init()
+                }
             }
-
-
         }
-
     }
 
     fun init() {

@@ -79,5 +79,6 @@
     <string name="update_detector_pic">Add/Update pic to detect</string>
     <string name="detector_file_name">Enter file name of the picture of the detector</string>
     <string name="filename_error">Filename can only have digits and letters</string>
+    <string name="file_save_error">Failed to save the  file</string>
 
 </resources>

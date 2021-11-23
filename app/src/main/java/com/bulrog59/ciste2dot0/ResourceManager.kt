@@ -56,6 +56,7 @@ class ResourceManager(activity: Activity) {
         }
     }
 
+
     fun fileExists(fileName: String):Boolean    {
         return File("$rootFolder$fileName").exists()
     }

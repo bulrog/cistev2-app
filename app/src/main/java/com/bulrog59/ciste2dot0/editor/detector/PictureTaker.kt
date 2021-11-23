@@ -26,6 +26,10 @@ class PictureTaker(
     private var capture = false
     private val resourceManager = ResourceManager(activity)
 
+    companion object {
+        const val PIC_EXTENSION=".jpg"
+    }
+
     init {
         activity.findViewById<TextView>(R.id.maximumFound).visibility = View.INVISIBLE
         activity.findViewById<ProgressBar>(R.id.detectorValue).visibility = View.INVISIBLE
@@ -46,12 +50,11 @@ class PictureTaker(
 
         if (capture) {
             val img = ConvertPicture.getPicture(imageProxy)
-            resourceManager.getOutputStreamForFile("$fileName.jpg").use {
+            resourceManager.getOutputStreamForFile("$fileName$PIC_EXTENSION").use {
                 createBitmapfromMat(img)?.compress(Bitmap.CompressFormat.JPEG, 95, it)
-                //TODO: replace with string resource
                     ?: Toast.makeText(
                         activity,
-                        "Failed to save the bitmap, cannot create a new file",
+                        R.string.file_save_error,
                         Toast.LENGTH_LONG
                     ).show()
                 activity.runOnUiThread {

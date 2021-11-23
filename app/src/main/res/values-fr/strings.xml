@@ -80,5 +80,6 @@
     <string name="update_detector_pic">Ajouter/Mettre à jour l\'image</string>
     <string name="detector_file_name">Entrez le nom de la photo à détecter</string>
     <string name="filename_error">Le nom de fichier ne peut avoir que des lettres et des chiffres</string>
+    <string name="file_save_error">Erreur pour sauvergarder le fichier</string>
 
 </resources>

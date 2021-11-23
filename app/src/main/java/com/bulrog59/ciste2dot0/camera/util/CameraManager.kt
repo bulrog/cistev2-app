@@ -22,7 +22,6 @@ abstract class CameraManager(val activity: AppCompatActivity) {
     private lateinit var picAnalyzer:ImageAnalysis.Analyzer
 
 
-    //TODO: to review to clean this up:
     abstract fun initPicAnalyzer(): ImageAnalysis.Analyzer
 
     private fun startCamera() {

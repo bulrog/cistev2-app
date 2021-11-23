@@ -115,7 +115,7 @@ class GamesDataManager(val context: Context) {
 
     }
 
-
+    //TODO: to also add option to delete safly picture and for that check if the game has the picture still in use
     private fun deleteRecursive(fileOrDirectory: File) {
         if (fileOrDirectory.isDirectory) {
             fileOrDirectory.listFiles()?.apply {
