@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/title_new_game"
+        android:text="@string/title_game_meta"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/game_language_help_text">
 
         <EditText
-            android:id="@+id/pic_optional_text"
+            android:id="@+id/description_text"
             android:inputType="textMultiLine"
             android:lines="8"
             android:minLines="8"
@@ -109,12 +109,12 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/create_game"
+        android:id="@+id/game_meta_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/create_game_button"
+        android:text="@string/save_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

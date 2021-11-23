@@ -4,9 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +18,7 @@ import com.bulrog59.ciste2dot0.game.management.GameDataWriter
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.fasterxml.jackson.databind.JsonNode
+import java.util.*
 
 
 class EditActivity : AppCompatActivity() {
@@ -27,6 +26,10 @@ class EditActivity : AppCompatActivity() {
     private lateinit var gameDataWriter: GameDataWriter
     private val fieldValidator = FieldValidator(this)
     private var filePicker: CallBackActivityResult? = null
+
+    //TODO: as also in GameMgtActivity to put it in a companion object
+    private val languages =
+        HashSet(Locale.getAvailableLocales().map { it.displayLanguage }).sorted()
 
 
     private fun updateSceneOption(sceneData: SceneData, option: JsonNode) {
@@ -70,10 +73,11 @@ class EditActivity : AppCompatActivity() {
                 }.apply { init() }
             }
             SceneType.detector -> {
-                filePicker=DetectorEditor(this, gameDataWriter.gameData, position) {
+                filePicker = DetectorEditor(this, gameDataWriter.gameData, position) {
                     updateSceneOption(sceneData, it)
                 }.apply { init() }
             }
+            //TODO: add editor for the rule engine
             else -> Toast.makeText(this, getText(R.string.no_edit_mode), Toast.LENGTH_LONG).show()
         }
     }
@@ -113,7 +117,6 @@ class EditActivity : AppCompatActivity() {
     private fun sceneSelectionScreen() {
         //TODO: also add an icon to copy the game
         val scenesDescription = sceneDescriptions(gameDataWriter.gameData.scenes, this)
-        //TODO: to add also a button next to the scene selection to edit the game metadata
         setContentView(R.layout.editor_scene_selection)
 
         val recyclerView = findViewById<RecyclerView>(R.id.scene_selection_menu)
@@ -123,6 +126,8 @@ class EditActivity : AppCompatActivity() {
         findViewById<Button>(R.id.add_scene_button).setOnClickListener { sceneCreationScreen() }
         findViewById<Button>(R.id.edit_start_scene).setOnClickListener { selectStartingSceneScreen() }
         findViewById<Button>(R.id.delete_scene_button).setOnClickListener { deleteScene() }
+        findViewById<Button>(R.id.meta_data_edit_button).setOnClickListener { gameMetaEdition() }
+
 
     }
 
@@ -153,8 +158,28 @@ class EditActivity : AppCompatActivity() {
             }
 
         }
+
         recyclerView.adapter = sceneTypeSelector
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+    }
+
+    private fun gameMetaEdition() {
+        //TODO: to finish implementation for game meta edition
+        setContentView(R.layout.editor_game_meta)
+        findViewById<AutoCompleteTextView>(R.id.game_language_input).setAdapter(
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                languages
+            )
+        )
+        val gameMeta = gameDataWriter.gameData.gameMetaData
+        gameMeta?.description?.apply { findViewById<EditText>(R.id.description_text).setText(this) }
+        gameMeta?.language?.apply { findViewById<AutoCompleteTextView>(R.id.game_language_input).setText(this) }
+        gameMeta?.name.apply { findViewById<EditText>(R.id.menu_title_input).setText(this) }
+        gameMeta?.location.apply { findViewById<EditText>(R.id.game_location_input).setText(this) }
+
 
     }
 

@@ -50,7 +50,7 @@ class PicMusicEditor(
                     musicName = audioName!!,
                     loopMusic = activity.findViewById<Switch>(R.id.loop_music_switch).isChecked,
                     nextScene = nextScene!!,
-                    optionalText = activity.findViewById<TextView>(R.id.pic_optional_text).text.toString()
+                    optionalText = activity.findViewById<TextView>(R.id.description_text).text.toString()
                 )
             )
         )
@@ -62,7 +62,7 @@ class PicMusicEditor(
             gameData,
             scenePosition
         ) { it?.optionalText }?.apply {
-            activity.findViewById<TextView>(R.id.pic_optional_text).text = this
+            activity.findViewById<TextView>(R.id.description_text).text = this
         }
         gamePreviousElement<Boolean, PicMusicOption>(
             gameData,

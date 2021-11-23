@@ -125,7 +125,6 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
         holder: GameListAdapter.ViewHolder,
         gameMetaData: GameMetaData
     ) {
-        //TODO: review when download and upload game to give warning if people launch a game or quit
         holder.startButton.visibility = View.INVISIBLE
         holder.editButton.visibility = View.INVISIBLE
         holder.shareButton.visibility = View.INVISIBLE

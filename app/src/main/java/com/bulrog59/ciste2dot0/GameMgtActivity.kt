@@ -65,6 +65,7 @@ class GameMgtActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.new_game).setOnClickListener {
             gameCreationScreen()
         }
+
     }
 
 
@@ -80,7 +81,7 @@ class GameMgtActivity : AppCompatActivity() {
         val name = findViewById<EditText>(R.id.menu_title_input).text.toString()
         val language = findViewById<TextView>(R.id.game_language_input).text.toString()
         val description =
-            findViewById<TextView>(R.id.pic_optional_text).text.toString()
+            findViewById<TextView>(R.id.description_text).text.toString()
         val location = findViewById<TextView>(R.id.game_location_input).text.toString()
         val id = UUID.randomUUID()
         val gameMetaData = GameMetaData(
@@ -111,8 +112,9 @@ class GameMgtActivity : AppCompatActivity() {
         gameSelectionScreen()
     }
 
+
     private fun gameCreationScreen() {
-        setContentView(R.layout.editor_new_game)
+        setContentView(R.layout.editor_game_meta)
         findViewById<AutoCompleteTextView>(R.id.game_language_input).setAdapter(
             ArrayAdapter(
                 this,
@@ -121,9 +123,7 @@ class GameMgtActivity : AppCompatActivity() {
             )
         )
 
-
-
-        findViewById<Button>(R.id.create_game).setOnClickListener {
+        findViewById<Button>(R.id.game_meta_button).setOnClickListener {
             if (!errorInNewGameFields()) {
                 createGameFromFields()
             }

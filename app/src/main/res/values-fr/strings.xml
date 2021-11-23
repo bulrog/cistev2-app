@@ -17,7 +17,7 @@
     <string name="error_downloading_game">Erreur pour telecharger le jeu</string>
     <string name="error_uploading_game">Erreur pour partager le jeu</string>
     <string name="error_searching_game">Erreur pendant la recherche</string>
-    <string name="title_new_game">Créer un nouveau jeu</string>
+    <string name="title_game_meta">Détail du jeu</string>
     <string name="game_language_help_text">Language</string>
     <string name="game_description_help_text">Entrez la description du jeu</string>
     <string name="create_game_button">Créer</string>
@@ -82,5 +82,6 @@
     <string name="filename_error">Le nom de fichier ne peut avoir que des lettres et des chiffres</string>
     <string name="file_save_error">Erreur pour sauvergarder le fichier</string>
     <string name="transfer_abort">Les transfers en cours vont être interrompus, continuez?</string>
+    <string name="edit_meta_button_text">Editer les détails du jeu</string>
 
 </resources>
