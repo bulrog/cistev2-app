@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0
 
+import android.app.AlertDialog
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.*
@@ -23,6 +24,30 @@ class GameMgtActivity : AppCompatActivity() {
     private val languages =
         HashSet(Locale.getAvailableLocales().map { it.displayLanguage }).sorted()
 
+    private var gameUnderTransfer = 0
+
+    fun increaseGameUnderTransfer() {
+        gameUnderTransfer++
+    }
+
+    fun decreaseGameUnderTransfer() {
+        gameUnderTransfer--
+    }
+
+    fun reviewIfAbortPossibleTransfer(done: () -> Unit) {
+        if (gameUnderTransfer > 0) {
+            AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage(R.string.transfer_abort)
+                .setPositiveButton(R.string.confirmation) { _, _ ->
+                    done()
+                }
+                .setNegativeButton(R.string.denial) { _, _ -> }
+                .show()
+        } else {
+            done()
+        }
+    }
 
     private fun gameSelectionScreen() {
         setContentView(R.layout.game_management)
@@ -31,8 +56,11 @@ class GameMgtActivity : AppCompatActivity() {
             GameListAdapter(this)
         recyclerView.layoutManager = LinearLayoutManager(this)
         findViewById<ImageButton>(R.id.close_game).setOnClickListener {
-            finish()
-            exitProcess(0)
+            reviewIfAbortPossibleTransfer {
+                finish()
+                exitProcess(0)
+            }
+
         }
         findViewById<ImageButton>(R.id.new_game).setOnClickListener {
             gameCreationScreen()

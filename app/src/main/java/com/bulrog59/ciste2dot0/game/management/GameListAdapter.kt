@@ -1,6 +1,5 @@
 package com.bulrog59.ciste2dot0.game.management
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,17 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import com.bulrog59.ciste2dot0.CisteActivity
-import com.bulrog59.ciste2dot0.EditActivity
-import com.bulrog59.ciste2dot0.R
-import com.bulrog59.ciste2dot0.ResourceManager
+import com.bulrog59.ciste2dot0.*
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 import kotlin.math.roundToInt
 
 
-class GameListAdapter(private val gameMgtActivity: Activity) :
+class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
+
+
 
     private val gameDao = GameDao()
     private var gamesMetaData: List<GameMetaData> = listOf()
@@ -72,13 +70,14 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
         gameMgtActivity.startActivity(intent)
     }
 
+
     private fun startGame(id: UUID?) {
         //TODO: to add a compiler that verifies if game is ok (options are not empty json node and also files in the options are available)
-        launchActivity(CisteActivity::class.java, id)
+        gameMgtActivity.reviewIfAbortPossibleTransfer {launchActivity(CisteActivity::class.java, id)}
     }
 
     private fun editGame(id: UUID?) {
-        launchActivity(EditActivity::class.java, id)
+        gameMgtActivity.reviewIfAbortPossibleTransfer { launchActivity(EditActivity::class.java, id) }
 
     }
 
@@ -91,23 +90,25 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
     }
 
     private fun shareGame(gameMetaData: GameMetaData, holder: ViewHolder) {
-
+        gameMgtActivity.increaseGameUnderTransfer()
         gameDataManager.shareGame(
             gameMetaData,
             { transfer, total ->
                 transferUpdate(holder.progressBar, transfer, total)
             },
             { e ->
+                gameMgtActivity.decreaseGameUnderTransfer()
                 displayError(R.string.error_uploading_game, e)
                 loadedGameButtons(holder, gameMetaData)
             }
         ) {
-
-            gameDao.updateGameEntry(it,gameMetaData, { e ->
+            gameMgtActivity.decreaseGameUnderTransfer()
+            gameDao.updateGameEntry(it, gameMetaData, { e ->
                 displayError(R.string.error_uploading_game, e)
                 loadedGameButtons(holder, gameMetaData)
             }) {
-                Toast.makeText(gameMgtActivity,R.string.success_uploading_game,Toast.LENGTH_LONG).show()
+                Toast.makeText(gameMgtActivity, R.string.success_uploading_game, Toast.LENGTH_LONG)
+                    .show()
                 loadedGameButtons(holder, gameMetaData)
             }
 
@@ -132,14 +133,17 @@ class GameListAdapter(private val gameMgtActivity: Activity) :
 
             holder.loadDeleteButton.visibility = View.VISIBLE
             holder.loadDeleteButton.setOnClickListener {
+                gameMgtActivity.increaseGameUnderTransfer()
                 gameDataManager.loadGame(gameMetaData.id, gameMetaData.userId,
                     { transfer, total ->
                         transferUpdate(holder.progressBar, transfer, total)
                     }, { e ->
+                        gameMgtActivity.decreaseGameUnderTransfer()
                         displayError(R.string.error_downloading_game, e)
                         downloadGameButtons(holder, gameMetaData)
                     }
-                ) { loadedGameButtons(holder, gameMetaData) }
+                ) { gameMgtActivity.decreaseGameUnderTransfer()
+                    loadedGameButtons(holder, gameMetaData) }
                 holder.loadDeleteButton.visibility = View.INVISIBLE
             }
             holder.loadDeleteButton.setImageResource(R.drawable.ic_download)
