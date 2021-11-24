@@ -18,22 +18,22 @@ class SignInActivity : AppCompatActivity() {
     }
 
 
-
-
-
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
         if (result?.resultCode == RESULT_OK) {
             startActivity(Intent(this, GameMgtActivity::class.java))
         } else {
-            Toast.makeText(this,R.string.login_failure,Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.login_failure, Toast.LENGTH_LONG).show()
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        //TODO: tune the sign in screen as not so nice
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.AnonymousBuilder().build())
+            AuthUI.IdpConfig.AnonymousBuilder().build()
+        )
 
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()

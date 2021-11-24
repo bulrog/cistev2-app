@@ -7,23 +7,18 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bulrog59.ciste2dot0.editor.utils.FieldValidator
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager
-import com.bulrog59.ciste2dot0.game.management.GameMetaData
 import com.bulrog59.ciste2dot0.game.management.GameListAdapter
+import com.bulrog59.ciste2dot0.game.management.GameMetaUtil
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.firebase.auth.FirebaseAuth
-import java.util.*
 import kotlin.system.exitProcess
 
 class GameMgtActivity : AppCompatActivity() {
-    private val fieldValidator = FieldValidator(this)
-    private val languages =
-        HashSet(Locale.getAvailableLocales().map { it.displayLanguage }).sorted()
 
+    private val gameMetaUtil=GameMetaUtil(this)
     private var gameUnderTransfer = 0
 
     fun increaseGameUnderTransfer() {
@@ -68,33 +63,8 @@ class GameMgtActivity : AppCompatActivity() {
 
     }
 
-
-    private fun errorInNewGameFields(): Boolean {
-        var error = fieldValidator.notEmptyField(R.id.menu_title_input)
-        error = fieldValidator.maxSizeField(R.id.menu_title_input) || error
-        error = fieldValidator.notEmptyField(R.id.game_location_input) || error
-        error = fieldValidator.inList(R.id.game_language_input, languages) || error
-        return error
-    }
-
     private fun createGameFromFields() {
-        val name = findViewById<EditText>(R.id.menu_title_input).text.toString()
-        val language = findViewById<TextView>(R.id.game_language_input).text.toString()
-        val description =
-            findViewById<TextView>(R.id.description_text).text.toString()
-        val location = findViewById<TextView>(R.id.game_location_input).text.toString()
-        val id = UUID.randomUUID()
-        val gameMetaData = GameMetaData(
-            name = name,
-            language = language,
-            description = description,
-            location = location,
-            id = id,
-            sizeInMB = null,
-            userId = FirebaseAuth.getInstance().currentUser?.uid,
-            author = FirebaseAuth.getInstance().currentUser?.displayName
 
-        )
         val gameData = GameData(
             scenes = listOf(
                 SceneData(
@@ -104,7 +74,7 @@ class GameMgtActivity : AppCompatActivity() {
                     "exit"
                 )
             ),
-            gameMetaData = gameMetaData,
+            gameMetaData = gameMetaUtil.createGameMetaDataForMetaDataEditScreen(),
             backButtonScene = 0,
             starting = 0
         )
@@ -119,12 +89,12 @@ class GameMgtActivity : AppCompatActivity() {
             ArrayAdapter(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
-                languages
+                GameMetaUtil.languages
             )
         )
 
         findViewById<Button>(R.id.game_meta_button).setOnClickListener {
-            if (!errorInNewGameFields()) {
+            if (!gameMetaUtil.errorInGameMetaFields()) {
                 createGameFromFields()
             }
 

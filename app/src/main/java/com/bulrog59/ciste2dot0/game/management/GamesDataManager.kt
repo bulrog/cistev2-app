@@ -115,7 +115,7 @@ class GamesDataManager(val context: Context) {
 
     }
 
-    //TODO: to also add option to delete safely picture/video... and for that check if the game has the picture still in use
+    //TODO: add in game edition screen to clear unused resources and from there people can select which resource and then delete them
     private fun deleteRecursive(fileOrDirectory: File) {
         if (fileOrDirectory.isDirectory) {
             fileOrDirectory.listFiles()?.apply {

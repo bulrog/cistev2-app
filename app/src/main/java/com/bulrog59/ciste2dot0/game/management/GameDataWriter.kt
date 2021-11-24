@@ -66,6 +66,16 @@ class GameDataWriter(val activity: Activity) {
         saveGameData()
     }
 
+    fun updateGameMetaData(gameMetaData: GameMetaData){
+        gameData= GameData(
+            gameData.starting,
+            gameData.scenes,
+            gameData.backButtonScene,
+            gameMetaData
+        )
+        saveGameData()
+    }
+
     fun deleteScene(sceneId:Int){
        updateGameDataWithScenes(gameData.scenes.filter { it.sceneId!=sceneId })
     }

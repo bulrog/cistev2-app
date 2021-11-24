@@ -15,10 +15,10 @@ import com.bulrog59.ciste2dot0.editor.utils.FieldValidator
 import com.bulrog59.ciste2dot0.editor.utils.ItemPicker
 import com.bulrog59.ciste2dot0.editor.utils.MenuSelectorAdapter
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter
+import com.bulrog59.ciste2dot0.game.management.GameMetaUtil
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.fasterxml.jackson.databind.JsonNode
-import java.util.*
 
 
 class EditActivity : AppCompatActivity() {
@@ -26,11 +26,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var gameDataWriter: GameDataWriter
     private val fieldValidator = FieldValidator(this)
     private var filePicker: CallBackActivityResult? = null
-
-    //TODO: as also in GameMgtActivity to put it in a companion object
-    private val languages =
-        HashSet(Locale.getAvailableLocales().map { it.displayLanguage }).sorted()
-
+    private val gameMetaUtil=GameMetaUtil(this)
 
     private fun updateSceneOption(sceneData: SceneData, option: JsonNode) {
         gameDataWriter.addOrUpdateSceneData(
@@ -165,13 +161,13 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun gameMetaEdition() {
-        //TODO: to finish implementation for game meta edition
+
         setContentView(R.layout.editor_game_meta)
         findViewById<AutoCompleteTextView>(R.id.game_language_input).setAdapter(
             ArrayAdapter(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
-                languages
+                GameMetaUtil.languages
             )
         )
         val gameMeta = gameDataWriter.gameData.gameMetaData
@@ -180,6 +176,12 @@ class EditActivity : AppCompatActivity() {
         gameMeta?.name.apply { findViewById<EditText>(R.id.menu_title_input).setText(this) }
         gameMeta?.location.apply { findViewById<EditText>(R.id.game_location_input).setText(this) }
 
+        findViewById<Button>(R.id.game_meta_button).setOnClickListener {
+            if (!gameMetaUtil.errorInGameMetaFields()) {
+                //TODO: to try
+                gameDataWriter.updateGameMetaData(gameMetaUtil.createGameMetaDataForMetaDataEditScreen())
+            }
+        }
 
     }
 
