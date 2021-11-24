@@ -74,7 +74,7 @@ class GameMgtActivity : AppCompatActivity() {
                     "exit"
                 )
             ),
-            gameMetaData = gameMetaUtil.createGameMetaDataForMetaDataEditScreen(),
+            gameMetaData = gameMetaUtil.createGameMetaDataForMetaDataEditScreen(null),
             backButtonScene = 0,
             starting = 0
         )

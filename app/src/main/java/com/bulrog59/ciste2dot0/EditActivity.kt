@@ -178,9 +178,9 @@ class EditActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.game_meta_button).setOnClickListener {
             if (!gameMetaUtil.errorInGameMetaFields()) {
-                //TODO: to try
-                gameDataWriter.updateGameMetaData(gameMetaUtil.createGameMetaDataForMetaDataEditScreen())
+                gameDataWriter.updateGameMetaData(gameMetaUtil.createGameMetaDataForMetaDataEditScreen(gameDataWriter.gameData.gameMetaData?.id))
             }
+            sceneSelectionScreen()
         }
 
     }

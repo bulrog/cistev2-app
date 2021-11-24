@@ -26,13 +26,13 @@ class GameMetaUtil(private val activity: Activity) {
         return error
     }
 
-    fun createGameMetaDataForMetaDataEditScreen():GameMetaData{
+    fun createGameMetaDataForMetaDataEditScreen(gameID: UUID?): GameMetaData {
         val name = activity.findViewById<EditText>(R.id.menu_title_input).text.toString()
         val language = activity.findViewById<TextView>(R.id.game_language_input).text.toString()
         val description =
             activity.findViewById<TextView>(R.id.description_text).text.toString()
         val location = activity.findViewById<TextView>(R.id.game_location_input).text.toString()
-        val id = UUID.randomUUID()
+        val id = gameID ?: UUID.randomUUID()
         return GameMetaData(
             name = name,
             language = language,
