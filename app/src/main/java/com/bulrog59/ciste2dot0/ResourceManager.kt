@@ -73,7 +73,11 @@ class ResourceManager(activity: Activity) {
         }
     }
 
-    fun listFileOfType(filePickerType: FilePickerType):List<String>{
+    fun deleteResource(fileName: String){
+        File("$rootFolder$fileName").delete()
+    }
+
+    fun listResourceOfType(filePickerType: FilePickerType):List<String>{
 
         return File(rootFolder).listFiles()?.filter {
            Files.probeContentType(it.toPath()).startsWith(filePickerType.name)

@@ -123,7 +123,7 @@ class EditActivity : AppCompatActivity() {
         findViewById<Button>(R.id.edit_start_scene).setOnClickListener { selectStartingSceneScreen() }
         findViewById<Button>(R.id.delete_scene_button).setOnClickListener { deleteScene() }
         findViewById<Button>(R.id.meta_data_edit_button).setOnClickListener { gameMetaEdition() }
-        findViewById<Button>(R.id.clear_resources).setOnClickListener { clearUnusedResource() }
+        findViewById<Button>(R.id.clear_resource_button).setOnClickListener { clearUnusedResource() }
 
 
 
@@ -188,7 +188,15 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun clearUnusedResource(){
-
+        AlertDialog.Builder(this)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setMessage(R.string.confirmation_delete_resource)
+            .setPositiveButton(R.string.confirmation) { _, _ ->
+                gameDataWriter.clearUnusedFiles()
+                sceneSelectionScreen()
+            }
+            .setNegativeButton(R.string.denial) { _, _ -> }
+            .show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

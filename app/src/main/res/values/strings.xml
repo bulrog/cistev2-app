@@ -83,5 +83,6 @@
     <string name="transfer_abort">On going transfer will abort, do you want to continue?</string>
     <string name="edit_meta_button_text">Edit game metadata</string>
     <string name="clear_resource">Clear unused resources</string>
+    <string name="confirmation_delete_resource">Are you sure you want to delete all unused resources?</string>
 
 </resources>

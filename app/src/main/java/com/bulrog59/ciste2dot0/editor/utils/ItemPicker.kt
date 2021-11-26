@@ -16,8 +16,8 @@ class ItemPicker(val activity:Activity) {
         doneCallBack: (itemPosition: Int) -> Unit
     ) {
         activity.setContentView(R.layout.editor_item_selection)
-        activity.findViewById<TextView>(R.id.editor_item_selection_title).setText(titleText)
-        val recyclerView = activity.findViewById<RecyclerView>(R.id.editor_item_selection_list)
+        activity.findViewById<TextView>(R.id.title_unused_resource).setText(titleText)
+        val recyclerView = activity.findViewById<RecyclerView>(R.id.item_deletion_list)
         val menuSelectorAdapter= MenuSelectorAdapter(items) { p -> doneCallBack(p) }
         menuSelectorAdapter.positionSelected=previousSelection
         recyclerView.adapter = menuSelectorAdapter

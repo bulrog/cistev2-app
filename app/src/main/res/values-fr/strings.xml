@@ -84,5 +84,6 @@
     <string name="transfer_abort">Les transfers en cours vont être interrompus, continuez?</string>
     <string name="edit_meta_button_text">Editer les détails du jeu</string>
     <string name="clear_resource">Nettoyer les resources inutiles</string>
+    <string name="confirmation_delete_resource">Etes vous sûr de vouloir effacer toutes les resources non utilisées?</string>
 
 </resources>

@@ -53,43 +53,47 @@ class GameDataWriter(val activity: Activity) {
         return allResources.filter { i -> !picMusicPictures.contains(i) }
     }
 
-    private fun filterUnusedImageFromPicMusicOptions(allImages: List<String>):List<String>{
+    private fun filterUnusedImageFromPicMusicOptions(allImages: List<String>): List<String> {
         return filterUnusedFrom<PicMusicOption>(
             allImages,
             SceneType.picMusic
         ) { o -> listOf(o.imageName) }
     }
 
-    private fun filterUnusedImageFromDetector(allImages: List<String>):List<String>{
+    private fun filterUnusedImageFromDetector(allImages: List<String>): List<String> {
         return filterUnusedFrom<DetectorOption>(
             allImages,
             SceneType.detector
-        ){
-            o-> o.pic2Scene.keys
+        ) { o ->
+            o.pic2Scene.keys
         }
     }
 
-    private fun filterUnusedVideo(allVideo:List<String>):List<String>{
-        return filterUnusedFrom<VideoOption>(allVideo,
+    private fun filterUnusedVideo(allVideo: List<String>): List<String> {
+        return filterUnusedFrom<VideoOption>(
+            allVideo,
             SceneType.video
-        ){o-> listOf(o.videoName)}
+        ) { o -> listOf(o.videoName) }
     }
-    private fun filterUnusedMusic(allMusic:List<String>):List<String>{
-        return filterUnusedFrom<PicMusicOption>(allMusic,
+
+    private fun filterUnusedMusic(allMusic: List<String>): List<String> {
+        return filterUnusedFrom<PicMusicOption>(
+            allMusic,
             SceneType.picMusic
-        ){o-> listOf(o.musicName)}
+        ) { o -> listOf(o.musicName) }
     }
 
     private fun filterUnusedImages(allImages: List<String>): List<String> {
         return filterUnusedImageFromDetector(filterUnusedImageFromPicMusicOptions(allImages))
     }
 
-    private fun listUnusedFiles(): List<String> {
-        val unusedResources= mutableListOf<String>()
-        unusedResources.addAll(       filterUnusedImages(resourceFinder.listFileOfType(FilePickerType.image)) )
-        unusedResources.addAll(filterUnusedVideo(resourceFinder.listFileOfType(FilePickerType.video)))
-        unusedResources.addAll(filterUnusedMusic(resourceFinder.listFileOfType(FilePickerType.audio)))
-        return unusedResources
+    fun clearUnusedFiles() {
+        val unusedResources = mutableListOf<String>()
+        unusedResources.addAll(filterUnusedImages(resourceFinder.listResourceOfType(FilePickerType.image)))
+        unusedResources.addAll(filterUnusedVideo(resourceFinder.listResourceOfType(FilePickerType.video)))
+        unusedResources.addAll(filterUnusedMusic(resourceFinder.listResourceOfType(FilePickerType.audio)))
+        unusedResources.forEach { r-> resourceFinder.deleteResource(r) }
+
     }
 
 

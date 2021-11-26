@@ -60,7 +60,7 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
 
     private fun selectFile(filePickerType: FilePickerType) {
         newFile = false
-        val files = resourceFinder.listFileOfType(filePickerType)
+        val files = resourceFinder.listResourceOfType(filePickerType)
         if (files.isEmpty()) {
             Toast.makeText(activity, R.string.no_item_to_select, Toast.LENGTH_LONG).show()
             return
