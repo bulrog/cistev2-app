@@ -5,14 +5,26 @@ import android.widget.EditText
 import android.widget.TextView
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.FieldValidator
+import com.bulrog59.ciste2dot0.gamedata.SceneData
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 
-class GameMetaUtil(private val activity: Activity) {
+class GameUtil(private val activity: Activity) {
 
     companion object {
         val languages =
             HashSet(Locale.getAvailableLocales().map { it.displayLanguage }).sorted()
+        //TODO see where can replace in the code:
+        val mapper = ObjectMapper().apply { registerModule(KotlinModule()) }
+        //TODO see where can replace in the code:
+        inline fun <reified T> retrieveOption(sceneData: SceneData): T {
+            return mapper.treeToValue<T>(sceneData.options)
+                ?: throw IllegalArgumentException("options is null and cannot for a video type for the scene: $sceneData")
+        }
+
 
     }
 

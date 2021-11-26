@@ -15,7 +15,7 @@ import com.bulrog59.ciste2dot0.editor.utils.FieldValidator
 import com.bulrog59.ciste2dot0.editor.utils.ItemPicker
 import com.bulrog59.ciste2dot0.editor.utils.MenuSelectorAdapter
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter
-import com.bulrog59.ciste2dot0.game.management.GameMetaUtil
+import com.bulrog59.ciste2dot0.game.management.GameUtil
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.fasterxml.jackson.databind.JsonNode
@@ -26,7 +26,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var gameDataWriter: GameDataWriter
     private val fieldValidator = FieldValidator(this)
     private var filePicker: CallBackActivityResult? = null
-    private val gameMetaUtil=GameMetaUtil(this)
+    private val gameMetaUtil=GameUtil(this)
 
     private fun updateSceneOption(sceneData: SceneData, option: JsonNode) {
         gameDataWriter.addOrUpdateSceneData(
@@ -123,6 +123,8 @@ class EditActivity : AppCompatActivity() {
         findViewById<Button>(R.id.edit_start_scene).setOnClickListener { selectStartingSceneScreen() }
         findViewById<Button>(R.id.delete_scene_button).setOnClickListener { deleteScene() }
         findViewById<Button>(R.id.meta_data_edit_button).setOnClickListener { gameMetaEdition() }
+        findViewById<Button>(R.id.clear_resources).setOnClickListener { clearUnusedResource() }
+
 
 
     }
@@ -167,7 +169,7 @@ class EditActivity : AppCompatActivity() {
             ArrayAdapter(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
-                GameMetaUtil.languages
+                GameUtil.languages
             )
         )
         val gameMeta = gameDataWriter.gameData.gameMetaData
@@ -182,6 +184,10 @@ class EditActivity : AppCompatActivity() {
             }
             sceneSelectionScreen()
         }
+
+    }
+
+    private fun clearUnusedResource(){
 
     }
 

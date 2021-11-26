@@ -82,5 +82,6 @@
     <string name="file_save_error">Failed to save the  file</string>
     <string name="transfer_abort">On going transfer will abort, do you want to continue?</string>
     <string name="edit_meta_button_text">Edit game metadata</string>
+    <string name="clear_resource">Clear unused resources</string>
 
 </resources>

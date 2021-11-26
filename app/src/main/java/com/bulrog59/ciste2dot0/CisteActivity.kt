@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bulrog59.ciste2dot0.game.management.GameDataLoader
+import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
+import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.retrieveOption
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Inventory
 import com.bulrog59.ciste2dot0.gamedata.SceneData
@@ -21,22 +23,15 @@ import com.bulrog59.ciste2dot0.scenes.menu.MenuScene
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicScene
 import com.bulrog59.ciste2dot0.scenes.rules.RulesScene
 import com.bulrog59.ciste2dot0.scenes.video.VideoScene
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.module.kotlin.treeToValue
 import kotlin.system.exitProcess
 
 
 class CisteActivity : AppCompatActivity() {
     private var currentScene: Scene? = null
     private lateinit var gameData: GameData
-    val mapper = ObjectMapper()
     val inventory = Inventory()
     lateinit var gameDataLoader:GameDataLoader
 
-    init {
-        mapper.registerModule(KotlinModule())
-    }
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
             baseContext, it
@@ -94,11 +89,6 @@ class CisteActivity : AppCompatActivity() {
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
-    }
-
-    inline fun <reified T> retrieveOption(sceneData: SceneData): T {
-        return mapper.treeToValue<T>(sceneData.options)
-            ?: throw IllegalArgumentException("options is null and cannot for a video type for the scene: $sceneData")
     }
 
     inline fun <reified U, T> loadScene(

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager
 import com.bulrog59.ciste2dot0.game.management.GameListAdapter
-import com.bulrog59.ciste2dot0.game.management.GameMetaUtil
+import com.bulrog59.ciste2dot0.game.management.GameUtil
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
@@ -18,7 +18,7 @@ import kotlin.system.exitProcess
 
 class GameMgtActivity : AppCompatActivity() {
 
-    private val gameMetaUtil=GameMetaUtil(this)
+    private val gameMetaUtil=GameUtil(this)
     private var gameUnderTransfer = 0
 
     fun increaseGameUnderTransfer() {
@@ -89,7 +89,7 @@ class GameMgtActivity : AppCompatActivity() {
             ArrayAdapter(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
-                GameMetaUtil.languages
+                GameUtil.languages
             )
         )
 
