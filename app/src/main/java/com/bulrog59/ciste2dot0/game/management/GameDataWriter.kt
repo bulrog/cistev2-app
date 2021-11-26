@@ -13,6 +13,7 @@ import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.bulrog59.ciste2dot0.scenes.detector.DetectorOption
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
+import com.bulrog59.ciste2dot0.scenes.video.VideoOption
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.io.File
@@ -41,26 +42,26 @@ class GameDataWriter(val activity: Activity) {
     }
 
 
-    private inline fun <reified T> filterUnusedImageFrom(
-        allImages: List<String>,
+    private inline fun <reified T> filterUnusedFrom(
+        allResources: List<String>,
         sceneType: SceneType,
-        getPics: (T) -> Collection<String>
+        getResourceFromOption: (T) -> Collection<String>
     ): List<String> {
         val picMusicPictures = gameData.scenes
             .filter { s -> !s.options.isEmpty && s.sceneType == sceneType }
-            .flatMap { s -> getPics(retrieveOption(s)) }
-        return allImages.filter { i -> !picMusicPictures.contains(i) }
+            .flatMap { s -> getResourceFromOption(retrieveOption(s)) }
+        return allResources.filter { i -> !picMusicPictures.contains(i) }
     }
 
     private fun filterUnusedImageFromPicMusicOptions(allImages: List<String>):List<String>{
-        return filterUnusedImageFrom<PicMusicOption>(
+        return filterUnusedFrom<PicMusicOption>(
             allImages,
             SceneType.picMusic
         ) { o -> listOf(o.imageName) }
     }
 
     private fun filterUnusedImageFromDetector(allImages: List<String>):List<String>{
-        return filterUnusedImageFrom<DetectorOption>(
+        return filterUnusedFrom<DetectorOption>(
             allImages,
             SceneType.detector
         ){
@@ -68,13 +69,27 @@ class GameDataWriter(val activity: Activity) {
         }
     }
 
+    private fun filterUnusedVideo(allVideo:List<String>):List<String>{
+        return filterUnusedFrom<VideoOption>(allVideo,
+            SceneType.video
+        ){o-> listOf(o.videoName)}
+    }
+    private fun filterUnusedMusic(allMusic:List<String>):List<String>{
+        return filterUnusedFrom<PicMusicOption>(allMusic,
+            SceneType.picMusic
+        ){o-> listOf(o.musicName)}
+    }
+
     private fun filterUnusedImages(allImages: List<String>): List<String> {
         return filterUnusedImageFromDetector(filterUnusedImageFromPicMusicOptions(allImages))
     }
 
     private fun listUnusedFiles(): List<String> {
-        val unusedImages = filterUnusedImages(resourceFinder.listFileOfType(FilePickerType.image))
-        return unusedImages
+        val unusedResources= mutableListOf<String>()
+        unusedResources.addAll(       filterUnusedImages(resourceFinder.listFileOfType(FilePickerType.image)) )
+        unusedResources.addAll(filterUnusedVideo(resourceFinder.listFileOfType(FilePickerType.video)))
+        unusedResources.addAll(filterUnusedMusic(resourceFinder.listFileOfType(FilePickerType.audio)))
+        return unusedResources
     }
 
 
