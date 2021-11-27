@@ -85,5 +85,6 @@
     <string name="clear_resource">Clear unused resources</string>
     <string name="confirmation_delete_resource">Are you sure you want to delete all unused resources?</string>
     <string name="scene_not_exist">You cannot switch to that scene as it does not exist</string>
+    <string name="not_cfg_scene">Game cannot be played, some scenes are not configured:</string>
 
 </resources>

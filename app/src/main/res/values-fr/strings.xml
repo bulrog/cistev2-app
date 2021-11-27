@@ -86,5 +86,6 @@
     <string name="clear_resource">Nettoyer les resources inutiles</string>
     <string name="confirmation_delete_resource">Etes vous sûr de vouloir effacer toutes les resources non utilisées?</string>
     <string name="scene_not_exist">Vous ne pouvez pas basculer vers cette scène car elle n\'existe pas</string>
+    <string name="not_cfg_scene">Le jeu ne peut pas être joué, quelques scènes ne sont pas configurées:</string>
 
 </resources>

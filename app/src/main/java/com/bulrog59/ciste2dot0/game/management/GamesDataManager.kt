@@ -5,10 +5,10 @@ import android.net.Uri
 import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter.Companion.makeSizeString
+import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
 import com.bulrog59.ciste2dot0.gamedata.GameData
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.bulrog59.ciste2dot0.gamedata.SceneType
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
@@ -19,7 +19,6 @@ import java.util.*
 class GamesDataManager(val context: Context) {
     private val folderGame = context.filesDir.absolutePath + FOLDER_FOR_GAME_DATA
     private val storage = Firebase.storage
-    private val mapper = ObjectMapper()
     private val GAMEDATA_FILE = "game.json"
 
 
@@ -28,14 +27,18 @@ class GamesDataManager(val context: Context) {
         mapper.registerModule(KotlinModule())
     }
 
+    private fun readLocalGame(gameLocation: String): GameData {
+        return mapper.readValue(
+            File(gameLocation),
+            GameData::class.java
+        )
+    }
+
     fun addLocalGames(gamesMetaData: MutableList<GameMetaData>) {
         File(folderGame).listFiles()?.forEach { file ->
             if (file.isDirectory) {
                 try {
-                    val gameData = mapper.readValue(
-                        File("${file.canonicalPath}/$GAMEDATA_FILE"),
-                        GameData::class.java
-                    )
+                    val gameData = readLocalGame("${file.canonicalPath}/$GAMEDATA_FILE")
                     if (!gamesMetaData.map { it.id }.contains(gameData.gameMetaData?.id)) {
                         gamesMetaData.add(gameData.gameMetaData!!)
                     }
@@ -72,13 +75,21 @@ class GamesDataManager(val context: Context) {
         onSuccessAction: (Long) -> Unit
     ) {
         val zipFileName = "$folderGame${gameMetaData.id}.zip"
-        val zipSize=ZipUtils.zipAll("$folderGame${gameMetaData.id}", zipFileName)
-        if (zipSize> MAX_SIZE_IN_MB*1e6){
-            callOnFailure(IllegalArgumentException(makeSizeString(context,R.string.game_too_big,zipSize)))
+        val zipSize = ZipUtils.zipAll("$folderGame${gameMetaData.id}", zipFileName)
+        if (zipSize > MAX_SIZE_IN_MB * 1e6) {
+            callOnFailure(
+                IllegalArgumentException(
+                    makeSizeString(
+                        context,
+                        R.string.game_too_big,
+                        zipSize
+                    )
+                )
+            )
         } else {
             storage.getReferenceFromUrl("${URL_FIRESTORE}/${gameMetaData.userId}/${gameMetaData.id}.zip")
                 .putFile(Uri.fromFile(File(zipFileName)))
-                .addOnProgressListener {callOnProgress(it.bytesTransferred,it.totalByteCount) }
+                .addOnProgressListener { callOnProgress(it.bytesTransferred, it.totalByteCount) }
                 .addOnFailureListener {
                     callOnFailure(it)
                 }
@@ -160,9 +171,28 @@ class GamesDataManager(val context: Context) {
             }
     }
 
+    fun verifyGame(id: UUID?): String? {
+        id?.apply {
+            val gameData = readLocalGame("$folderGame$id/$GAMEDATA_FILE")
+            val notConfiguredScenes = gameData.scenes
+                .filter { s -> s.options.isEmpty }
+                .filter { s -> s.sceneType != SceneType.debug && s.sceneType != SceneType.exit }
+                .map { s -> s.name }
+                .joinToString(",")
+            if (notConfiguredScenes.isNotEmpty()){
+                val errorNotConfigScene = context.getText(R.string.not_cfg_scene)
+                return "$errorNotConfigScene$notConfiguredScenes"
+            }
+        }
+
+        return null
+
+
+    }
+
     companion object {
         const val FOLDER_FOR_GAME_DATA = "/gameData/"
-        const val MAX_SIZE_IN_MB=100
+        const val MAX_SIZE_IN_MB = 100
         private const val URL_FIRESTORE =
             "https://firebasestorage.googleapis.com/v0/b/cistes2dot0.appspot.com/o/"
     }

@@ -72,8 +72,14 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
 
 
     private fun startGame(id: UUID?) {
-        //TODO: to add a compiler that verifies if game is ok (options are not empty json node and also files in the options are available)
-        gameMgtActivity.reviewIfAbortPossibleTransfer {launchActivity(CisteActivity::class.java, id)}
+        val error=gameDataManager.verifyGame(id)
+        if (error!=null){
+            Toast.makeText(gameMgtActivity,error,Toast.LENGTH_LONG).show()
+        }
+        else {
+            gameMgtActivity.reviewIfAbortPossibleTransfer {launchActivity(CisteActivity::class.java, id)}
+        }
+
     }
 
     private fun editGame(id: UUID?) {
