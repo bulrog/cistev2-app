@@ -92,6 +92,7 @@ class UpdateInventoryEditor(
     fun init() {
         activity.setContentView(R.layout.editor_update_inventory)
         //TODO: when delete an item need to verify it is not used in rule engine and in inventory combinations to add an optional method when delete to verify we can delete.
+        //TODO: when delete a update inventory scene then also need to check all the items inside
         activity.findViewById<Button>(R.id.add_menu_button).setOnClickListener {
             ListEditor(activity, itemsToAdd, { l -> l.map { it.name } }, this::itemToAddEdit, { r ->
                 itemsToAdd = r

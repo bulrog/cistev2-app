@@ -98,16 +98,11 @@ class CisteActivity : AppCompatActivity() {
         return createScene(retrieveOption(sceneData), this)
     }
 
-    fun setScene(sceneId: Int) {
+    private fun changeScene(sceneData: SceneData){
         currentScene?.apply {
             lifecycle.removeObserver(this)
             shutdown()
         }
-        val sceneDataMatches = gameData.scenes.filter { it.sceneId == sceneId }
-        if (sceneDataMatches.size > 1) {
-            throw IllegalArgumentException("for scene $sceneId we have more than one match in the game data $gameData")
-        }
-        val sceneData = sceneDataMatches.getOrNull(0)
         when (sceneData?.sceneType) {
             SceneType.video -> {
                 currentScene = loadScene(::VideoScene, sceneData)
@@ -138,12 +133,23 @@ class CisteActivity : AppCompatActivity() {
             SceneType.menu -> {
                 currentScene = loadScene(::MenuScene, sceneData)
             }
-            null -> {
-                throw IllegalAccessException("the scene id:$sceneId does not exist in the game data:$gameData")
-            }
         }
 
         lifecycle.addObserver(currentScene!!)
+    }
+
+    fun setScene(sceneId: Int) {
+        val sceneDataMatches = gameData.scenes.filter { it.sceneId == sceneId }
+        if (sceneDataMatches.size > 1) {
+            throw IllegalArgumentException("for scene $sceneId we have more than one match in the game data $gameData")
+        }
+        val sceneData = sceneDataMatches.getOrNull(0)
+        if (sceneData!=null){
+            changeScene(sceneData)
+        } else {
+            Toast.makeText(this,R.string.scene_not_exist,Toast.LENGTH_LONG).show()
+        }
+
     }
 
     companion object {

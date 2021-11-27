@@ -27,6 +27,8 @@ class DebugScene(private val debugOptions: DebugOptions, private val cisteActivi
             movementMethod = ScrollingMovementMethod()
         }
         cisteActivity.findViewById<Button>(R.id.goToScene).setOnClickListener {
+
+            //TODO: to try if scene is not existing that it does not change the screen
             cisteActivity.setScene(Integer.parseInt(cisteActivity.findViewById<EditText>(R.id.sceneEntry).text.toString()))
         }
         cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

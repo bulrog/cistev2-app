@@ -115,7 +115,6 @@ class GamesDataManager(val context: Context) {
 
     }
 
-    //TODO: add in game edition screen to clear unused resources and from there people can select which resource and then delete them
     private fun deleteRecursive(fileOrDirectory: File) {
         if (fileOrDirectory.isDirectory) {
             fileOrDirectory.listFiles()?.apply {
