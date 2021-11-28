@@ -87,5 +87,6 @@
     <string name="confirmation_delete_resource">Etes vous sûr de vouloir effacer toutes les resources non utilisées?</string>
     <string name="scene_not_exist">Vous ne pouvez pas basculer vers cette scène car elle n\'existe pas</string>
     <string name="not_cfg_scene">Le jeu ne peut pas être joué, quelques scènes ne sont pas configurées:</string>
+    <string name="item_in_use_error">Vous ne pouvez pas effacer l\'item:VAR_ITEM car il est utilisé dans les scène(s):VAR_SCENES</string>
 
 </resources>

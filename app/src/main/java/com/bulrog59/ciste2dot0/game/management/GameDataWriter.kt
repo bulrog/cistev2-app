@@ -8,11 +8,12 @@ import com.bulrog59.ciste2dot0.ResourceManager
 import com.bulrog59.ciste2dot0.editor.utils.FilePickerType
 import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.retrieveOption
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager.Companion.MAX_SIZE_IN_MB
-import com.bulrog59.ciste2dot0.gamedata.GameData
-import com.bulrog59.ciste2dot0.gamedata.SceneData
-import com.bulrog59.ciste2dot0.gamedata.SceneType
+import com.bulrog59.ciste2dot0.gamedata.*
 import com.bulrog59.ciste2dot0.scenes.detector.DetectorOption
+import com.bulrog59.ciste2dot0.scenes.inventory.InventoryOptions
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
+import com.bulrog59.ciste2dot0.scenes.rules.RulesOptions
+import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
 import com.bulrog59.ciste2dot0.scenes.video.VideoOption
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -92,7 +93,7 @@ class GameDataWriter(val activity: Activity) {
         unusedResources.addAll(filterUnusedImages(resourceFinder.listResourceOfType(FilePickerType.image)))
         unusedResources.addAll(filterUnusedVideo(resourceFinder.listResourceOfType(FilePickerType.video)))
         unusedResources.addAll(filterUnusedMusic(resourceFinder.listResourceOfType(FilePickerType.audio)))
-        unusedResources.forEach { r-> resourceFinder.deleteResource(r) }
+        unusedResources.forEach { r -> resourceFinder.deleteResource(r) }
 
     }
 
@@ -169,5 +170,57 @@ class GameDataWriter(val activity: Activity) {
         }
         updateGameDataWithScenes(scenesData)
 
+    }
+
+    private fun getWhereInUseFrom(sceneType: SceneType,
+        itemInUseChecker: (sceneData: SceneData) -> Boolean
+    ): String {
+        return gameData.scenes
+            .filter { s -> s.sceneType == sceneType }
+            .filter { s -> itemInUseChecker(s) }
+            .map { it.name }
+            .joinToString(",")
+    }
+
+    private fun getInventoriesWhereItemInUse(itemID: Int): String {
+        return getWhereInUseFrom(SceneType.inventory)  { sceneData ->
+                retrieveOption<InventoryOptions>(sceneData).combinations.filter { it.id1 == itemID || it.id2 == itemID }
+                    .isNotEmpty()
+            }
+    }
+
+
+    private fun getRuleEngineWhereItemInUse(itemID: Int): String {
+        return getWhereInUseFrom(SceneType.ruleEngine) {
+            retrieveOption<RulesOptions>(it).rules.filter { rule -> rule.itemIds.contains(itemID) }.isNotEmpty()
+        }
+    }
+
+
+    fun verifyIfItemIsUsed(item: Item): String {
+        val listOfScenesInUsed = getInventoriesWhereItemInUse(item.id)+","+getRuleEngineWhereItemInUse(item.id)
+
+        if (","==listOfScenesInUsed){
+            return activity.getText(R.string.item_in_use_error)
+                .replace(Regex("VAR_ITEM"), item.name)
+                .replace(Regex("VAR_SCENES"), listOfScenesInUsed)
+        }
+
+        return ""
+    }
+
+
+    fun verifyCanDeleteAScene(sceneIDToDelete: Int): String {
+        val sceneDataToDelete = gameData.scenes.filter { s -> s.sceneId == sceneIDToDelete }[0]
+        if (sceneDataToDelete.sceneType != SceneType.updateInventory) {
+            return ""
+        }
+        val updateInvOptions = retrieveOption<UpdateInventoryOptions>(sceneDataToDelete)
+        val errorMessage =
+            updateInvOptions.itemsToAdd.map { i -> verifyIfItemIsUsed(i) }.joinToString(",")
+        if (errorMessage.isEmpty()) {
+            return ""
+        }
+        return errorMessage
     }
 }

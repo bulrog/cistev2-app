@@ -95,23 +95,31 @@ class EditActivity : AppCompatActivity() {
         ItemPicker(this).init(
             R.string.select_element_to_delete,
             sceneDescriptions(gameDataWriter.gameData.scenes, this)
-        ) { p ->
-            AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setMessage(R.string.delete_item_message)
-                .setPositiveButton(R.string.confirmation) { _, _ ->
-                    gameDataWriter.apply { this.deleteScene(this.gameData.scenes[p].sceneId) }
-                    sceneSelectionScreen()
-                }
-                .setNegativeButton(R.string.denial) { _, _ -> sceneSelectionScreen() }
-                .show()
+        ) {
+            p ->
+            val sceneIDToDelete=gameDataWriter.gameData.scenes[p].sceneId
+            val errorItemUse=gameDataWriter.verifyCanDeleteAScene(sceneIDToDelete)
+            if (errorItemUse.isEmpty()){
+                AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setMessage(R.string.delete_item_message)
+                    .setPositiveButton(R.string.confirmation) { _, _ ->
+                        gameDataWriter.deleteScene(sceneIDToDelete)
+                        sceneSelectionScreen()
+                    }
+                    .setNegativeButton(R.string.denial) { _, _ -> sceneSelectionScreen() }
+                    .show()
+            }
+            else {
+                Toast.makeText(this,errorItemUse,Toast.LENGTH_LONG).show()
+            }
+
         }
 
     }
 
 
     private fun sceneSelectionScreen() {
-        //TODO: also add an icon to copy the game
         val scenesDescription = sceneDescriptions(gameDataWriter.gameData.scenes, this)
         setContentView(R.layout.editor_scene_selection)
 
