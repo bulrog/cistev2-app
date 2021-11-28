@@ -22,6 +22,11 @@ class UpdateInventoryEditor(
     scenePosition: Int,
     private val done: (JsonNode) -> Unit
 ) {
+
+    companion object {
+        private const val NO_ID = -1
+    }
+
     private var itemsToAdd =
         gamePreviousElement<List<Item>, UpdateInventoryOptions>(
             gameData,
@@ -31,7 +36,7 @@ class UpdateInventoryEditor(
         gamePreviousElement<List<Item>, UpdateInventoryOptions>(
             gameData,
             scenePosition
-        ) { getItemList(gameData).filter { i -> it?.itemIdsToRemove!!.contains(i.id) } }
+        ) { getItemList(gameData).filter { i -> it?.itemIdsToRemove?.contains(i.id) ?: false } }
             ?: emptyList()
     private var nextScene = gamePreviousElement<Int, UpdateInventoryOptions>(
         gameData,
@@ -57,13 +62,16 @@ class UpdateInventoryEditor(
     }
 
     private fun getPic(previousItem: Item?, name: String, done: (Item) -> Unit) {
+        //TODO: issue to download a picture (does nothing)
         FilePicker(activity).init(
             R.string.select_picture_text_title,
             FilePickerType.image,
             previousItem?.picture
         ) { pic ->
-            val id = (getItemList(gameData).map { it.id }.maxOrNull() ?: 0) + 1
-            done(Item(id, name, pic))
+
+            //cannot set the ID as this function is called by the list editor which has its own mutated
+            //item list, so will defer the set of the id when we get back the list from the list editor:
+            done(Item(NO_ID, name, pic))
 
         }
     }
@@ -88,13 +96,30 @@ class UpdateInventoryEditor(
 
     }
 
+    private fun updateItemsToAddWithIds(itemsFromListEditor: List<Item>) {
+        val itemsToAddNew = mutableListOf<Item>()
+        var maxItemIdInGame = (mutableListOf<Item>().apply {
+            addAll(getItemList(gameData))
+            addAll(itemsToAdd)
+        }.map { it.id }.maxOrNull() ?: 0) + 1
+
+        itemsFromListEditor.forEach {
+            var itemID = it.id
+            if (itemID == NO_ID) {
+                itemID = maxItemIdInGame++
+            }
+            itemsToAddNew.add(Item(itemID, it.name, it.picture))
+        }
+        itemsToAdd=itemsToAddNew
+    }
+
 
     fun init() {
         activity.setContentView(R.layout.editor_update_inventory)
         //TODO: when delete an item need to verify it is not used in rule engine and in inventory combinations to add an optional method when delete to verify we can delete.
         activity.findViewById<Button>(R.id.add_menu_button).setOnClickListener {
             ListEditor(activity, itemsToAdd, { l -> l.map { it.name } }, this::itemToAddEdit, { r ->
-                itemsToAdd = r
+                updateItemsToAddWithIds(r)
                 init()
             }).init()
         }

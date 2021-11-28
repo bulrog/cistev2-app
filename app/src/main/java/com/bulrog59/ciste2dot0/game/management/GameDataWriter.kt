@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.ResourceManager
 import com.bulrog59.ciste2dot0.editor.utils.FilePickerType
+import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper
 import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.retrieveOption
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager.Companion.MAX_SIZE_IN_MB
 import com.bulrog59.ciste2dot0.gamedata.*
@@ -172,35 +173,37 @@ class GameDataWriter(val activity: Activity) {
 
     }
 
-    private fun getWhereInUseFrom(sceneType: SceneType,
+    private fun getWhereInUseFrom(
+        sceneType: SceneType,
         itemInUseChecker: (sceneData: SceneData) -> Boolean
     ): String {
         return gameData.scenes
-            .filter { s -> s.sceneType == sceneType }
-            .filter { s -> itemInUseChecker(s) }
-            .map { it.name }
-            .joinToString(",")
+            .filter { it.sceneType == sceneType }
+            .filter { itemInUseChecker(it) }
+            .joinToString(",") { GameOptionHelper.getSceneDescription(it) }
     }
 
     private fun getInventoriesWhereItemInUse(itemID: Int): String {
-        return getWhereInUseFrom(SceneType.inventory)  { sceneData ->
-                retrieveOption<InventoryOptions>(sceneData).combinations.filter { it.id1 == itemID || it.id2 == itemID }
-                    .isNotEmpty()
-            }
+        return getWhereInUseFrom(SceneType.inventory) { sceneData ->
+            retrieveOption<InventoryOptions>(sceneData).combinations.filter { it.id1 == itemID || it.id2 == itemID }
+                .isNotEmpty()
+        }
     }
 
 
     private fun getRuleEngineWhereItemInUse(itemID: Int): String {
         return getWhereInUseFrom(SceneType.ruleEngine) {
-            retrieveOption<RulesOptions>(it).rules.filter { rule -> rule.itemIds.contains(itemID) }.isNotEmpty()
+            retrieveOption<RulesOptions>(it).rules.filter { rule -> rule.itemIds.contains(itemID) }
+                .isNotEmpty()
         }
     }
 
 
     fun verifyIfItemIsUsed(item: Item): String {
-        val listOfScenesInUsed = getInventoriesWhereItemInUse(item.id)+","+getRuleEngineWhereItemInUse(item.id)
+        val listOfScenesInUsed =
+            getInventoriesWhereItemInUse(item.id) + "," + getRuleEngineWhereItemInUse(item.id)
 
-        if (","==listOfScenesInUsed){
+        if ("," != listOfScenesInUsed) {
             return activity.getText(R.string.item_in_use_error)
                 .replace(Regex("VAR_ITEM"), item.name)
                 .replace(Regex("VAR_SCENES"), listOfScenesInUsed)

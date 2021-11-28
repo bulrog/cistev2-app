@@ -112,6 +112,7 @@ class EditActivity : AppCompatActivity() {
             }
             else {
                 Toast.makeText(this,errorItemUse,Toast.LENGTH_LONG).show()
+                sceneSelectionScreen()
             }
 
         }

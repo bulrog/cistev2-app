@@ -61,11 +61,15 @@ class ListEditor<T>(
         val recyclerView = activity.findViewById<RecyclerView>(R.id.item_menu_selection)
         recyclerView.adapter =
             MenuSelectorAdapter(getItemText(items)) { p ->
-                updateMenuItems(items[p]) { l, m -> l[p] = m }
+                updateMenuItems(items[p]) { l, m ->
+                    l[p] = m
+                }
             }
         recyclerView.layoutManager = LinearLayoutManager(activity)
         activity.findViewById<Button>(R.id.add_menu_button).setOnClickListener {
-            updateMenuItems(null) { l, m -> l.add(m) }
+            updateMenuItems(null) { l, m ->
+                l.add(m)
+            }
         }
 
         activity.findViewById<Button>(R.id.delete_menu_item_button).setOnClickListener {

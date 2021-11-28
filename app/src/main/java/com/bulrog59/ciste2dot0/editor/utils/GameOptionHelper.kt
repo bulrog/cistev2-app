@@ -33,13 +33,17 @@ class GameOptionHelper {
 
         fun sceneDescriptions(scenes: List<SceneData>, context: Context): List<String> {
             return scenes.map {
-                "${it.sceneId}:${it.name ?: "none"} (${context.getText(it.sceneType.description)})"
+                "${getSceneDescription(it)} (${context.getText(it.sceneType.description)})"
             }
+        }
+
+        fun getSceneDescription(scene: SceneData):String{
+            return "${scene.sceneId}:${scene.name?: "none"}"
         }
 
         fun getSceneDescription(gameData: GameData,sceneId:Int):String{
             val scene = gameData.scenes.filter { it.sceneId == sceneId }[0]
-            return "${scene.sceneId}:${scene.name}"
+            return getSceneDescription(scene)
 
         }
 
