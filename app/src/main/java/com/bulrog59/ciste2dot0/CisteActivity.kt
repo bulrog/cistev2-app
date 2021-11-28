@@ -103,7 +103,7 @@ class CisteActivity : AppCompatActivity() {
             lifecycle.removeObserver(this)
             shutdown()
         }
-        when (sceneData?.sceneType) {
+        when (sceneData.sceneType) {
             SceneType.video -> {
                 currentScene = loadScene(::VideoScene, sceneData)
             }

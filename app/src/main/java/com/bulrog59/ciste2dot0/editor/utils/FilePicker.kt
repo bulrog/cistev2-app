@@ -44,8 +44,9 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         if (uri != null) {
             newFile = true
             fileUri = uri
-            getFileName(uri)?.apply {
-                activity.findViewById<TextView>(R.id.selected_file_name).text = getFileName(uri)
+            val fileName=getFileName(uri)
+            fileName?.apply {
+                activity.findViewById<TextView>(R.id.selected_file_name).text = fileName
             }
         }
     }

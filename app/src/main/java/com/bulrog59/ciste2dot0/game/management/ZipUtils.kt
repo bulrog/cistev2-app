@@ -79,7 +79,7 @@ object ZipUtils {
     private fun zipFiles(zipOut: ZipOutputStream, sourceFile: File, parentDirPath: String) {
 
         val data = ByteArray(2048)
-
+        //TODO: list files can be null if folder does not exist:
         for (f in sourceFile.listFiles()) {
 
             if (f.isDirectory) {

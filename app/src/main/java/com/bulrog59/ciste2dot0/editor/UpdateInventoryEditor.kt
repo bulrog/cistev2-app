@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0.editor
 
 import android.app.Activity
+import android.net.Uri
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -21,11 +22,18 @@ class UpdateInventoryEditor(
     private val gameData: GameData,
     scenePosition: Int,
     private val done: (JsonNode) -> Unit
-) {
+) : CallBackActivityResult {
 
     companion object {
         private const val NO_ID = -1
     }
+
+    private var filePicker: FilePicker? = null
+
+    override fun callBack(uri: Uri?, requestCode: Int) {
+        filePicker?.callBack(uri, requestCode)
+    }
+
 
     private var itemsToAdd =
         gamePreviousElement<List<Item>, UpdateInventoryOptions>(
@@ -62,18 +70,20 @@ class UpdateInventoryEditor(
     }
 
     private fun getPic(previousItem: Item?, name: String, done: (Item) -> Unit) {
-        //TODO: issue to download a picture (does nothing)
-        FilePicker(activity).init(
-            R.string.select_picture_text_title,
-            FilePickerType.image,
-            previousItem?.picture
-        ) { pic ->
+        filePicker = FilePicker(activity).apply {
+            init(
+                R.string.select_picture_text_title,
+                FilePickerType.image,
+                previousItem?.picture
+            ) { pic ->
 
-            //cannot set the ID as this function is called by the list editor which has its own mutated
-            //item list, so will defer the set of the id when we get back the list from the list editor:
-            done(Item(NO_ID, name, pic))
+                //cannot set the ID as this function is called by the list editor which has its own mutated
+                //item list, so will defer the set of the id when we get back the list from the list editor:
+                done(Item(NO_ID, name, pic))
 
+            }
         }
+
     }
 
     private fun itemToAddEdit(previousItem: Item?, done: (Item) -> Unit) {
@@ -110,7 +120,7 @@ class UpdateInventoryEditor(
             }
             itemsToAddNew.add(Item(itemID, it.name, it.picture))
         }
-        itemsToAdd=itemsToAddNew
+        itemsToAdd = itemsToAddNew
     }
 
 

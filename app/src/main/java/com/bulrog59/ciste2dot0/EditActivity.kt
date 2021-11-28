@@ -26,7 +26,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var gameDataWriter: GameDataWriter
     private val fieldValidator = FieldValidator(this)
     private var filePicker: CallBackActivityResult? = null
-    private val gameMetaUtil=GameUtil(this)
+    private val gameMetaUtil = GameUtil(this)
 
     private fun updateSceneOption(sceneData: SceneData, option: JsonNode) {
         gameDataWriter.addOrUpdateSceneData(
@@ -59,7 +59,7 @@ class EditActivity : AppCompatActivity() {
                 }.apply { init() }
             }
             SceneType.updateInventory -> {
-                UpdateInventoryEditor(this, gameDataWriter.gameData, position) {
+                filePicker = UpdateInventoryEditor(this, gameDataWriter.gameData, position) {
                     updateSceneOption(sceneData, it)
                 }.apply { init() }
             }
@@ -95,11 +95,10 @@ class EditActivity : AppCompatActivity() {
         ItemPicker(this).init(
             R.string.select_element_to_delete,
             sceneDescriptions(gameDataWriter.gameData.scenes, this)
-        ) {
-            p ->
-            val sceneIDToDelete=gameDataWriter.gameData.scenes[p].sceneId
-            val errorItemUse=gameDataWriter.verifyCanDeleteAScene(sceneIDToDelete)
-            if (errorItemUse.isEmpty()){
+        ) { p ->
+            val sceneIDToDelete = gameDataWriter.gameData.scenes[p].sceneId
+            val errorItemUse = gameDataWriter.verifyCanDeleteAScene(sceneIDToDelete)
+            if (errorItemUse.isEmpty()) {
                 AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setMessage(R.string.delete_item_message)
@@ -109,9 +108,8 @@ class EditActivity : AppCompatActivity() {
                     }
                     .setNegativeButton(R.string.denial) { _, _ -> sceneSelectionScreen() }
                     .show()
-            }
-            else {
-                Toast.makeText(this,errorItemUse,Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, errorItemUse, Toast.LENGTH_LONG).show()
                 sceneSelectionScreen()
             }
 
@@ -133,7 +131,6 @@ class EditActivity : AppCompatActivity() {
         findViewById<Button>(R.id.delete_scene_button).setOnClickListener { deleteScene() }
         findViewById<Button>(R.id.meta_data_edit_button).setOnClickListener { gameMetaEdition() }
         findViewById<Button>(R.id.clear_resource_button).setOnClickListener { clearUnusedResource() }
-
 
 
     }
@@ -183,20 +180,28 @@ class EditActivity : AppCompatActivity() {
         )
         val gameMeta = gameDataWriter.gameData.gameMetaData
         gameMeta?.description?.apply { findViewById<EditText>(R.id.description_text).setText(this) }
-        gameMeta?.language?.apply { findViewById<AutoCompleteTextView>(R.id.game_language_input).setText(this) }
+        gameMeta?.language?.apply {
+            findViewById<AutoCompleteTextView>(R.id.game_language_input).setText(
+                this
+            )
+        }
         gameMeta?.name.apply { findViewById<EditText>(R.id.menu_title_input).setText(this) }
         gameMeta?.location.apply { findViewById<EditText>(R.id.game_location_input).setText(this) }
 
         findViewById<Button>(R.id.game_meta_button).setOnClickListener {
             if (!gameMetaUtil.errorInGameMetaFields()) {
-                gameDataWriter.updateGameMetaData(gameMetaUtil.createGameMetaDataForMetaDataEditScreen(gameDataWriter.gameData.gameMetaData?.id))
+                gameDataWriter.updateGameMetaData(
+                    gameMetaUtil.createGameMetaDataForMetaDataEditScreen(
+                        gameDataWriter.gameData.gameMetaData?.id
+                    )
+                )
             }
             sceneSelectionScreen()
         }
 
     }
 
-    private fun clearUnusedResource(){
+    private fun clearUnusedResource() {
         AlertDialog.Builder(this)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setMessage(R.string.confirmation_delete_resource)
