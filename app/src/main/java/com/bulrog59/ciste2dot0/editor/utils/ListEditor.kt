@@ -18,7 +18,7 @@ class ListEditor<T>(
     ) -> Unit,
     private val done: (List<T>) -> Unit
 ) {
-
+    var validatorItemCanBeRemoved: (T) -> String = { "" }
     private fun updateMenuItems(
         item: T?,
         updater: (MutableList<T>, T) -> Unit
@@ -35,22 +35,30 @@ class ListEditor<T>(
             Toast.makeText(activity, R.string.no_item_to_select, Toast.LENGTH_LONG).show()
             return
         }
+
         ItemPicker(activity).init(
             R.string.select_element_to_delete,
             getItemText(items)
         ) {
-            AlertDialog.Builder(activity)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setMessage(R.string.delete_item_message)
-                .setPositiveButton(R.string.confirmation) { _, _ ->
-                    items = mutableListOf<T>().apply {
-                        addAll(items)
-                        removeAt(it)
+            val error = validatorItemCanBeRemoved(items[it])
+            if (error.isNotEmpty()) {
+                Toast.makeText(activity, error, Toast.LENGTH_LONG).show()
+                init()
+            } else {
+                AlertDialog.Builder(activity)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setMessage(R.string.delete_item_message)
+                    .setPositiveButton(R.string.confirmation) { _, _ ->
+                        items = mutableListOf<T>().apply {
+                            addAll(items)
+                            removeAt(it)
+                        }
+                        init()
                     }
-                    init()
-                }
-                .setNegativeButton(R.string.denial) { _, _ -> init() }
-                .show()
+                    .setNegativeButton(R.string.denial) { _, _ -> init() }
+                    .show()
+            }
+
 
         }
 

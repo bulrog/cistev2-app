@@ -12,6 +12,7 @@ import com.bulrog59.ciste2dot0.editor.utils.*
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.gamePreviousElement
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemList
+import com.bulrog59.ciste2dot0.game.management.GameDataWriter
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Item
 import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
@@ -24,11 +25,13 @@ class UpdateInventoryEditor(
     private val done: (JsonNode) -> Unit
 ) : CallBackActivityResult {
 
+
     companion object {
         private const val NO_ID = -1
     }
 
     private var filePicker: FilePicker? = null
+    private val gameDataWriter=GameDataWriter(activity)
 
     override fun callBack(uri: Uri?, requestCode: Int) {
         filePicker?.callBack(uri, requestCode)
@@ -126,12 +129,12 @@ class UpdateInventoryEditor(
 
     fun init() {
         activity.setContentView(R.layout.editor_update_inventory)
-        //TODO: when delete an item need to verify it is not used in rule engine and in inventory combinations to add an optional method when delete to verify we can delete.
         activity.findViewById<Button>(R.id.add_menu_button).setOnClickListener {
             ListEditor(activity, itemsToAdd, { l -> l.map { it.name } }, this::itemToAddEdit, { r ->
                 updateItemsToAddWithIds(r)
                 init()
-            }).init()
+            }).apply { validatorItemCanBeRemoved = { gameDataWriter.verifyIfItemIsUsed(it) } }
+                .init()
         }
         activity.findViewById<Button>(R.id.delete_menu_item_button).setOnClickListener {
             ListEditor(

@@ -18,6 +18,7 @@ import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
 import com.bulrog59.ciste2dot0.scenes.video.VideoOption
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import org.apache.commons.io.FileUtils
 import java.io.File
 import java.util.*
 
@@ -38,8 +39,8 @@ class GameDataWriter(val activity: Activity) {
     companion object {
         fun makeSizeString(context: Context, stringTemplate: Int, size: Long): String {
             return context.getText(stringTemplate)
-                .replace(Regex("VARSIZE"), (size / 1e6).toInt().toString())
-                .replace(Regex("MAXSIZE"), MAX_SIZE_IN_MB.toString())
+                .replace(Regex("VAR_SIZE"), (size / 1e6).toInt().toString())
+                .replace(Regex("MAX_SIZE"), MAX_SIZE_IN_MB.toString())
         }
     }
 
@@ -100,13 +101,14 @@ class GameDataWriter(val activity: Activity) {
 
 
     private fun reportGameSize(gameId: UUID) {
-        val zipFileName = "${folderGame}dummy.zip"
-        val zipSize = ZipUtils.zipAll("$folderGame$gameId", zipFileName)
-        File(zipFileName).delete()
+
+
+        //put limit on unzipped data as faster to check and also quite similar as video/pic... are already compressed:
+        val gameSize = FileUtils.sizeOfDirectory(File("$folderGame$gameId"))
 
         Toast.makeText(
             activity,
-            makeSizeString(activity, R.string.game_size_info, zipSize),
+            makeSizeString(activity, R.string.game_size_info, gameSize),
             Toast.LENGTH_LONG
         ).show()
 
@@ -185,16 +187,14 @@ class GameDataWriter(val activity: Activity) {
 
     private fun getInventoriesWhereItemInUse(itemID: Int): String {
         return getWhereInUseFrom(SceneType.inventory) { sceneData ->
-            retrieveOption<InventoryOptions>(sceneData).combinations.filter { it.id1 == itemID || it.id2 == itemID }
-                .isNotEmpty()
+            retrieveOption<InventoryOptions>(sceneData).combinations.any { it.id1 == itemID || it.id2 == itemID }
         }
     }
 
 
     private fun getRuleEngineWhereItemInUse(itemID: Int): String {
         return getWhereInUseFrom(SceneType.ruleEngine) {
-            retrieveOption<RulesOptions>(it).rules.filter { rule -> rule.itemIds.contains(itemID) }
-                .isNotEmpty()
+            retrieveOption<RulesOptions>(it).rules.any { rule -> rule.itemIds.contains(itemID) }
         }
     }
 
@@ -220,7 +220,7 @@ class GameDataWriter(val activity: Activity) {
         }
         val updateInvOptions = retrieveOption<UpdateInventoryOptions>(sceneDataToDelete)
         val errorMessage =
-            updateInvOptions.itemsToAdd.map { i -> verifyIfItemIsUsed(i) }.joinToString(",")
+            updateInvOptions.itemsToAdd.joinToString(",") { i -> verifyIfItemIsUsed(i) }
         if (errorMessage.isEmpty()) {
             return ""
         }
