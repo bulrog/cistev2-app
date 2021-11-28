@@ -68,8 +68,8 @@ object ZipUtils {
     fun zipAll(directory: String, zipFile: String): Long {
         val sourceFile = File(directory)
 
-        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use {
-            it.use {
+        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { zos ->
+            zos.use {
                 zipFiles(it, sourceFile, "")
             }
         }
@@ -78,48 +78,51 @@ object ZipUtils {
 
     private fun zipFiles(zipOut: ZipOutputStream, sourceFile: File, parentDirPath: String) {
 
-        val data = ByteArray(2048)
-        //TODO: list files can be null if folder does not exist:
-        for (f in sourceFile.listFiles()) {
+        val folderContent=sourceFile.listFiles()
+        if (folderContent!=null){
+            val data = ByteArray(2048)
+            for (f in folderContent) {
 
-            if (f.isDirectory) {
-                val entry = ZipEntry(f.name + File.separator)
-                entry.time = f.lastModified()
-                entry.isDirectory
-                entry.size = f.length()
+                if (f.isDirectory) {
+                    val entry = ZipEntry(f.name + File.separator)
+                    entry.time = f.lastModified()
+                    entry.isDirectory
+                    entry.size = f.length()
 
-                Log.i("zip", "Adding Directory: " + f.name)
-                zipOut.putNextEntry(entry)
+                    Log.i("zip", "Adding Directory: " + f.name)
+                    zipOut.putNextEntry(entry)
 
-                //Call recursively to add files within this directory
-                zipFiles(zipOut, f, f.name)
-            } else {
+                    //Call recursively to add files within this directory
+                    zipFiles(zipOut, f, f.name)
+                } else {
 
-                if (!f.name.contains(".zip")) { //If folder contains a file with extension ".zip", skip it
-                    FileInputStream(f).use { fi ->
-                        BufferedInputStream(fi).use { origin ->
-                            val path = parentDirPath + File.separator + f.name
-                            Log.i("zip", "Adding file: $path")
-                            val entry = ZipEntry(path)
-                            entry.time = f.lastModified()
-                            entry.isDirectory
-                            entry.size = f.length()
-                            zipOut.putNextEntry(entry)
-                            while (true) {
-                                val readBytes = origin.read(data)
-                                if (readBytes == -1) {
-                                    break
+                    if (!f.name.contains(".zip")) { //If folder contains a file with extension ".zip", skip it
+                        FileInputStream(f).use { fi ->
+                            BufferedInputStream(fi).use { origin ->
+                                val path = parentDirPath + File.separator + f.name
+                                Log.i("zip", "Adding file: $path")
+                                val entry = ZipEntry(path)
+                                entry.time = f.lastModified()
+                                entry.isDirectory
+                                entry.size = f.length()
+                                zipOut.putNextEntry(entry)
+                                while (true) {
+                                    val readBytes = origin.read(data)
+                                    if (readBytes == -1) {
+                                        break
+                                    }
+                                    zipOut.write(data, 0, readBytes)
                                 }
-                                zipOut.write(data, 0, readBytes)
                             }
                         }
+                    } else {
+                        zipOut.closeEntry()
+                        zipOut.close()
                     }
-                } else {
-                    zipOut.closeEntry()
-                    zipOut.close()
                 }
             }
         }
+
     }
 
     /**

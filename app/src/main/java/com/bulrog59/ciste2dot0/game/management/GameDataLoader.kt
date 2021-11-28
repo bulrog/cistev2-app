@@ -4,14 +4,12 @@ import android.app.Activity
 import android.net.Uri
 import com.bulrog59.ciste2dot0.ResourceManager
 import com.bulrog59.ciste2dot0.ResourceManager.Companion.GAME_RESOURCE_NAME
+import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
 import com.bulrog59.ciste2dot0.gamedata.GameData
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.io.InputStream
 
 class GameDataLoader(activity: Activity) {
     private val resourceFinder=ResourceManager(activity)
-    private val mapper=ObjectMapper().apply { registerModule(KotlinModule()) }
 
     fun loadGameDataFromIntent():GameData{
         val ios = resourceFinder.getStreamFromUri(GAME_RESOURCE_NAME)

@@ -3,24 +3,20 @@ package com.bulrog59.ciste2dot0.editor.utils
 import android.app.Activity
 import android.content.Context
 import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Item
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
-import com.bulrog59.ciste2dot0.scenes.inventory.Combination
-import com.bulrog59.ciste2dot0.scenes.inventory.InventoryOptions
 import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue
 
 class GameOptionHelper {
     companion object {
-        val om = ObjectMapper().apply { registerModule(KotlinModule()) }
         inline fun <reified T> getSceneOptions(gameData: GameData, scenePosition: Int): T? {
             val options = gameData.scenes[scenePosition].options
-            return if (options.isEmpty) null else om.treeToValue<T>(options)
+            return if (options.isEmpty) null else mapper.treeToValue<T>(options)
         }
 
         inline fun <T, reified O> gamePreviousElement(
@@ -48,8 +44,8 @@ class GameOptionHelper {
         }
 
         fun <T> convertToJsonNode(data: T): JsonNode {
-            return om.readTree(
-                om.writeValueAsString(
+            return mapper.readTree(
+                mapper.writeValueAsString(
                     data
                 )
             )
@@ -88,7 +84,7 @@ class GameOptionHelper {
         fun getItemList(gameData: GameData): List<Item> {
             return gameData.scenes.filter { it.sceneType == SceneType.updateInventory }
                 .filter { !it.options.isEmpty }
-                .mapNotNull { om.treeToValue<UpdateInventoryOptions>(it.options)?.itemsToAdd }
+                .mapNotNull { mapper.treeToValue<UpdateInventoryOptions>(it.options)?.itemsToAdd }
                 .flatten()
 
         }

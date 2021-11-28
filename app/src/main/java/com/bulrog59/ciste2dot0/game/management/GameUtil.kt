@@ -17,9 +17,9 @@ class GameUtil(private val activity: Activity) {
     companion object {
         val languages =
             HashSet(Locale.getAvailableLocales().map { it.displayLanguage }).sorted()
-        //TODO see where can replace in the code:
+
         val mapper = ObjectMapper().apply { registerModule(KotlinModule()) }
-        //TODO see where can replace in the code:
+
         inline fun <reified T> retrieveOption(sceneData: SceneData): T {
             return mapper.treeToValue<T>(sceneData.options)
                 ?: throw IllegalArgumentException("options is null and cannot for a video type for the scene: $sceneData")

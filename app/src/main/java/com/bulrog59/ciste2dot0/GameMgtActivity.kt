@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager
 import com.bulrog59.ciste2dot0.game.management.GameListAdapter
 import com.bulrog59.ciste2dot0.game.management.GameUtil
+import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
-import com.fasterxml.jackson.databind.ObjectMapper
 import kotlin.system.exitProcess
 
 class GameMgtActivity : AppCompatActivity() {
@@ -70,7 +70,7 @@ class GameMgtActivity : AppCompatActivity() {
                 SceneData(
                     0,
                     SceneType.exit,
-                    ObjectMapper().createObjectNode(),
+                    mapper.createObjectNode(),
                     "exit"
                 )
             ),

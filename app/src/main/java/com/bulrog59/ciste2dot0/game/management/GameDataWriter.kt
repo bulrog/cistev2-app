@@ -7,6 +7,7 @@ import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.ResourceManager
 import com.bulrog59.ciste2dot0.editor.utils.FilePickerType
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper
+import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
 import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.retrieveOption
 import com.bulrog59.ciste2dot0.game.management.GamesDataManager.Companion.MAX_SIZE_IN_MB
 import com.bulrog59.ciste2dot0.gamedata.*
@@ -16,8 +17,6 @@ import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
 import com.bulrog59.ciste2dot0.scenes.rules.RulesOptions
 import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
 import com.bulrog59.ciste2dot0.scenes.video.VideoOption
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.util.*
@@ -25,7 +24,6 @@ import java.util.*
 class GameDataWriter(val activity: Activity) {
     private val resourceFinder = ResourceManager(activity)
     private val folderGame = activity.filesDir.absolutePath + GamesDataManager.FOLDER_FOR_GAME_DATA
-    private val mapper = ObjectMapper().apply { registerModule(KotlinModule()) }
     var gameData = GameDataLoader(activity).loadGameDataFromIntent()
 
     private fun saveGameData() {
@@ -158,7 +156,7 @@ class GameDataWriter(val activity: Activity) {
                 SceneData(
                     maxSceneId + 1,
                     sceneType,
-                    ObjectMapper().createObjectNode(),
+                    mapper.createObjectNode(),
                     sceneName
                 )
             )

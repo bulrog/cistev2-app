@@ -13,7 +13,6 @@ import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.scenes.Scene
 
 class PicMusicScene(
-    //TODO: make music optional?
     private val picMusicOption: PicMusicOption,
     private val cisteActivity: CisteActivity,
 ) : Scene {
