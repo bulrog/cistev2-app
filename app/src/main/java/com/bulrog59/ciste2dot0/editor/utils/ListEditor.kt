@@ -19,6 +19,7 @@ class ListEditor<T>(
     private val done: (List<T>) -> Unit
 ) {
     var validatorItemCanBeRemoved: (T) -> String = { "" }
+
     private fun updateMenuItems(
         item: T?,
         updater: (MutableList<T>, T) -> Unit
