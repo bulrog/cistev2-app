@@ -34,7 +34,7 @@ class MultipleMenuSelectorAdapter(private val choices: List<String>, private var
         }
         holder.itemView.setOnClickListener {
             if (positionsSelected.contains(position)){
-                positionsSelected= mutableListOf<Int>().apply{ addAll(positionsSelected.filter { it!=position }))}
+                positionsSelected= mutableListOf<Int>().apply{ addAll(positionsSelected.filter { it!=position })}
             }else{
                 positionsSelected.add(position)
             }

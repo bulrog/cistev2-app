@@ -90,5 +90,6 @@
     <string name="contains">contains</string>
     <string name="all">all</string>
     <string name="rule_picker_title">Select rule to apply</string>
+    <string name="item_selection_title">Select the items the rule applies on</string>
 
 </resources>

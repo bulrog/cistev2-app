@@ -8,6 +8,7 @@ import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemLi
 import com.bulrog59.ciste2dot0.editor.utils.ItemPicker
 import com.bulrog59.ciste2dot0.editor.utils.ListEditor
 import com.bulrog59.ciste2dot0.editor.utils.MultipleItemPicker
+import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.scenes.rules.Rule
 import com.bulrog59.ciste2dot0.scenes.rules.RuleKey
@@ -26,40 +27,63 @@ class RuleEngineEditor(
         scenePosition
     ) { it?.rules } ?: emptyList()
 
-    private val allItems=getItemList(gameData)
+    private val allItems = getItemList(gameData)
 
-    private fun getItemText(itemID:Int):String{
-        return allItems.filter { it.id==itemID }.map { it.name }.first()
+    private fun getItemText(itemID: Int): String {
+        return allItems.filter { it.id == itemID }.map { it.name }.first()
     }
 
-    private fun getRuleText(rule:Rule):String{
-        val ruleText=activity.getText(rule.ruleKey.description)
-        val itemListText=rule.itemIds.joinToString(",") { getItemText(it) }
+    private fun getRuleText(rule: Rule): String {
+        val ruleText = activity.getText(rule.ruleKey.description)
+        val itemListText = rule.itemIds.joinToString(",") { getItemText(it) }
         return "$ruleText: $itemListText"
     }
 
-    private fun getRulesText(rules:List<Rule>):List<String>{
-        return rules.map {getRuleText(it)}
+    private fun getRulesText(rules: List<Rule>): List<String> {
+        return rules.map { getRuleText(it) }
 
     }
 
-    private fun editRule(rule:Rule?, done:(Rule)->Unit){
-       //TODO: rework itempicker and menuselectoradaptor to be particular case of the multiple case:
-       ItemPicker(activity).init(
-           R.string.rule_picker_title,
-           RuleKey.values().map { activity.getString(it.description) }){
-           val ruleKey=RuleKey.values()[it]
-//           MultipleItemPicker(activity).init(
-//
-//           )
+    private fun getItemPositions(itemsID: List<Int>): List<Int> {
+        val itemsPosition = mutableListOf<Int>()
+        for (itemID in itemsID) {
 
-       }
+            for (itemPosition in allItems.indices) {
+                if (allItems[itemPosition].id == itemID) {
+                    itemsPosition.add(itemPosition)
+                    break
+                }
+            }
+
+        }
+        return itemsPosition
+    }
+
+    private fun selectItems(rule:Rule?, ruleKey: RuleKey){
+        MultipleItemPicker(activity).init(
+            R.string.item_selection_title,
+            allItems.map { it.name },
+            getItemPositions(rule?.itemIds?: emptyList())
+
+        ) {
+            //TODO: to continue
+            done(mapper.createObjectNode())
+        }
+    }
+
+    private fun editRule(rule: Rule?, done: (Rule) -> Unit) {
+        //TODO: rework itempicker and menuselectoradaptor to be particular case of the multiple case:
+        ItemPicker(activity).init(
+            R.string.rule_picker_title,
+            RuleKey.values().map { activity.getString(it.description) }) { it ->
+            selectItems(rule,RuleKey.values()[it])
+        }
     }
 
     fun init() {
-        ListEditor(activity, rules,this::getRulesText,this::editRule){
+        ListEditor(activity, rules, this::getRulesText, this::editRule) {
             done(convertToJsonNode(it))
-        }
+        }.init()
 
     }
 }
