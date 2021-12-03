@@ -10,7 +10,19 @@ import com.bulrog59.ciste2dot0.R
 
 class MultipleItemPicker(val activity: Activity) {
 
+    var singleItem = false
+
     private var selectedItems: List<Int> = emptyList()
+
+    private fun onSelectedItem(positions: List<Int>, done: (itemsPosition: List<Int>) -> Unit) {
+        if (singleItem) {
+            done(positions)
+        } else {
+            selectedItems = positions
+        }
+
+    }
+
     fun init(
         titleText: Int,
         items: List<String>,
@@ -20,17 +32,25 @@ class MultipleItemPicker(val activity: Activity) {
         activity.setContentView(R.layout.editor_item_selection)
         activity.findViewById<TextView>(R.id.title_unused_resource).setText(titleText)
         val recyclerView = activity.findViewById<RecyclerView>(R.id.item_deletion_list)
-        selectedItems=previousSelection
+        if (singleItem && previousSelection.size > 1) {
+            throw IllegalArgumentException("you cannot have more than 1 item selected when you set to select single itme")
+        }
+        selectedItems = previousSelection
         val menuSelectorAdapter = MultipleMenuSelectorAdapter(
             items,
-            mutableListOf<Int>().apply { addAll(previousSelection) }) { p -> selectedItems=p }
+            mutableListOf<Int>().apply { addAll(previousSelection) },
+            singleItem
+        ) { onSelectedItem(it, done) }
+
         recyclerView.adapter = menuSelectorAdapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val nextButton = activity.findViewById<Button>(R.id.next_item_selection)
-        //TODO: when single item then turn it off:
-        nextButton.visibility = View.VISIBLE
-        nextButton.setOnClickListener {
-            done(selectedItems)
+        if (!singleItem) {
+            nextButton.visibility = View.VISIBLE
+            nextButton.setOnClickListener {
+                done(selectedItems)
+            }
+
         }
     }
 }

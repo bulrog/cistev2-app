@@ -127,7 +127,7 @@ class EditActivity : AppCompatActivity() {
         setContentView(R.layout.editor_scene_selection)
 
         val recyclerView = findViewById<RecyclerView>(R.id.scene_selection_menu)
-        recyclerView.adapter = MenuSelectorAdapter(scenesDescription) { p -> setEditorForScene(p) }
+        recyclerView.adapter = MenuSelectorAdapter(scenesDescription,RecyclerView.NO_POSITION) { p -> setEditorForScene(p) }
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         findViewById<Button>(R.id.add_scene_button).setOnClickListener { sceneCreationScreen() }
@@ -153,14 +153,15 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun sceneCreationScreen() {
+        var positionSelected=RecyclerView.NO_POSITION
         setContentView(R.layout.editor_new_scene)
         val recyclerView = findViewById<RecyclerView>(R.id.scene_type_selection)
         val sceneTypeSelector = MenuSelectorAdapter(
-            SceneType.values().map { v -> getText(v.description).toString() }) {}
+            SceneType.values().map { v -> getText(v.description).toString() },RecyclerView.NO_POSITION) {positionSelected=it}
 
         findViewById<Button>(R.id.create_scene_button).setOnClickListener {
-            if (sceneTypeSelector.positionSelected != RecyclerView.NO_POSITION) {
-                addNewSceneToGameData(SceneType.values()[sceneTypeSelector.positionSelected])
+            if (positionSelected != RecyclerView.NO_POSITION) {
+                addNewSceneToGameData(SceneType.values()[positionSelected])
             } else {
                 Toast.makeText(this, R.string.element_not_selected, Toast.LENGTH_LONG).show()
             }

@@ -218,7 +218,10 @@ class GameDataWriter(val activity: Activity) {
         }
         val updateInvOptions = retrieveOption<UpdateInventoryOptions>(sceneDataToDelete)
         val errorMessage =
-            updateInvOptions.itemsToAdd.joinToString(",") { i -> verifyIfItemIsUsed(i) }
+            updateInvOptions.itemsToAdd
+                .map { verifyIfItemIsUsed(it) }
+                .filter { it.isNotEmpty() }
+                .joinToString(",")
         if (errorMessage.isEmpty()) {
             return ""
         }

@@ -69,7 +69,7 @@ class ListEditor<T>(
         activity.setContentView(R.layout.editor_menu)
         val recyclerView = activity.findViewById<RecyclerView>(R.id.item_menu_selection)
         recyclerView.adapter =
-            MenuSelectorAdapter(getItemText(items)) { p ->
+            MenuSelectorAdapter(getItemText(items), RecyclerView.NO_POSITION) { p ->
                 updateMenuItems(items[p]) { l, m ->
                     l[p] = m
                 }

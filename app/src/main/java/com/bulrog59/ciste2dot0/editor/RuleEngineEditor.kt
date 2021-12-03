@@ -67,7 +67,6 @@ class RuleEngineEditor(
             getItemPositions(rule?.itemIds ?: emptyList())
 
         ) { positionList ->
-            //TODO: found scene 6 which had duplicate item IDs (I hope from previous bug) but when try to delete it I get a message with just a comma, to review why
             GameOptionHelper.getItemPickerNextScene<RulesOptions>(
                 activity,
                 gameData,
@@ -80,7 +79,6 @@ class RuleEngineEditor(
     }
 
     private fun editRule(rule: Rule?, doneRule: (Rule) -> Unit) {
-        //TODO: rework itempicker and menuselectoradaptor to be particular case of the multiple case:
         ItemPicker(activity).init(
             R.string.rule_picker_title,
             RuleKey.values().map { activity.getString(it.description) }) { it ->
@@ -96,6 +94,7 @@ class RuleEngineEditor(
             this::editRule
         ) {
             //TODO: add edition to select the default scene:
+            //TODO: add editor to change scene order:
             done(convertToJsonNode(RulesOptions(it, rulesOptions?.defaultScene ?: -1)))
         }.init()
 

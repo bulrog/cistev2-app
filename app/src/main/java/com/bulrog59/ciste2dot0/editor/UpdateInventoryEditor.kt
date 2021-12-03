@@ -150,18 +150,20 @@ class UpdateInventoryEditor(
         }
 
         val r = activity.findViewById<RecyclerView>(R.id.next_scene_update_inventory)
+        var previousPosition =RecyclerView.NO_POSITION
+        nextScene?.apply {
+            previousPosition =
+                gameData.scenes.indexOf(gameData.scenes.find { s -> s.sceneId == nextScene })
+        }
         val menuSelector = MenuSelectorAdapter(
             GameOptionHelper.sceneDescriptions(
                 gameData.scenes,
                 activity
-            )
-        ) { p ->
+            ),previousPosition) { p ->
             nextScene = gameData.scenes[p].sceneId
         }
-        nextScene?.apply {
-            menuSelector.positionSelected =
-                gameData.scenes.indexOf(gameData.scenes.find { s -> s.sceneId == nextScene })
-        }
+
+
         r.adapter = menuSelector
         r.layoutManager = LinearLayoutManager(activity)
 
