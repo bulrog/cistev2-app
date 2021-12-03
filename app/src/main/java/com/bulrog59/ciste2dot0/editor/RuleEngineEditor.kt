@@ -5,10 +5,10 @@ import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemList
+import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getSceneDescription
 import com.bulrog59.ciste2dot0.editor.utils.ItemPicker
 import com.bulrog59.ciste2dot0.editor.utils.ListEditor
 import com.bulrog59.ciste2dot0.editor.utils.MultipleItemPicker
-import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.scenes.rules.Rule
 import com.bulrog59.ciste2dot0.scenes.rules.RuleKey
@@ -22,10 +22,11 @@ class RuleEngineEditor(
     private val done: (JsonNode) -> Unit
 ) {
 
-    private var rules = GameOptionHelper.gamePreviousElement<List<Rule>, RulesOptions>(
+
+    private var rulesOptions = GameOptionHelper.gamePreviousElement<RulesOptions, RulesOptions>(
         gameData,
         scenePosition
-    ) { it?.rules } ?: emptyList()
+    ) { it }
 
     private val allItems = getItemList(gameData)
 
@@ -36,7 +37,7 @@ class RuleEngineEditor(
     private fun getRuleText(rule: Rule): String {
         val ruleText = activity.getText(rule.ruleKey.description)
         val itemListText = rule.itemIds.joinToString(",") { getItemText(it) }
-        return "$ruleText: $itemListText"
+        return "$ruleText: $itemListText-> ${getSceneDescription(gameData, rule.nextScene)}"
     }
 
     private fun getRulesText(rules: List<Rule>): List<String> {
@@ -59,30 +60,43 @@ class RuleEngineEditor(
         return itemsPosition
     }
 
-    private fun selectItems(rule:Rule?, ruleKey: RuleKey){
+    private fun selectItems(rule: Rule?, ruleKey: RuleKey, doneRule: (Rule) -> Unit) {
         MultipleItemPicker(activity).init(
             R.string.item_selection_title,
             allItems.map { it.name },
-            getItemPositions(rule?.itemIds?: emptyList())
+            getItemPositions(rule?.itemIds ?: emptyList())
 
-        ) {
-            //TODO: to continue
-            done(mapper.createObjectNode())
+        ) { positionList ->
+            //TODO: found scene 6 which had duplicate item IDs (I hope from previous bug) but when try to delete it I get a message with just a comma, to review why
+            GameOptionHelper.getItemPickerNextScene<RulesOptions>(
+                activity,
+                gameData,
+                scenePosition,
+                { rule?.nextScene }) { nextScene ->
+                doneRule(Rule(ruleKey, positionList.map { allItems[it].id }, nextScene))
+            }
+
         }
     }
 
-    private fun editRule(rule: Rule?, done: (Rule) -> Unit) {
+    private fun editRule(rule: Rule?, doneRule: (Rule) -> Unit) {
         //TODO: rework itempicker and menuselectoradaptor to be particular case of the multiple case:
         ItemPicker(activity).init(
             R.string.rule_picker_title,
             RuleKey.values().map { activity.getString(it.description) }) { it ->
-            selectItems(rule,RuleKey.values()[it])
+            selectItems(rule, RuleKey.values()[it], doneRule)
         }
     }
 
     fun init() {
-        ListEditor(activity, rules, this::getRulesText, this::editRule) {
-            done(convertToJsonNode(it))
+        ListEditor(
+            activity,
+            rulesOptions?.rules ?: emptyList(),
+            this::getRulesText,
+            this::editRule
+        ) {
+            //TODO: add edition to select the default scene:
+            done(convertToJsonNode(RulesOptions(it, rulesOptions?.defaultScene ?: -1)))
         }.init()
 
     }

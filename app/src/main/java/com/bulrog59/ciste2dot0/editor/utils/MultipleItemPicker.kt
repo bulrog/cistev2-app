@@ -20,6 +20,7 @@ class MultipleItemPicker(val activity: Activity) {
         activity.setContentView(R.layout.editor_item_selection)
         activity.findViewById<TextView>(R.id.title_unused_resource).setText(titleText)
         val recyclerView = activity.findViewById<RecyclerView>(R.id.item_deletion_list)
+        selectedItems=previousSelection
         val menuSelectorAdapter = MultipleMenuSelectorAdapter(
             items,
             mutableListOf<Int>().apply { addAll(previousSelection) }) { p -> selectedItems=p }
