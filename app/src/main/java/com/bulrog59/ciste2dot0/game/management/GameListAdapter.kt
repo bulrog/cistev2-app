@@ -17,22 +17,28 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
     RecyclerView.Adapter<GameListAdapter.ViewHolder>() {
 
 
-
     private val gameDao = GameDao()
     private var gamesMetaData: List<GameMetaData> = listOf()
 
     private val gameDataManager = GamesDataManager(gameMgtActivity)
 
-    private fun getListOfGames() {
+    fun getListOfGames() {
+        val gamesList = gameDataManager.loadLocalGames()
         gameDao.getGames({
             Toast.makeText(
                 gameMgtActivity,
                 "${gameMgtActivity.getText(R.string.error_searching_game)}:${it.message}",
                 Toast.LENGTH_LONG
             ).show()
-        }) {
-            gamesMetaData = it
-            gameDataManager.addLocalGames(gamesMetaData as MutableList<GameMetaData>)
+        }) { games ->
+            games.forEach { game ->
+                if (!gamesList.map { it.id }.contains(game.id))
+                    gamesList.add(game)
+            }
+
+
+            gamesMetaData = gamesList
+
             notifyDataSetChanged()
             gameMgtActivity.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = View.GONE
         }
@@ -70,20 +76,33 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
         gameMgtActivity.startActivity(intent)
     }
 
+    private fun isGameOk(id: UUID?): Boolean {
+        val error = gameDataManager.verifyGame(id)
+        if (error != null) {
+            Toast.makeText(gameMgtActivity, error, Toast.LENGTH_LONG).show()
+            return false
+        }
+        return true
+    }
 
     private fun startGame(id: UUID?) {
-        val error=gameDataManager.verifyGame(id)
-        if (error!=null){
-            Toast.makeText(gameMgtActivity,error,Toast.LENGTH_LONG).show()
+        if (isGameOk(id)) {
+            gameMgtActivity.reviewIfAbortPossibleTransfer {
+                launchActivity(
+                    CisteActivity::class.java,
+                    id
+                )
+            }
         }
-        else {
-            gameMgtActivity.reviewIfAbortPossibleTransfer {launchActivity(CisteActivity::class.java, id)}
-        }
-
     }
 
     private fun editGame(id: UUID?) {
-        gameMgtActivity.reviewIfAbortPossibleTransfer { launchActivity(EditActivity::class.java, id) }
+        gameMgtActivity.reviewIfAbortPossibleTransfer {
+            launchActivity(
+                EditActivity::class.java,
+                id
+            )
+        }
 
     }
 
@@ -96,26 +115,29 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
     }
 
     private fun shareGame(gameMetaData: GameMetaData, holder: ViewHolder) {
-        gameMgtActivity.increaseGameUnderTransfer()
-        gameDataManager.shareGame(
-            gameMetaData,
-            { transfer, total ->
-                transferUpdate(holder.progressBar, transfer, total)
-            },
-            { e ->
+        if (isGameOk(gameMetaData.id)){
+            gameMgtActivity.increaseGameUnderTransfer()
+            gameDataManager.shareGame(
+                gameMetaData,
+                { transfer, total ->
+                    transferUpdate(holder.progressBar, transfer, total)
+                },
+                { e ->
+                    gameMgtActivity.decreaseGameUnderTransfer()
+                    displayError(R.string.error_uploading_game, e)
+                    loadedGameButtons(holder, gameMetaData)
+                }
+            ) {
                 gameMgtActivity.decreaseGameUnderTransfer()
-                displayError(R.string.error_uploading_game, e)
-                loadedGameButtons(holder, gameMetaData)
-            }
-        ) {
-            gameMgtActivity.decreaseGameUnderTransfer()
-            gameDao.updateGameEntry(it, gameMetaData, { e ->
-                displayError(R.string.error_uploading_game, e)
-                loadedGameButtons(holder, gameMetaData)
-            }) {
-                Toast.makeText(gameMgtActivity, R.string.success_uploading_game, Toast.LENGTH_LONG)
-                    .show()
-                loadedGameButtons(holder, gameMetaData)
+                gameDao.updateGameEntry(it, gameMetaData, { e ->
+                    displayError(R.string.error_uploading_game, e)
+                    loadedGameButtons(holder, gameMetaData)
+                }) {
+                    Toast.makeText(gameMgtActivity, R.string.success_uploading_game, Toast.LENGTH_LONG)
+                        .show()
+                    loadedGameButtons(holder, gameMetaData)
+                }
+
             }
 
         }
@@ -147,8 +169,10 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
                         displayError(R.string.error_downloading_game, e)
                         downloadGameButtons(holder, gameMetaData)
                     }
-                ) { gameMgtActivity.decreaseGameUnderTransfer()
-                    loadedGameButtons(holder, gameMetaData) }
+                ) {
+                    gameMgtActivity.decreaseGameUnderTransfer()
+                    loadedGameButtons(holder, gameMetaData)
+                }
                 holder.loadDeleteButton.visibility = View.INVISIBLE
             }
             holder.loadDeleteButton.setImageResource(R.drawable.ic_download)

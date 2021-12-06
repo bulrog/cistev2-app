@@ -20,6 +20,7 @@ class GameMgtActivity : AppCompatActivity() {
 
     private val gameMetaUtil=GameUtil(this)
     private var gameUnderTransfer = 0
+    private var gameListAdapter:GameListAdapter?=null
 
     fun increaseGameUnderTransfer() {
         gameUnderTransfer++
@@ -47,8 +48,8 @@ class GameMgtActivity : AppCompatActivity() {
     private fun gameSelectionScreen() {
         setContentView(R.layout.game_management)
         val recyclerView = findViewById<RecyclerView>(R.id.games_list)
-        recyclerView.adapter =
-            GameListAdapter(this)
+        gameListAdapter=GameListAdapter(this)
+        recyclerView.adapter =gameListAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         findViewById<ImageButton>(R.id.close_game).setOnClickListener {
             reviewIfAbortPossibleTransfer {
@@ -111,6 +112,11 @@ class GameMgtActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         gameSelectionScreen()
 
-
     }
+
+    override fun onResume() {
+        super.onResume()
+        gameListAdapter?.getListOfGames()
+    }
+
 }

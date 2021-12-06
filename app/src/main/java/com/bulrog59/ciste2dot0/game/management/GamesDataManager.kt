@@ -34,13 +34,15 @@ class GamesDataManager(val context: Context) {
         )
     }
 
-    fun addLocalGames(gamesMetaData: MutableList<GameMetaData>) {
+    fun loadLocalGames() :MutableList<GameMetaData>{
+        val gamesMetaData:MutableList<GameMetaData> = mutableListOf()
+
         File(folderGame).listFiles()?.forEach { file ->
             if (file.isDirectory) {
                 try {
                     val gameData = readLocalGame("${file.canonicalPath}/$GAMEDATA_FILE")
-                    if (!gamesMetaData.map { it.id }.contains(gameData.gameMetaData?.id)) {
-                        gamesMetaData.add(gameData.gameMetaData!!)
+                    gameData.gameMetaData?.apply {
+                        gamesMetaData.add(this)
                     }
 
                 } catch (e: Exception) {
@@ -53,6 +55,7 @@ class GamesDataManager(val context: Context) {
 
             }
         }
+        return gamesMetaData
     }
 
 

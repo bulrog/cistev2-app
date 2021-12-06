@@ -85,7 +85,7 @@
     <string name="clear_resource">Clear unused resources</string>
     <string name="confirmation_delete_resource">Are you sure you want to delete all unused resources?</string>
     <string name="scene_not_exist">You cannot switch to that scene as it does not exist</string>
-    <string name="not_cfg_scene">Game cannot be played, some scenes are not configured:</string>
+    <string name="not_cfg_scene">Game cannot be played or shared, some scenes are not configured:</string>
     <string name="item_in_use_error">You cannot delete as item:VAR_ITEM in use in scene(s):VAR_SCENES</string>
     <string name="contains">contains</string>
     <string name="all">all</string>
