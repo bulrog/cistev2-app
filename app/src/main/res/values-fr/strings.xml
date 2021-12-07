@@ -92,5 +92,9 @@
     <string name="all">tous</string>
     <string name="rule_picker_title">Sélectionnez la règle à utiliser</string>
     <string name="item_selection_title">Sélectionnez les items sur lesquels la règle d\'applique</string>
+    <string name="edit_rules_button_text">Éditer les règles</string>
+    <string name="change_rules_order">Changer l\'ordre des règles</string>
+    <string name="default_scene_text">Changer la scène par défaut</string>
+    <string name="error_no_default_scene">Vous devez sélectionner une scène par défaut</string>
 
 </resources>

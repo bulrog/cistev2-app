@@ -91,5 +91,9 @@
     <string name="all">all</string>
     <string name="rule_picker_title">Select rule to apply</string>
     <string name="item_selection_title">Select the items the rule applies on</string>
+    <string name="edit_rules_button_text">Edit rules</string>
+    <string name="change_rules_order">Change rules order</string>
+    <string name="default_scene_text">Change default scene</string>
+    <string name="error_no_default_scene">You need to select a default scene</string>
 
 </resources>

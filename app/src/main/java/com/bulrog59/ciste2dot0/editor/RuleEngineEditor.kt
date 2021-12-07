@@ -1,6 +1,8 @@
 package com.bulrog59.ciste2dot0.editor
 
 import android.app.Activity
+import android.widget.Button
+import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
@@ -10,10 +12,12 @@ import com.bulrog59.ciste2dot0.editor.utils.ItemPicker
 import com.bulrog59.ciste2dot0.editor.utils.ListEditor
 import com.bulrog59.ciste2dot0.editor.utils.MultipleItemPicker
 import com.bulrog59.ciste2dot0.gamedata.GameData
+import com.bulrog59.ciste2dot0.scenes.detector.DetectorOption
 import com.bulrog59.ciste2dot0.scenes.rules.Rule
 import com.bulrog59.ciste2dot0.scenes.rules.RuleKey
 import com.bulrog59.ciste2dot0.scenes.rules.RulesOptions
 import com.fasterxml.jackson.databind.JsonNode
+import java.util.AbstractMap
 
 class RuleEngineEditor(
     private val activity: Activity,
@@ -21,6 +25,8 @@ class RuleEngineEditor(
     private val scenePosition: Int,
     private val done: (JsonNode) -> Unit
 ) {
+
+    private val NO_SCENE = -1
 
 
     private var rulesOptions = GameOptionHelper.gamePreviousElement<RulesOptions, RulesOptions>(
@@ -86,17 +92,46 @@ class RuleEngineEditor(
         }
     }
 
-    fun init() {
+    private fun exitIfRulesAreOk() {
+        if (rulesOptions?.defaultScene == NO_SCENE) {
+            Toast.makeText(activity, R.string.error_no_default_scene, Toast.LENGTH_LONG).show()
+        } else {
+            done(convertToJsonNode(rulesOptions))
+        }
+
+    }
+
+    private fun changeRules() {
         ListEditor(
             activity,
             rulesOptions?.rules ?: emptyList(),
             this::getRulesText,
             this::editRule
         ) {
-            //TODO: add edition to select the default scene:
-            //TODO: add editor to change scene order:
-            done(convertToJsonNode(RulesOptions(it, rulesOptions?.defaultScene ?: -1)))
+            rulesOptions = RulesOptions(it, rulesOptions?.defaultScene ?: NO_SCENE)
+            init()
         }.init()
+    }
+
+    private fun editDefaultScene() {
+        GameOptionHelper.getItemPickerNextScene<RulesOptions>(
+            activity,
+            gameData,
+            scenePosition,
+            { rulesOptions?.defaultScene }) { nextScene ->
+            rulesOptions = RulesOptions(rulesOptions?.rules ?: emptyList(), nextScene)
+            init()
+        }
+    }
+
+    fun init() {
+        //TODO: add editor to change scene order:
+
+        activity.setContentView(R.layout.editor_rules)
+        activity.findViewById<Button>(R.id.edit_rules).setOnClickListener { changeRules() }
+        activity.findViewById<Button>(R.id.default_scene).setOnClickListener { editDefaultScene() }
+        activity.findViewById<Button>(R.id.exit_button).setOnClickListener { exitIfRulesAreOk() }
+
 
     }
 }
