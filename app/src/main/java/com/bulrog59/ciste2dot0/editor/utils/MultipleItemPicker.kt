@@ -29,8 +29,8 @@ class MultipleItemPicker(val activity: Activity) {
         previousSelection: List<Int>,
         done: (itemsPosition: List<Int>) -> Unit
     ) {
-        activity.setContentView(R.layout.editor_item_selection)
-        activity.findViewById<TextView>(R.id.title_unused_resource).setText(titleText)
+        activity.setContentView(R.layout.editor_item_selection_order)
+        activity.findViewById<TextView>(R.id.title_editor_multipleitems).setText(titleText)
         val recyclerView = activity.findViewById<RecyclerView>(R.id.item_deletion_list)
         if (singleItem && previousSelection.size > 1) {
             throw IllegalArgumentException("you cannot have more than 1 item selected when you set to select single itme")

@@ -95,5 +95,6 @@
     <string name="change_rules_order">Change rules order</string>
     <string name="default_scene_text">Change default scene</string>
     <string name="error_no_default_scene">You need to select a default scene</string>
+    <string name="item_order_title">Change order of rules</string>
 
 </resources>

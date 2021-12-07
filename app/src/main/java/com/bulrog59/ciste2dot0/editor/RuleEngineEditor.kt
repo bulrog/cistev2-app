@@ -1,23 +1,23 @@
 package com.bulrog59.ciste2dot0.editor
 
 import android.app.Activity
+import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.R
-import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper
+import com.bulrog59.ciste2dot0.editor.utils.*
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemList
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getSceneDescription
-import com.bulrog59.ciste2dot0.editor.utils.ItemPicker
-import com.bulrog59.ciste2dot0.editor.utils.ListEditor
-import com.bulrog59.ciste2dot0.editor.utils.MultipleItemPicker
 import com.bulrog59.ciste2dot0.gamedata.GameData
-import com.bulrog59.ciste2dot0.scenes.detector.DetectorOption
 import com.bulrog59.ciste2dot0.scenes.rules.Rule
 import com.bulrog59.ciste2dot0.scenes.rules.RuleKey
 import com.bulrog59.ciste2dot0.scenes.rules.RulesOptions
 import com.fasterxml.jackson.databind.JsonNode
-import java.util.AbstractMap
 
 class RuleEngineEditor(
     private val activity: Activity,
@@ -124,13 +124,31 @@ class RuleEngineEditor(
         }
     }
 
-    fun init() {
-        //TODO: add editor to change scene order:
+    private fun editRuleOrder(){
+        //TODO: add when select an item to get it colored (see here: https://github.com/iPaulPro/Android-ItemTouchHelper-Demo/blob/d164fba0f27c8aa38cfa7dbd4bc74d53dea44605/app/src/main/java/co/paulburke/android/itemtouchhelperdemo/helper/SimpleItemTouchHelperCallback.java#L98):
+        activity.setContentView(R.layout.editor_item_selection_order)
+        activity.findViewById<TextView>(R.id.title_editor_multipleitems).setText(R.string.item_order_title)
+        val recyclerView=activity.findViewById<RecyclerView>(R.id.item_deletion_list)
+        val itemOrderAdapter=ItemOrderAdapter(rulesOptions?.rules?: emptyList(),this::getRuleText)
+        ItemTouchHelper(SimpleItemTouchHelperCallback(itemOrderAdapter)).attachToRecyclerView(recyclerView)
+        recyclerView.adapter=itemOrderAdapter
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        val nextButton=activity.findViewById<Button>(R.id.next_item_selection)
+        nextButton.visibility= View.VISIBLE
+        nextButton.setOnClickListener {
+            rulesOptions=RulesOptions(itemOrderAdapter.choices,rulesOptions?.defaultScene?:NO_SCENE)
+            init()
+        }
 
+    }
+
+    fun init() {
         activity.setContentView(R.layout.editor_rules)
         activity.findViewById<Button>(R.id.edit_rules).setOnClickListener { changeRules() }
         activity.findViewById<Button>(R.id.default_scene).setOnClickListener { editDefaultScene() }
+        activity.findViewById<Button>(R.id.change_rule_order).setOnClickListener { editRuleOrder() }
         activity.findViewById<Button>(R.id.exit_button).setOnClickListener { exitIfRulesAreOk() }
+
 
 
     }
