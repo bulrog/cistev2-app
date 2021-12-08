@@ -96,5 +96,6 @@
     <string name="default_scene_text">Change default scene</string>
     <string name="error_no_default_scene">You need to select a default scene</string>
     <string name="item_order_title">Change order of rules</string>
+    <string name="cannot_delete_scene">Cannot delete scene as used in other scene(s):</string>
 
 </resources>

@@ -210,9 +210,7 @@ class GameDataWriter(val activity: Activity) {
         return ""
     }
 
-
-    fun verifyCanDeleteAScene(sceneIDToDelete: Int): String {
-        val sceneDataToDelete = gameData.scenes.filter { s -> s.sceneId == sceneIDToDelete }[0]
+    fun verifyIfSomeItemsAreUsed(sceneDataToDelete:SceneData): String {
         if (sceneDataToDelete.sceneType != SceneType.updateInventory) {
             return ""
         }
@@ -225,6 +223,27 @@ class GameDataWriter(val activity: Activity) {
         if (errorMessage.isEmpty()) {
             return ""
         }
+
+        return "$errorMessage. "
+    }
+
+    private fun verifyIfSceneIsUsedAsNextScene(sceneDataToDelete: SceneData):String {
+        //TODO: to do the same for other scene types:
+        val scenesInUsed=gameData.scenes.filter { sceneData -> sceneData.sceneType==SceneType.picMusic
+                && sceneData.sceneId!=sceneDataToDelete.sceneId
+                && !sceneData.options.isEmpty}
+            .filter { retrieveOption<PicMusicOption>(it).nextScene==sceneDataToDelete.sceneId }
+            .joinToString(",") { GameOptionHelper.getSceneDescription(it) }
+        if (scenesInUsed.isNotEmpty()){
+            return "${activity.getText(R.string.cannot_delete_scene)}$scenesInUsed"
+        }
+        return ""
+    }
+
+    fun verifyCanDeleteAScene(sceneIDToDelete: Int): String {
+        val sceneDataToDelete = gameData.scenes.filter { s -> s.sceneId == sceneIDToDelete }[0]
+        var errorMessage=verifyIfSomeItemsAreUsed(sceneDataToDelete)
+        errorMessage+=verifyIfSceneIsUsedAsNextScene(sceneDataToDelete)
         return errorMessage
     }
 }

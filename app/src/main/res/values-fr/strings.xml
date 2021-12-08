@@ -97,5 +97,6 @@
     <string name="default_scene_text">Changer la scène par défaut</string>
     <string name="error_no_default_scene">Vous devez sélectionner une scène par défaut</string>
     <string name="item_order_title">Changer l\'ordre d\'application des règles</string>
+    <string name="cannot_delete_scene">Impossible d\'effacer la scène car elle est utilisée par d\'autres scène(s):</string>
 
 </resources>
