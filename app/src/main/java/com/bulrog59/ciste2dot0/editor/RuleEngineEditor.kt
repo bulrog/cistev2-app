@@ -125,14 +125,15 @@ class RuleEngineEditor(
     }
 
     private fun editRuleOrder(){
-        //TODO: add when select an item to get it colored (see here: https://github.com/iPaulPro/Android-ItemTouchHelper-Demo/blob/d164fba0f27c8aa38cfa7dbd4bc74d53dea44605/app/src/main/java/co/paulburke/android/itemtouchhelperdemo/helper/SimpleItemTouchHelperCallback.java#L98):
         activity.setContentView(R.layout.editor_item_selection_order)
         activity.findViewById<TextView>(R.id.title_editor_multipleitems).setText(R.string.item_order_title)
+
         val recyclerView=activity.findViewById<RecyclerView>(R.id.item_deletion_list)
         val itemOrderAdapter=ItemOrderAdapter(rulesOptions?.rules?: emptyList(),this::getRuleText)
         ItemTouchHelper(SimpleItemTouchHelperCallback(itemOrderAdapter)).attachToRecyclerView(recyclerView)
         recyclerView.adapter=itemOrderAdapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
+
         val nextButton=activity.findViewById<Button>(R.id.next_item_selection)
         nextButton.visibility= View.VISIBLE
         nextButton.setOnClickListener {
