@@ -155,6 +155,7 @@ class UpdateInventoryEditor(
             previousPosition =
                 gameData.scenes.indexOf(gameData.scenes.find { s -> s.sceneId == nextScene })
         }
+        //TODO: can select the same scene so then infinite loop
         val menuSelector = MenuSelectorAdapter(
             GameOptionHelper.sceneDescriptions(
                 gameData.scenes,

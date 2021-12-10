@@ -13,6 +13,7 @@ import com.bulrog59.ciste2dot0.game.management.GamesDataManager.Companion.MAX_SI
 import com.bulrog59.ciste2dot0.gamedata.*
 import com.bulrog59.ciste2dot0.scenes.detector.DetectorOption
 import com.bulrog59.ciste2dot0.scenes.inventory.InventoryOptions
+import com.bulrog59.ciste2dot0.scenes.menu.MenuOptions
 import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
 import com.bulrog59.ciste2dot0.scenes.rules.RulesOptions
 import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
@@ -210,7 +211,7 @@ class GameDataWriter(val activity: Activity) {
         return ""
     }
 
-    fun verifyIfSomeItemsAreUsed(sceneDataToDelete:SceneData): String {
+    fun verifyIfSomeItemsAreUsed(sceneDataToDelete: SceneData): String {
         if (sceneDataToDelete.sceneType != SceneType.updateInventory) {
             return ""
         }
@@ -227,14 +228,88 @@ class GameDataWriter(val activity: Activity) {
         return "$errorMessage. "
     }
 
-    private fun verifyIfSceneIsUsedAsNextScene(sceneDataToDelete: SceneData):String {
-        //TODO: to do the same for other scene types:
-        val scenesInUsed=gameData.scenes.filter { sceneData -> sceneData.sceneType==SceneType.picMusic
-                && sceneData.sceneId!=sceneDataToDelete.sceneId
-                && !sceneData.options.isEmpty}
-            .filter { retrieveOption<PicMusicOption>(it).nextScene==sceneDataToDelete.sceneId }
+    private inline fun <reified T> verifyIfSceneIsUsedAsNextSceneForType(
+        sceneType: SceneType,
+        sceneIDToDelete: Int,
+        getNextScene: (T) -> List<Int>
+    ): String {
+        return gameData.scenes.filter { sceneData ->
+            sceneData.sceneType == sceneType
+                    && sceneData.sceneId != sceneIDToDelete
+                    && !sceneData.options.isEmpty
+        }
+            .filter { getNextScene(retrieveOption(it)).contains(sceneIDToDelete) }
             .joinToString(",") { GameOptionHelper.getSceneDescription(it) }
-        if (scenesInUsed.isNotEmpty()){
+
+    }
+
+    private fun verifyUsedByPicMusicOption(sceneIDToDelete: Int): String {
+        return verifyIfSceneIsUsedAsNextSceneForType<PicMusicOption>(
+            SceneType.picMusic,
+            sceneIDToDelete
+        ) { listOf(it.nextScene) }
+    }
+
+    private fun verifyUsedByVideoOption(sceneIDToDelete: Int): String {
+        return verifyIfSceneIsUsedAsNextSceneForType<VideoOption>(
+            SceneType.video,
+            sceneIDToDelete
+        ) { listOf(it.nextScene) }
+    }
+
+    private fun verifyUsedByRulesOptions(sceneIDToDelete: Int): String {
+        return verifyIfSceneIsUsedAsNextSceneForType<RulesOptions>(
+            SceneType.ruleEngine, sceneIDToDelete
+        ) { r ->
+            mutableListOf<Int>().apply {
+                addAll(r.rules.map { it.nextScene })
+                add(r.defaultScene)
+            }
+        }
+    }
+
+    private fun verifyUsedByInventoryOptions(sceneIDToDelete: Int): String {
+        //TODO: if add exit button on inventory then need also to check for the scene deletion
+        return verifyIfSceneIsUsedAsNextSceneForType<InventoryOptions>(
+            SceneType.inventory,
+            sceneIDToDelete
+        )
+        { it.combinations.map { c -> c.nextScene } }
+    }
+
+    private fun verifyUsedByUpdateInventoryOptions(sceneIDToDelete: Int): String {
+        return verifyIfSceneIsUsedAsNextSceneForType<UpdateInventoryOptions>(
+            SceneType.updateInventory,
+            sceneIDToDelete
+        )
+        { listOf(it.nextScene) }
+    }
+
+    private fun verifyUsedByDetectorOption(sceneIDToDelete: Int): String {
+        return verifyIfSceneIsUsedAsNextSceneForType<DetectorOption>(
+            SceneType.detector,
+            sceneIDToDelete
+        ) { d -> d.pic2Scene.map { it.value } }
+    }
+
+    private fun verifyUsedByMenuOptions(sceneIDToDelete: Int): String {
+        return verifyIfSceneIsUsedAsNextSceneForType<MenuOptions>(
+            SceneType.menu,
+            sceneIDToDelete
+        ) { m -> m.menuItems.map { it.nextScene } }
+    }
+
+    private fun verifyIfSceneIsUsedAsNextScene(sceneIDToDelete: Int): String {
+        val scenesInUsed = listOf(
+            verifyUsedByPicMusicOption(sceneIDToDelete),
+            verifyUsedByVideoOption(sceneIDToDelete),
+            verifyUsedByRulesOptions(sceneIDToDelete),
+            verifyUsedByInventoryOptions(sceneIDToDelete),
+            verifyUsedByUpdateInventoryOptions(sceneIDToDelete),
+            verifyUsedByDetectorOption(sceneIDToDelete),
+            verifyUsedByMenuOptions(sceneIDToDelete)).filter { it.isNotEmpty() }.joinToString(",")
+
+        if (scenesInUsed.isNotEmpty()) {
             return "${activity.getText(R.string.cannot_delete_scene)}$scenesInUsed"
         }
         return ""
@@ -242,8 +317,8 @@ class GameDataWriter(val activity: Activity) {
 
     fun verifyCanDeleteAScene(sceneIDToDelete: Int): String {
         val sceneDataToDelete = gameData.scenes.filter { s -> s.sceneId == sceneIDToDelete }[0]
-        var errorMessage=verifyIfSomeItemsAreUsed(sceneDataToDelete)
-        errorMessage+=verifyIfSceneIsUsedAsNextScene(sceneDataToDelete)
+        var errorMessage = verifyIfSomeItemsAreUsed(sceneDataToDelete)
+        errorMessage += verifyIfSceneIsUsedAsNextScene(sceneDataToDelete.sceneId)
         return errorMessage
     }
 }

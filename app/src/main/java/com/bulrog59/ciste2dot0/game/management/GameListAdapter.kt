@@ -115,6 +115,7 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
     }
 
     private fun shareGame(gameMetaData: GameMetaData, holder: ViewHolder) {
+        //TODO: to also put message to tell user if sure game is ready to avoid other people to get crap game
         if (isGameOk(gameMetaData.id)){
             gameMgtActivity.increaseGameUnderTransfer()
             gameDataManager.shareGame(

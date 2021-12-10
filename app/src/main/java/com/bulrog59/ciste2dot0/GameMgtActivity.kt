@@ -85,6 +85,8 @@ class GameMgtActivity : AppCompatActivity() {
 
 
     private fun gameCreationScreen() {
+        //TODO: on emulator I can share game I just created when guest so should disable this!
+        //TODO: when click while loading game list then game list crash when it returns results as try to change the view which is not there anymore
         setContentView(R.layout.editor_game_meta)
         findViewById<AutoCompleteTextView>(R.id.game_language_input).setAdapter(
             ArrayAdapter(

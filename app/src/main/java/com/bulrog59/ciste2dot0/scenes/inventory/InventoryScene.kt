@@ -20,6 +20,7 @@ class InventoryScene(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
+        //TODO: need to add an exit button if we use nothing and then go to another scene?
         cisteActivity.setContentView(R.layout.scene_inventory)
         cisteActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         val recyclerView = cisteActivity.findViewById<RecyclerView>(R.id.inventory)
