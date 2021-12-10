@@ -40,7 +40,7 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
             gamesMetaData = gamesList
 
             notifyDataSetChanged()
-            gameMgtActivity.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = View.GONE
+            gameMgtActivity.findViewById<RelativeLayout>(R.id.loadingPanel)?.visibility = View.GONE
         }
     }
 
