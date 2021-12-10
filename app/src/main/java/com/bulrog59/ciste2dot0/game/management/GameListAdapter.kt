@@ -184,7 +184,7 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
 
     private fun canUserShareTheGame(userId: String?): Boolean {
         val user = FirebaseAuth.getInstance().currentUser
-        return userId == user?.uid && user?.displayName != null
+        return userId == user?.uid && user?.displayName?.isNotEmpty()?:false
     }
 
     private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, gameMetaData: GameMetaData) {
