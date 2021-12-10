@@ -97,5 +97,6 @@
     <string name="error_no_default_scene">You need to select a default scene</string>
     <string name="item_order_title">Change order of rules</string>
     <string name="cannot_delete_scene">Cannot delete scene as used in other scene(s):</string>
+    <string name="confirmation_share_game">Are you sure you want to share the game? Please ensure only games which are rady to play.</string>
 
 </resources>

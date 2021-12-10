@@ -27,7 +27,6 @@ class SignInActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //TODO: tune the sign in screen as not so nice
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         val providers = arrayListOf(

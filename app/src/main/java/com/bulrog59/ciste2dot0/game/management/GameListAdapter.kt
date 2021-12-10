@@ -114,33 +114,42 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
         ).show()
     }
 
-    private fun shareGame(gameMetaData: GameMetaData, holder: ViewHolder) {
-        //TODO: to also put message to tell user if sure game is ready to avoid other people to get crap game
-        if (isGameOk(gameMetaData.id)){
-            gameMgtActivity.increaseGameUnderTransfer()
-            gameDataManager.shareGame(
-                gameMetaData,
-                { transfer, total ->
-                    transferUpdate(holder.progressBar, transfer, total)
-                },
-                { e ->
-                    gameMgtActivity.decreaseGameUnderTransfer()
-                    displayError(R.string.error_uploading_game, e)
-                    loadedGameButtons(holder, gameMetaData)
-                }
-            ) {
+    private fun transferGame(gameMetaData: GameMetaData, holder: ViewHolder){
+        gameMgtActivity.increaseGameUnderTransfer()
+        gameDataManager.shareGame(
+            gameMetaData,
+            { transfer, total ->
+                transferUpdate(holder.progressBar, transfer, total)
+            },
+            { e ->
                 gameMgtActivity.decreaseGameUnderTransfer()
-                gameDao.updateGameEntry(it, gameMetaData, { e ->
-                    displayError(R.string.error_uploading_game, e)
-                    loadedGameButtons(holder, gameMetaData)
-                }) {
-                    Toast.makeText(gameMgtActivity, R.string.success_uploading_game, Toast.LENGTH_LONG)
-                        .show()
-                    loadedGameButtons(holder, gameMetaData)
-                }
-
+                displayError(R.string.error_uploading_game, e)
+                loadedGameButtons(holder, gameMetaData)
+            }
+        ) {
+            gameMgtActivity.decreaseGameUnderTransfer()
+            gameDao.updateGameEntry(it, gameMetaData, { e ->
+                displayError(R.string.error_uploading_game, e)
+                loadedGameButtons(holder, gameMetaData)
+            }) {
+                Toast.makeText(gameMgtActivity, R.string.success_uploading_game, Toast.LENGTH_LONG)
+                    .show()
+                loadedGameButtons(holder, gameMetaData)
             }
 
+        }
+    }
+
+    private fun shareGame(gameMetaData: GameMetaData, holder: ViewHolder) {
+        if (isGameOk(gameMetaData.id)){
+            AlertDialog.Builder(gameMgtActivity)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage(R.string.confirmation_share_game)
+                .setPositiveButton(R.string.confirmation) { _, _ ->
+                    transferGame(gameMetaData,holder)
+                }
+                .setNegativeButton(R.string.denial) { _, _ -> loadedGameButtons(holder,gameMetaData) }
+                .show()
         }
     }
 

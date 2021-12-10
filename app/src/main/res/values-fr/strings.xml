@@ -98,5 +98,6 @@
     <string name="error_no_default_scene">Vous devez sélectionner une scène par défaut</string>
     <string name="item_order_title">Changer l\'ordre d\'application des règles</string>
     <string name="cannot_delete_scene">Impossible d\'effacer la scène car elle est utilisée par d\'autres scène(s):</string>
+    <string name="confirmation_share_game">Etes vous sûr de vouloir partager le jeu? Ne partagez que des jeux prêt a être joué.</string>
 
 </resources>

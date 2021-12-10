@@ -15,13 +15,14 @@ import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemLi
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.Item
+import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.scenes.update_inventory.UpdateInventoryOptions
 import com.fasterxml.jackson.databind.JsonNode
 
 class UpdateInventoryEditor(
     private val activity: Activity,
     private val gameData: GameData,
-    scenePosition: Int,
+    val scenePosition: Int,
     private val done: (JsonNode) -> Unit
 ) : CallBackActivityResult {
 
@@ -150,18 +151,23 @@ class UpdateInventoryEditor(
         }
 
         val r = activity.findViewById<RecyclerView>(R.id.next_scene_update_inventory)
+        val otherScenes = mutableListOf<SceneData>().apply {
+            addAll(gameData.scenes)
+            removeAt(scenePosition)
+        }
+
         var previousPosition =RecyclerView.NO_POSITION
         nextScene?.apply {
             previousPosition =
-                gameData.scenes.indexOf(gameData.scenes.find { s -> s.sceneId == nextScene })
+                otherScenes.indexOf(gameData.scenes.find { s -> s.sceneId == nextScene })
         }
-        //TODO: can select the same scene so then infinite loop
+
         val menuSelector = MenuSelectorAdapter(
             GameOptionHelper.sceneDescriptions(
-                gameData.scenes,
+                otherScenes,
                 activity
             ),previousPosition) { p ->
-            nextScene = gameData.scenes[p].sceneId
+            nextScene = otherScenes[p].sceneId
         }
 
 
