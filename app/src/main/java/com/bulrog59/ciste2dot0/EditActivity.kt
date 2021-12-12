@@ -82,7 +82,7 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
-    private fun selectStartingSceneScreen() {
+    private fun selectSceneScreen(gameSceneToUpdate: (Int) -> Unit) {
         val itemPicker = ItemPicker(this)
         itemPicker.previousSelection =
             gameDataWriter.gameData.scenes.indexOf(gameDataWriter.gameData.scenes.findLast { gameDataWriter.gameData.starting == it.sceneId })
@@ -127,11 +127,31 @@ class EditActivity : AppCompatActivity() {
         setContentView(R.layout.editor_scene_selection)
 
         val recyclerView = findViewById<RecyclerView>(R.id.scene_selection_menu)
-        recyclerView.adapter = MenuSelectorAdapter(scenesDescription,RecyclerView.NO_POSITION) { p -> setEditorForScene(p) }
+        recyclerView.adapter = MenuSelectorAdapter(
+            scenesDescription,
+            RecyclerView.NO_POSITION
+        ) { p -> setEditorForScene(p) }
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         findViewById<Button>(R.id.add_scene_button).setOnClickListener { sceneCreationScreen() }
-        findViewById<Button>(R.id.edit_start_scene).setOnClickListener { selectStartingSceneScreen() }
+        findViewById<Button>(R.id.edit_start_scene).setOnClickListener {
+            selectSceneScreen { s ->
+                gameDataWriter.apply {
+                    this.updateStartingScene(
+                        s
+                    )
+                }
+            }
+        }
+        findViewById<Button>(R.id.back_button_scene).setOnClickListener {
+            selectSceneScreen { s ->
+                gameDataWriter.apply {
+                    this.updateBackButtonScene(
+                        s
+                    )
+                }
+            }
+        }
         findViewById<Button>(R.id.delete_scene_button).setOnClickListener { deleteScene() }
         findViewById<Button>(R.id.meta_data_edit_button).setOnClickListener { gameMetaEdition() }
         findViewById<Button>(R.id.clear_resource_button).setOnClickListener { clearUnusedResource() }
@@ -153,11 +173,13 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun sceneCreationScreen() {
-        var positionSelected=RecyclerView.NO_POSITION
+        var positionSelected = RecyclerView.NO_POSITION
         setContentView(R.layout.editor_new_scene)
         val recyclerView = findViewById<RecyclerView>(R.id.scene_type_selection)
         val sceneTypeSelector = MenuSelectorAdapter(
-            SceneType.values().map { v -> getText(v.description).toString() },RecyclerView.NO_POSITION) {positionSelected=it}
+            SceneType.values().map { v -> getText(v.description).toString() },
+            RecyclerView.NO_POSITION
+        ) { positionSelected = it }
 
         findViewById<Button>(R.id.create_scene_button).setOnClickListener {
             if (positionSelected != RecyclerView.NO_POSITION) {

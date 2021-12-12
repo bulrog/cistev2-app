@@ -135,6 +135,16 @@ class GameDataWriter(val activity: Activity) {
         saveGameData()
     }
 
+    fun updateBackButtonScene(backButtonSceneId: Int) {
+        gameData = GameData(
+            gameData.starting,
+            gameData.scenes,
+            backButtonSceneId,
+            gameData.gameMetaData
+        )
+        saveGameData()
+    }
+
     fun updateGameMetaData(gameMetaData: GameMetaData) {
         gameData = GameData(
             gameData.starting,
@@ -269,7 +279,6 @@ class GameDataWriter(val activity: Activity) {
     }
 
     private fun verifyUsedByInventoryOptions(sceneIDToDelete: Int): String {
-        //TODO: if add exit button on inventory then need also to check for the scene deletion
         return verifyIfSceneIsUsedAsNextSceneForType<InventoryOptions>(
             SceneType.inventory,
             sceneIDToDelete
@@ -307,7 +316,8 @@ class GameDataWriter(val activity: Activity) {
             verifyUsedByInventoryOptions(sceneIDToDelete),
             verifyUsedByUpdateInventoryOptions(sceneIDToDelete),
             verifyUsedByDetectorOption(sceneIDToDelete),
-            verifyUsedByMenuOptions(sceneIDToDelete)).filter { it.isNotEmpty() }.joinToString(",")
+            verifyUsedByMenuOptions(sceneIDToDelete)
+        ).filter { it.isNotEmpty() }.joinToString(",")
 
         if (scenesInUsed.isNotEmpty()) {
             return "${activity.getText(R.string.cannot_delete_scene)}$scenesInUsed"
@@ -315,10 +325,21 @@ class GameDataWriter(val activity: Activity) {
         return ""
     }
 
+    private fun verifySceneIsNotStartingScene(sceneIDToDelete: Int): String {
+        return if (sceneIDToDelete == gameData.starting) activity.getString(R.string.cannot_delete_starting_scene) else ""
+    }
+
+    private fun verifySceneIsNotBackButtonScene(sceneIDToDelete: Int): String {
+        return if (sceneIDToDelete == gameData.backButtonScene) activity.getString(R.string.cannot_delete_scene_back_button) else ""
+    }
+
     fun verifyCanDeleteAScene(sceneIDToDelete: Int): String {
         val sceneDataToDelete = gameData.scenes.filter { s -> s.sceneId == sceneIDToDelete }[0]
-        var errorMessage = verifyIfSomeItemsAreUsed(sceneDataToDelete)
-        errorMessage += verifyIfSceneIsUsedAsNextScene(sceneDataToDelete.sceneId)
+        //TODO: verify scene is back button scene
+        var errorMessage = verifySceneIsNotStartingScene(sceneIDToDelete) +
+                verifySceneIsNotBackButtonScene(sceneIDToDelete) +
+                verifyIfSomeItemsAreUsed(sceneDataToDelete) +
+                verifyIfSceneIsUsedAsNextScene(sceneDataToDelete.sceneId)
         return errorMessage
     }
 }

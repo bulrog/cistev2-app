@@ -60,9 +60,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:text="@string/edit_meta_button_text"
-        app:layout_constraintBottom_toTopOf="@+id/edit_start_scene"
+        app:layout_constraintBottom_toTopOf="@+id/back_button_scene"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
@@ -83,6 +82,16 @@
         android:layout_marginBottom="10dp"
         android:text="@string/clear_resource"
         app:layout_constraintBottom_toTopOf="@+id/meta_data_edit_button"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/back_button_scene"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/back_button_text"
+        app:layout_constraintBottom_toTopOf="@+id/edit_start_scene"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
