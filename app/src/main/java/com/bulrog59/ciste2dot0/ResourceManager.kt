@@ -23,7 +23,7 @@ class ResourceManager(activity: Activity) {
     }
 
     private fun findFileWithName(name:String):String {
-        val matchingFiles=File(rootFolder).listFiles()?.filter { it.nameWithoutExtension == name }
+        val matchingFiles=File(rootFolder).listFiles()?.filter { it.nameWithoutExtension == File(name).nameWithoutExtension }
         if (matchingFiles?.size!=1){
             throw IllegalStateException("cannot find a unique file in the folder$rootFolder for name:$name")
         }

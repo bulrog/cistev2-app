@@ -43,9 +43,11 @@ class PicMusicScene(
 
         }
         picMusicOption.optionalText?.apply {
-            val text = cisteActivity.findViewById<TextView>(R.id.text_pic)
-            text.visibility = View.VISIBLE
-            text.text = this
+            if (this.isNotEmpty()){
+                val text = cisteActivity.findViewById<TextView>(R.id.text_pic)
+                text.visibility = View.VISIBLE
+                text.text = this
+            }
         }
     }
 
