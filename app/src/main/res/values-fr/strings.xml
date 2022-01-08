@@ -55,7 +55,7 @@
     <string name="loop_sound_help_text">Jouer le son en boucle</string>
     <string name="save_text">Sauvegarder</string>
     <string name="change_starting_scene">Changer la scene de démarrage</string>
-    <string name="select_start_scene_title">Sélectionnez la scène de démarrage du jeu</string>
+    <string name="select_scene_title">Sélectionnez la scène</string>
     <string name="video_select_text">Sélectionnez la vidéo à jouer</string>
     <string name="title_menu_editor_selection">Sélectionnez l\'item à modifier</string>
     <string name="title_entity_help_text">Entrez le texte à afficher</string>

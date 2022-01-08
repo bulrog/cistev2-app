@@ -82,15 +82,15 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
-    private fun selectSceneScreen(gameSceneToUpdate: (Int) -> Unit) {
+    private fun selectSceneScreen(previousSceneID:Int,gameSceneToUpdate: (Int) -> Unit) {
         val itemPicker = ItemPicker(this)
         itemPicker.previousSelection =
-            gameDataWriter.gameData.scenes.indexOf(gameDataWriter.gameData.scenes.findLast { gameDataWriter.gameData.starting == it.sceneId })
+            gameDataWriter.gameData.scenes.indexOf(gameDataWriter.gameData.scenes.findLast { previousSceneID == it.sceneId })
         itemPicker.init(
-            R.string.select_start_scene_title,
+            R.string.select_scene_title,
             sceneDescriptions(gameDataWriter.gameData.scenes, this)
         ) { p ->
-            gameDataWriter.apply { this.updateStartingScene(this.gameData.scenes[p].sceneId) }
+            gameSceneToUpdate(gameDataWriter.gameData.scenes[p].sceneId)
             sceneSelectionScreen()
         }
     }
@@ -135,7 +135,7 @@ class EditActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.add_scene_button).setOnClickListener { sceneCreationScreen() }
         findViewById<Button>(R.id.edit_start_scene).setOnClickListener {
-            selectSceneScreen { s ->
+            selectSceneScreen(gameDataWriter.gameData.starting) { s ->
                 gameDataWriter.apply {
                     this.updateStartingScene(
                         s
@@ -144,7 +144,7 @@ class EditActivity : AppCompatActivity() {
             }
         }
         findViewById<Button>(R.id.back_button_scene).setOnClickListener {
-            selectSceneScreen { s ->
+            selectSceneScreen(gameDataWriter.gameData.backButtonScene) { s ->
                 gameDataWriter.apply {
                     this.updateBackButtonScene(
                         s

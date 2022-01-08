@@ -56,7 +56,7 @@
     <string name="loop_sound_help_text">Play sound in loop</string>
     <string name="save_text">Save</string>
     <string name="change_starting_scene">Change starting scene</string>
-    <string name="select_start_scene_title">Select the scene to start the game</string>
+    <string name="select_scene_title">Select the scene</string>
     <string name="video_select_text">Select video to play</string>
     <string name="title_menu_editor_selection">Select the menu item you want to edit</string>
     <string name="title_entity_help_text">Enter the text to show</string>
