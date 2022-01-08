@@ -102,5 +102,6 @@
     <string name="cannot_delete_starting_scene">Vous ne pouvez pas effacer la scène de départ.</string>
     <string name="cannot_delete_scene_back_button">Vous ne pouvez pas effacer la scène pointée par le bouton de retour.</string>
     <string name="back_button_text">"Sélectionnez la scène du backbutton "</string>
+    <string name="file_different_extension_error">Vous ne pouvez pas avoir un fichier avec le même nom mais une autre extension. Fichier en conflit:</string>
 
 </resources>

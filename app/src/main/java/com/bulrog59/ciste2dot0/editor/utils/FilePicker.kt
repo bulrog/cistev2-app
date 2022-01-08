@@ -21,7 +21,7 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
     private var fileUri: Uri? = null
     private var newFile = false
     private val resourceFinder = ResourceManager(activity)
-    var previousFileName: String?=null
+    var previousFileName: String? = null
 
 
     private fun getFileName(uri: Uri): String? {
@@ -44,7 +44,7 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         if (uri != null) {
             newFile = true
             fileUri = uri
-            val fileName=getFileName(uri)
+            val fileName = getFileName(uri)
             fileName?.apply {
                 activity.findViewById<TextView>(R.id.selected_file_name).text = fileName
             }
@@ -90,6 +90,21 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
                     val fileName = getFileName(this)
                     val ios = activity.contentResolver.openInputStream(this)
                     fileName?.apply {
+                        val filesMatchingWithoutExtension =
+                            resourceFinder.getFileWithMatchingNameWithoutExtension(this)
+                        if (filesMatchingWithoutExtension.isNotEmpty() &&
+                            filesMatchingWithoutExtension.any { this != it }
+                        ) {
+                            Toast.makeText(
+                                activity,
+                                "${activity.getText(R.string.file_different_extension_error)}${
+                                    filesMatchingWithoutExtension.filter { this != it }
+                                        .joinToString()
+                                }",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return
+                        }
                         if (resourceFinder.fileExists(this)) {
                             AlertDialog.Builder(activity)
                                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -127,9 +142,9 @@ class FilePicker(val activity: Activity) : CallBackActivityResult {
         previousItem: String?,
         doneCallBack: (fileName: String) -> Unit
     ) {
-        fileUri=null
-        newFile=false
-        previousFileName=null
+        fileUri = null
+        newFile = false
+        previousFileName = null
 
         this.doneCallBack = doneCallBack
         activity.setContentView(R.layout.editor_file_picker)

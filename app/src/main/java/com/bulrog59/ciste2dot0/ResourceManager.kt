@@ -10,8 +10,8 @@ import java.nio.file.Files
 
 class ResourceManager(activity: Activity) {
     private val id = activity.intent.getStringExtra(GAME_ID)
-    private val resources=activity.resources
-    private val rootFolder: String = if (id==null) {
+    private val resources = activity.resources
+    private val rootFolder: String = if (id == null) {
         StringBuilder()
             .append("android.resource://")
             .append(activity.packageName).append(File.separator)
@@ -22,19 +22,25 @@ class ResourceManager(activity: Activity) {
         "${activity.filesDir.absolutePath}/$FOLDER_FOR_GAME_DATA/$id/"
     }
 
-    private fun findFileWithName(name:String):String {
-        val matchingFiles=File(rootFolder).listFiles()?.filter { it.nameWithoutExtension == File(name).nameWithoutExtension }
-        if (matchingFiles?.size!=1){
+    fun getFileWithMatchingNameWithoutExtension(name: String): List<String> {
+        return File(rootFolder).listFiles()
+            ?.filter { it.nameWithoutExtension == File(name).nameWithoutExtension }?.map { it.name }
+            ?: emptyList()
+    }
+
+    private fun findFileWithNameWithoutExtension(name: String): String {
+        val matchingFiles = getFileWithMatchingNameWithoutExtension(name)
+        if (matchingFiles.size != 1) {
             throw IllegalStateException("cannot find a unique file in the folder$rootFolder for name:$name")
         }
-        return matchingFiles.first().name
+        return matchingFiles.first()
     }
 
     fun getUri(resourceName: String): Uri {
-        if (id==null){
+        if (id == null) {
             return Uri.parse(rootFolder + resourceName)
         }
-        return Uri.parse(rootFolder + findFileWithName(resourceName))
+        return Uri.parse(rootFolder + findFileWithNameWithoutExtension(resourceName))
     }
 
     private inline fun <reified T : Class<*>> T.getId(resourceName: String): Int {
@@ -47,46 +53,45 @@ class ResourceManager(activity: Activity) {
 
     }
 
-    fun getStreamFromUri(resourceName: String) : InputStream {
-        return  if (id==null){
-                resources.openRawResource(R.raw::class.java.getId(resourceName))
-        }
-        else{
+    fun getStreamFromUri(resourceName: String): InputStream {
+        return if (id == null) {
+            resources.openRawResource(R.raw::class.java.getId(resourceName))
+        } else {
             FileInputStream(File(getUri(resourceName).toString()))
         }
     }
 
 
-    fun fileExists(fileName: String):Boolean    {
+    fun fileExists(fileName: String): Boolean {
         return File("$rootFolder$fileName").exists()
     }
 
-    fun getOutputStreamForFile(fileName: String):OutputStream{
+    fun getOutputStreamForFile(fileName: String): OutputStream {
         return FileOutputStream(File("$rootFolder$fileName"))
     }
 
-    fun getOutputStreamFromURI(uri:String):OutputStream?{
-        return if (id==null){
+    fun getOutputStreamFromURI(uri: String): OutputStream? {
+        return if (id == null) {
             null
-        }else{
+        } else {
             FileOutputStream(File(getUri(uri).toString()))
         }
     }
 
-    fun deleteResource(fileName: String){
+    fun deleteResource(fileName: String) {
         File("$rootFolder$fileName").delete()
     }
 
-    fun listResourceOfType(filePickerType: FilePickerType):List<String>{
+    fun listResourceOfType(filePickerType: FilePickerType): List<String> {
 
         return File(rootFolder).listFiles()?.filter {
-           Files.probeContentType(it.toPath()).startsWith(filePickerType.name)
+            Files.probeContentType(it.toPath()).startsWith(filePickerType.name)
         }?.map { it.name } ?: emptyList()
     }
 
     companion object {
         const val GAME_ID = "game_id"
-        const val GAME_RESOURCE_NAME="game"
+        const val GAME_RESOURCE_NAME = "game"
     }
 
 

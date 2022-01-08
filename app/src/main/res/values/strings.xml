@@ -101,5 +101,6 @@
     <string name="cannot_delete_starting_scene">Cannot delete starting scene.</string>
     <string name="cannot_delete_scene_back_button">Cannot delete scene pointed by back button.</string>
     <string name="back_button_text">Select backbutton scene</string>
+    <string name="file_different_extension_error">You cannot have a file with the same name but a different extension. Conflicting file:</string>
 
 </resources>
