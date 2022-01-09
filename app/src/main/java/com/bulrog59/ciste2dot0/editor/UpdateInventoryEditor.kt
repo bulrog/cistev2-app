@@ -32,7 +32,7 @@ class UpdateInventoryEditor(
     }
 
     private var filePicker: FilePicker? = null
-    private val gameDataWriter=GameDataWriter(activity)
+    private val gameDataWriter = GameDataWriter(activity)
 
     override fun callBack(uri: Uri?, requestCode: Int) {
         filePicker?.callBack(uri, requestCode)
@@ -80,10 +80,9 @@ class UpdateInventoryEditor(
                 FilePickerType.image,
                 previousItem?.picture
             ) { pic ->
-
-                //cannot set the ID as this function is called by the list editor which has its own mutated
+                //cannot set the ID if not existing as this function is called by the list editor which has its own mutated
                 //item list, so will defer the set of the id when we get back the list from the list editor:
-                done(Item(NO_ID, name, pic))
+                done(Item(previousItem?.id ?: NO_ID, name, pic))
 
             }
         }
@@ -156,7 +155,7 @@ class UpdateInventoryEditor(
             removeAt(scenePosition)
         }
 
-        var previousPosition =RecyclerView.NO_POSITION
+        var previousPosition = RecyclerView.NO_POSITION
         nextScene?.apply {
             previousPosition =
                 otherScenes.indexOf(gameData.scenes.find { s -> s.sceneId == nextScene })
@@ -166,7 +165,8 @@ class UpdateInventoryEditor(
             GameOptionHelper.sceneDescriptions(
                 otherScenes,
                 activity
-            ),previousPosition) { p ->
+            ), previousPosition
+        ) { p ->
             nextScene = otherScenes[p].sceneId
         }
 
