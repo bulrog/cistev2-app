@@ -2,6 +2,7 @@ package com.bulrog59.ciste2dot0
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
@@ -31,7 +32,7 @@ class CisteActivity : AppCompatActivity() {
     private var currentScene: Scene? = null
     private lateinit var gameData: GameData
     val inventory = Inventory()
-    lateinit var gameDataLoader:GameDataLoader
+    lateinit var gameDataLoader: GameDataLoader
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
@@ -75,7 +76,7 @@ class CisteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this))
-        gameDataLoader=GameDataLoader(this)
+        gameDataLoader = GameDataLoader(this)
         reviewPermissions()
         gameData = gameDataLoader.loadGameDataFromIntent()
 
@@ -99,7 +100,12 @@ class CisteActivity : AppCompatActivity() {
         return createScene(retrieveOption(sceneData), this)
     }
 
-    private fun changeScene(sceneData: SceneData){
+    private fun exitGame() {
+        finish()
+        exitProcess(0)
+    }
+
+    private fun changeScene(sceneData: SceneData) {
         currentScene?.apply {
             lifecycle.removeObserver(this)
             shutdown()
@@ -109,15 +115,16 @@ class CisteActivity : AppCompatActivity() {
                 currentScene = loadScene(::VideoScene, sceneData)
             }
             SceneType.exit -> {
-                AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setMessage(R.string.quit)
-                    .setPositiveButton(R.string.confirmation) { _, _ ->
-                        finish()
-                        exitProcess(0)
-                    }
-                    .setNegativeButton(R.string.denial) { _, _ ->  }
-                    .show()
+                currentScene?.apply {
+                    AlertDialog.Builder(this@CisteActivity)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setMessage(R.string.quit)
+                        .setPositiveButton(R.string.confirmation) { _, _ ->
+                            exitGame()
+                        }
+                        .setNegativeButton(R.string.denial) { _, _ -> }
+                        .show()
+                } ?: startActivity(Intent(this, GameMgtActivity::class.java))
 
             }
             SceneType.picMusic -> {
@@ -144,7 +151,7 @@ class CisteActivity : AppCompatActivity() {
             }
         }
 
-        lifecycle.addObserver(currentScene!!)
+        currentScene?.apply { lifecycle.addObserver(this) }
     }
 
     fun setScene(sceneId: Int) {
@@ -153,10 +160,10 @@ class CisteActivity : AppCompatActivity() {
             throw IllegalArgumentException("for scene $sceneId we have more than one match in the game data $gameData")
         }
         val sceneData = sceneDataMatches.getOrNull(0)
-        if (sceneData!=null){
+        if (sceneData != null) {
             changeScene(sceneData)
         } else {
-            Toast.makeText(this,R.string.scene_not_exist,Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.scene_not_exist, Toast.LENGTH_LONG).show()
         }
 
     }
