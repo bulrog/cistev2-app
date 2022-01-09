@@ -71,6 +71,15 @@ class GameDataWriter(val activity: Activity) {
         }
     }
 
+    private fun filterUnusedImageFromInventoryUpdate(allImages: List<String>): List<String> {
+        return filterUnusedFrom<UpdateInventoryOptions>(
+            allImages,
+            SceneType.updateInventory
+        ) { o ->
+            o.itemsToAdd.map { it.picture }
+        }
+    }
+
     private fun filterUnusedVideo(allVideo: List<String>): List<String> {
         return filterUnusedFrom<VideoOption>(
             allVideo,
@@ -86,7 +95,10 @@ class GameDataWriter(val activity: Activity) {
     }
 
     private fun filterUnusedImages(allImages: List<String>): List<String> {
-        return filterUnusedImageFromDetector(filterUnusedImageFromPicMusicOptions(allImages))
+        return filterUnusedImageFromInventoryUpdate(
+            filterUnusedImageFromDetector(
+                filterUnusedImageFromPicMusicOptions(
+                    allImages)))
     }
 
     fun clearUnusedFiles() {
@@ -117,7 +129,7 @@ class GameDataWriter(val activity: Activity) {
 
         gameData = GameData(
             gameData.starting,
-            scenesData.sortedBy { it.sceneId },
+            scenesData.sortedByDescending { it.sceneId },
             gameData.backButtonScene,
             gameData.gameMetaData
         )

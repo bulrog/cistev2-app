@@ -48,7 +48,7 @@
     <string name="file_not_selected">Vous devez selectionner un ficher</string>
     <string name="select_file_button_text">Selectionner le fichier existant</string>
     <string name="no_item_to_select">Il n\'y a pas de resource à selectionner</string>
-    <string name="quit_editor_mode">Etes vous sûr de vouloir quitter le mode editor?</string>
+    <string name="quit">Etes vous sûr de vouloir quitter?</string>
     <string name="select_audio_text_title">Selectionner la musique/son à jouer</string>
     <string name="next_scene_title">Selectionnez la prochaine scène</string>
     <string name="pic_optional_help_text">Ajouter un texte optionnel à afficher</string>

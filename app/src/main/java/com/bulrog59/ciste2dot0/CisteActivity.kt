@@ -1,6 +1,7 @@
 package com.bulrog59.ciste2dot0
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
@@ -108,8 +109,16 @@ class CisteActivity : AppCompatActivity() {
                 currentScene = loadScene(::VideoScene, sceneData)
             }
             SceneType.exit -> {
-                finish()
-                exitProcess(0)
+                AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setMessage(R.string.quit)
+                    .setPositiveButton(R.string.confirmation) { _, _ ->
+                        finish()
+                        exitProcess(0)
+                    }
+                    .setNegativeButton(R.string.denial) { _, _ ->  }
+                    .show()
+
             }
             SceneType.picMusic -> {
                 currentScene = loadScene(::PicMusicScene, sceneData)

@@ -252,7 +252,7 @@ class EditActivity : AppCompatActivity() {
     override fun onBackPressed() {
         AlertDialog.Builder(this)
             .setIcon(android.R.drawable.ic_dialog_alert)
-            .setMessage(R.string.quit_editor_mode)
+            .setMessage(R.string.quit)
             .setPositiveButton(R.string.confirmation) { _, _ ->
                 super.onBackPressed()
 
