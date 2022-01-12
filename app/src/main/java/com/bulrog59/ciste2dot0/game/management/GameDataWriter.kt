@@ -347,7 +347,7 @@ class GameDataWriter(val activity: Activity) {
 
     fun verifyCanDeleteAScene(sceneIDToDelete: Int): String {
         val sceneDataToDelete = gameData.scenes.filter { s -> s.sceneId == sceneIDToDelete }[0]
-        //TODO: verify scene is back button scene
+
         var errorMessage = verifySceneIsNotStartingScene(sceneIDToDelete) +
                 verifySceneIsNotBackButtonScene(sceneIDToDelete) +
                 verifyIfSomeItemsAreUsed(sceneDataToDelete) +
