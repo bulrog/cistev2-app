@@ -33,7 +33,11 @@ class Inventory {
     }
 
     fun removeItem(id: Int) {
-        items.removeAt(items.map { it.id }.indexOf(id))
+        val idToRemove=items.map { it.id }.indexOf(id)
+        if (idToRemove>0){
+            items.removeAt(idToRemove)
+        }
+
     }
 
     fun copy(): Inventory {
