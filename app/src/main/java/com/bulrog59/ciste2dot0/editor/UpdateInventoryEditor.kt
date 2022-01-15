@@ -11,6 +11,7 @@ import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.*
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.gamePreviousElement
+import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemDescription
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemList
 import com.bulrog59.ciste2dot0.game.management.GameDataWriter
 import com.bulrog59.ciste2dot0.gamedata.GameData
@@ -105,7 +106,7 @@ class UpdateInventoryEditor(
             Toast.makeText(activity, R.string.no_item_to_select, Toast.LENGTH_LONG).show()
             return
         }
-        itemPicker.init(R.string.item_removal_help_text, items.map { it.name }) { done(items[it]) }
+        itemPicker.init(R.string.item_removal_help_text, items.map { getItemDescription(it) }) { done(items[it]) }
 
     }
 
@@ -130,7 +131,7 @@ class UpdateInventoryEditor(
     fun init() {
         activity.setContentView(R.layout.editor_update_inventory)
         activity.findViewById<Button>(R.id.add_menu_button).setOnClickListener {
-            ListEditor(activity, itemsToAdd, { l -> l.map { it.name } }, this::itemToAddEdit, { r ->
+            ListEditor(activity, itemsToAdd, { l -> l.map { getItemDescription(it) } }, this::itemToAddEdit, { r ->
                 updateItemsToAddWithIds(r)
                 init()
             }).apply { validatorItemCanBeRemoved = { gameDataWriter.verifyIfItemIsUsed(it) } }
@@ -140,7 +141,7 @@ class UpdateInventoryEditor(
             ListEditor(
                 activity,
                 itemIdsToRemove,
-                { l -> l.map { it.name } },
+                { l -> l.map { getItemDescription(it) } },
                 this::removeItemSelection,
                 { r ->
                     itemIdsToRemove = r

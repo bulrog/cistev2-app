@@ -5,11 +5,13 @@ import android.widget.Toast
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
+import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemDescription
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemList
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemPickerNextScene
 import com.bulrog59.ciste2dot0.editor.utils.ItemPicker
 import com.bulrog59.ciste2dot0.editor.utils.ListEditor
 import com.bulrog59.ciste2dot0.gamedata.GameData
+import com.bulrog59.ciste2dot0.gamedata.Item
 import com.bulrog59.ciste2dot0.scenes.inventory.Combination
 import com.bulrog59.ciste2dot0.scenes.inventory.InventoryOptions
 import com.fasterxml.jackson.databind.JsonNode
@@ -22,7 +24,7 @@ class InventoryEditor(
 ) {
 
     private fun getItemName(itemID: Int): String {
-        return getItemList(gameData).findLast { it.id == itemID }?.name ?: ""
+        return getItemList(gameData).findLast { it.id == itemID }?.let { getItemDescription(it) } ?: ""
     }
 
     private fun getSceneName(sceneId: Int): String {
@@ -67,7 +69,7 @@ class InventoryEditor(
 
         itemPicker.init(
             R.string.second_item_selection_title,
-            remainingItems.map { it.name }) { secondItem ->
+            remainingItems.map { getItemDescription(it) }) { secondItem ->
             val firstItemId = allItems[firstItemPosition].id
             val secondItemId = remainingItems[secondItem].id
 
@@ -91,7 +93,7 @@ class InventoryEditor(
         }
         itemPicker.init(
             R.string.first_item_selection_title,
-            allItems.map { it.name }) {
+            allItems.map { getItemDescription(it) }) {
             getSecondItem(it, combination, done)
         }
     }

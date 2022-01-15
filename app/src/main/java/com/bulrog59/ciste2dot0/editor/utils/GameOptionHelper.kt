@@ -88,5 +88,9 @@ class GameOptionHelper {
                 .flatten()
 
         }
+
+        fun getItemDescription(item: Item):String{
+            return "${item.id}:${item.name}"
+        }
     }
 }

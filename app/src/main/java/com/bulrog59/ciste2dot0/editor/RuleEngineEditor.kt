@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.*
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
+import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemDescription
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemList
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getSceneDescription
 import com.bulrog59.ciste2dot0.gamedata.GameData
@@ -37,7 +38,7 @@ class RuleEngineEditor(
     private val allItems = getItemList(gameData)
 
     private fun getItemText(itemID: Int): String {
-        return allItems.filter { it.id == itemID }.map { it.name }.first()
+        return allItems.filter { it.id == itemID }.map { getItemDescription(it) }.first()
     }
 
     private fun getRuleText(rule: Rule): String {
