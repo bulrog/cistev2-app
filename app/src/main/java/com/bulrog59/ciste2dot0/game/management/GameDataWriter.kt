@@ -52,7 +52,9 @@ class GameDataWriter(val activity: Activity) {
         val picMusicPictures = gameData.scenes
             .filter { s -> !s.options.isEmpty && s.sceneType == sceneType }
             .flatMap { s -> getResourceFromOption(retrieveOption(s)) }
-        return allResources.filter { i -> !picMusicPictures.contains(i) }
+            .map { f-> File(f).nameWithoutExtension }
+
+        return allResources.filter { i -> !picMusicPictures.contains(File(i).nameWithoutExtension) }
     }
 
     private fun filterUnusedImageFromPicMusicOptions(allImages: List<String>): List<String> {
