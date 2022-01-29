@@ -14,24 +14,30 @@ import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
+import java.util.*
 import kotlin.system.exitProcess
 
 class GameMgtActivity : AppCompatActivity() {
 
-    private val gameMetaUtil=GameUtil(this)
-    private var gameUnderTransfer = 0
-    private var gameListAdapter:GameListAdapter?=null
+    private val gameMetaUtil = GameUtil(this)
 
-    fun increaseGameUnderTransfer() {
-        gameUnderTransfer++
+    private val gamesUnderTransfer: MutableList<UUID> = mutableListOf()
+    private var gameListAdapter: GameListAdapter? = null
+
+    fun addGameUnderTransfer(gameID: UUID) {
+        gamesUnderTransfer.add(gameID)
     }
 
-    fun decreaseGameUnderTransfer() {
-        gameUnderTransfer--
+    fun removeGameUnderTransfer(gameID: UUID) {
+        gamesUnderTransfer.remove(gameID)
+    }
+
+    fun isUnderTransfer(gameID: UUID): Boolean {
+        return gamesUnderTransfer.contains(gameID)
     }
 
     fun reviewIfAbortPossibleTransfer(done: () -> Unit) {
-        if (gameUnderTransfer > 0) {
+        if (gamesUnderTransfer.size > 0) {
             AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setMessage(R.string.transfer_abort)
@@ -48,8 +54,8 @@ class GameMgtActivity : AppCompatActivity() {
     private fun gameSelectionScreen() {
         setContentView(R.layout.game_management)
         val recyclerView = findViewById<RecyclerView>(R.id.games_list)
-        gameListAdapter=GameListAdapter(this)
-        recyclerView.adapter =gameListAdapter
+        gameListAdapter = GameListAdapter(this)
+        recyclerView.adapter = gameListAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         findViewById<ImageButton>(R.id.close_game).setOnClickListener {
             reviewIfAbortPossibleTransfer {

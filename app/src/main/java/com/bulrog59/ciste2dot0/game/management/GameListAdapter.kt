@@ -114,47 +114,59 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
         ).show()
     }
 
-    private fun transferGame(gameMetaData: GameMetaData, holder: ViewHolder){
-        gameMgtActivity.increaseGameUnderTransfer()
-        gameDataManager.shareGame(
-            gameMetaData,
-            { transfer, total ->
-                transferUpdate(holder.progressBar, transfer, total)
-            },
-            { e ->
-                gameMgtActivity.decreaseGameUnderTransfer()
-                displayError(R.string.error_uploading_game, e)
-                loadedGameButtons(holder, gameMetaData)
-            }
-        ) {
-            gameMgtActivity.decreaseGameUnderTransfer()
-            gameDao.updateGameEntry(it, gameMetaData, { e ->
-                displayError(R.string.error_uploading_game, e)
-                loadedGameButtons(holder, gameMetaData)
-            }) {
-                Toast.makeText(gameMgtActivity, R.string.success_uploading_game, Toast.LENGTH_LONG)
-                    .show()
-                loadedGameButtons(holder, gameMetaData)
+    private fun transferGame(gameMetaData: GameMetaData, holder: ViewHolder) {
+        gameMetaData.id?.apply {
+            holder.progressBar.visibility = View.VISIBLE
+            gameMgtActivity.addGameUnderTransfer(this)
+            gameDataManager.shareGame(
+                gameMetaData,
+                { transfer, total ->
+                    transferUpdate(holder.progressBar, transfer, total)
+                },
+                { e ->
+                    gameMgtActivity.removeGameUnderTransfer(this)
+                    displayError(R.string.error_uploading_game, e)
+                    loadedGameButtons(holder, gameMetaData)
+                }
+            ) {
+                gameMgtActivity.removeGameUnderTransfer(this)
+                gameDao.updateGameEntry(it, gameMetaData, { e ->
+                    displayError(R.string.error_uploading_game, e)
+                    loadedGameButtons(holder, gameMetaData)
+                }) {
+                    Toast.makeText(
+                        gameMgtActivity,
+                        R.string.success_uploading_game,
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    loadedGameButtons(holder, gameMetaData)
+                }
+
             }
 
         }
     }
 
     private fun shareGame(gameMetaData: GameMetaData, holder: ViewHolder) {
-        if (isGameOk(gameMetaData.id)){
+        if (isGameOk(gameMetaData.id)) {
             AlertDialog.Builder(gameMgtActivity)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setMessage(R.string.confirmation_share_game)
                 .setPositiveButton(R.string.confirmation) { _, _ ->
-                    transferGame(gameMetaData,holder)
+                    transferGame(gameMetaData, holder)
                 }
-                .setNegativeButton(R.string.denial) { _, _ -> loadedGameButtons(holder,gameMetaData) }
+                .setNegativeButton(R.string.denial) { _, _ ->
+                    loadedGameButtons(
+                        holder,
+                        gameMetaData
+                    )
+                }
                 .show()
         }
     }
 
     private fun transferUpdate(progressBar: ProgressBar, transferBytes: Long, totalBytes: Long) {
-        progressBar.visibility = View.VISIBLE
         val progressValue = transferBytes * 100.0f / totalBytes
         progressBar.progress = progressValue.roundToInt()
     }
@@ -170,20 +182,23 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
 
             holder.loadDeleteButton.visibility = View.VISIBLE
             holder.loadDeleteButton.setOnClickListener {
-                gameMgtActivity.increaseGameUnderTransfer()
-                gameDataManager.loadGame(gameMetaData.id, gameMetaData.userId,
-                    { transfer, total ->
-                        transferUpdate(holder.progressBar, transfer, total)
-                    }, { e ->
-                        gameMgtActivity.decreaseGameUnderTransfer()
-                        displayError(R.string.error_downloading_game, e)
-                        downloadGameButtons(holder, gameMetaData)
+                gameMetaData.id?.apply {
+                    holder.progressBar.visibility = View.VISIBLE
+                    gameMgtActivity.addGameUnderTransfer(this)
+                    gameDataManager.loadGame(gameMetaData.id, gameMetaData.userId,
+                        { transfer, total ->
+                            transferUpdate(holder.progressBar, transfer, total)
+                        }, { e ->
+                            gameMgtActivity.removeGameUnderTransfer(this)
+                            displayError(R.string.error_downloading_game, e)
+                            downloadGameButtons(holder, gameMetaData)
+                        }
+                    ) {
+                        gameMgtActivity.removeGameUnderTransfer(this)
+                        loadedGameButtons(holder, gameMetaData)
                     }
-                ) {
-                    gameMgtActivity.decreaseGameUnderTransfer()
-                    loadedGameButtons(holder, gameMetaData)
+                    holder.loadDeleteButton.visibility = View.INVISIBLE
                 }
-                holder.loadDeleteButton.visibility = View.INVISIBLE
             }
             holder.loadDeleteButton.setImageResource(R.drawable.ic_download)
         }
@@ -193,12 +208,17 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
 
     private fun canUserShareTheGame(userId: String?): Boolean {
         val user = FirebaseAuth.getInstance().currentUser
-        return userId == user?.uid && user?.displayName?.isNotEmpty()?:false
+        return userId == user?.uid && user?.displayName?.isNotEmpty() ?: false
     }
 
     private fun loadedGameButtons(holder: GameListAdapter.ViewHolder, gameMetaData: GameMetaData) {
         holder.startButton.visibility = View.VISIBLE
         holder.progressBar.visibility = View.INVISIBLE
+        gameMetaData.id?.apply {
+            if (gameMgtActivity.isUnderTransfer(this)){
+                holder.progressBar.visibility = View.VISIBLE
+            }
+        }
 
         if (canUserShareTheGame(gameMetaData.userId)) {
             holder.shareButton.visibility = View.VISIBLE
