@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.editor.utils.*
+import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.NO_ID
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.convertToJsonNode
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.gamePreviousElement
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getItemDescription
@@ -23,14 +24,10 @@ import com.fasterxml.jackson.databind.JsonNode
 class UpdateInventoryEditor(
     private val activity: Activity,
     private val gameData: GameData,
-    val scenePosition: Int,
+    private val scenePosition: Int,
     private val done: (JsonNode) -> Unit
 ) : CallBackActivityResult {
 
-
-    companion object {
-        private const val NO_ID = -1
-    }
 
     private var filePicker: FilePicker? = null
     private val gameDataWriter = GameDataWriter(activity)

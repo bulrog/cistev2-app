@@ -14,6 +14,9 @@ import com.fasterxml.jackson.module.kotlin.treeToValue
 
 class GameOptionHelper {
     companion object {
+
+        const val NO_ID = -1
+
         inline fun <reified T> getSceneOptions(gameData: GameData, scenePosition: Int): T? {
             val options = gameData.scenes[scenePosition].options
             return if (options.isEmpty) null else mapper.treeToValue<T>(options)
@@ -90,7 +93,8 @@ class GameOptionHelper {
         }
 
         fun getItemDescription(item: Item):String{
-            return "${item.id}:${item.name}"
+            val idText=if (item.id== NO_ID) "" else "${item.id}:"
+            return "$idText${item.name}"
         }
     }
 }
