@@ -12,10 +12,10 @@ import java.nio.ByteBuffer
 
 class ConvertPicture {
     companion object{
-        private fun nV21toJPEG(nv21: ByteArray, width: Int, height: Int, quality: Int): ByteArray {
+        private fun nV21toJPEG(nv21: ByteArray, width: Int, height: Int): ByteArray {
             val out = ByteArrayOutputStream()
             val yuv = YuvImage(nv21, ImageFormat.NV21, width, height, null)
-            yuv.compressToJpeg(android.graphics.Rect(0, 0, width, height), quality, out)
+            yuv.compressToJpeg(android.graphics.Rect(0, 0, width, height), 100, out)
             return out.toByteArray()
         }
 
@@ -80,8 +80,7 @@ class ConvertPicture {
             val jpg2 = nV21toJPEG(
                 yUV420toNV21(imageProxy),
                 imageProxy.width,
-                imageProxy.height,
-                100
+                imageProxy.height
             )
             val img = Imgcodecs.imdecode(MatOfByte(*jpg2), Imgcodecs.IMREAD_UNCHANGED)
             val rotatedImg = Mat()
