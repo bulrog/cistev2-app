@@ -66,8 +66,12 @@ class ResourceManager(activity: Activity) {
         return File("$rootFolder$fileName").exists()
     }
 
+    fun getLocationForFile(fileName: String):String {
+        return "$rootFolder$fileName"
+    }
+
     fun getOutputStreamForFile(fileName: String): OutputStream {
-        return FileOutputStream(File("$rootFolder$fileName"))
+        return FileOutputStream(File(getLocationForFile(fileName)))
     }
 
     fun getOutputStreamFromURI(uri: String): OutputStream? {

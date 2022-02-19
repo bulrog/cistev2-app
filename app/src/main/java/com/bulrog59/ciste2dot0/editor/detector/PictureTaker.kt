@@ -15,6 +15,7 @@ import com.bulrog59.ciste2dot0.camera.util.CameraManager
 import com.bulrog59.ciste2dot0.camera.util.ConvertPicture
 import org.opencv.android.Utils
 import org.opencv.core.Mat
+import org.opencv.imgcodecs.Imgcodecs
 
 class PictureTaker(
     val activity: AppCompatActivity,
@@ -40,27 +41,14 @@ class PictureTaker(
     }
 
 
-    private fun createBitmapfromMat(snap: Mat): Bitmap? {
-        val bp = Bitmap.createBitmap(snap.cols(), snap.rows(), Bitmap.Config.ARGB_8888)
-        Utils.matToBitmap(snap, bp)
-        return bp
-    }
-
     override fun analyze(imageProxy: ImageProxy) {
 
         if (capture) {
             val img = ConvertPicture.getPicture(imageProxy)
-            resourceManager.getOutputStreamForFile("$fileName$PIC_EXTENSION").use {
-                createBitmapfromMat(img)?.compress(Bitmap.CompressFormat.JPEG, 95, it)
-                    ?: Toast.makeText(
-                        activity,
-                        R.string.file_save_error,
-                        Toast.LENGTH_LONG
-                    ).show()
-                activity.runOnUiThread {
-                    cameraManager.stopCamera()
-                    callBack()
-                }
+            Imgcodecs.imwrite(resourceManager.getLocationForFile("$fileName$PIC_EXTENSION"),img)
+            activity.runOnUiThread {
+                cameraManager.stopCamera()
+                callBack()
             }
 
         }
