@@ -178,7 +178,7 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
         holder.startButton.visibility = View.INVISIBLE
         holder.editButton.visibility = View.INVISIBLE
         holder.shareButton.visibility = View.INVISIBLE
-        if (holder.remoteGame) {
+        if (holder.remoteGame && gameMetaData.playable) {
 
             holder.loadDeleteButton.visibility = View.VISIBLE
             holder.loadDeleteButton.setOnClickListener {
