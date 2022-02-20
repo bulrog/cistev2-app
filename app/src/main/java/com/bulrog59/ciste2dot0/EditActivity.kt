@@ -222,8 +222,8 @@ class EditActivity : AppCompatActivity() {
                         gameDataWriter.gameData.gameMetaData?.id
                     )
                 )
+                sceneSelectionScreen()
             }
-            sceneSelectionScreen()
         }
 
     }
