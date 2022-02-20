@@ -215,7 +215,7 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
         holder.startButton.visibility = View.VISIBLE
         holder.progressBar.visibility = View.INVISIBLE
         gameMetaData.id?.apply {
-            if (gameMgtActivity.isUnderTransfer(this)){
+            if (gameMgtActivity.isUnderTransfer(this)) {
                 holder.progressBar.visibility = View.VISIBLE
             }
         }
@@ -259,8 +259,9 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
         val game = gamesMetaData[position]
         holder.gameNameText.text = game.name
         holder.remoteGame = game.id != null
+        val gameIsStoredLocally = game.id?.let { gameDataManager.gameIsAvailable(it) } ?: true
 
-        if (!holder.remoteGame || gameDataManager.gameIsAvailable(game.id!!)) {
+        if (!holder.remoteGame || gameIsStoredLocally) {
             loadedGameButtons(holder, game)
 
         } else {
@@ -270,7 +271,7 @@ class GameListAdapter(private val gameMgtActivity: GameMgtActivity) :
 
             val detailText = gameMgtActivity.findViewById<TextView>(R.id.game_details)
             detailText.visibility = View.VISIBLE
-            detailText.text = game.gameDetails()
+            detailText.text = game.gameDetails(gameMgtActivity::getString, gameIsStoredLocally)
             detailText.setOnClickListener { it.visibility = View.GONE }
         }
     }

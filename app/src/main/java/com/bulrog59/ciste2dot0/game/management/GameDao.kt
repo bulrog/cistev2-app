@@ -4,7 +4,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.lang.IllegalArgumentException
-import java.lang.Math.round
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -21,7 +20,7 @@ class GameDao {
     private val sizeInMB = "sizeInMB"
     private val userID = "userID"
     private val author = "author"
-    private val visibility = "visibility"
+    private val playable = "playable"
 
 
     fun mapToGame(document: QueryDocumentSnapshot): GameMetaData {
@@ -45,7 +44,7 @@ class GameDao {
             sizeInMB = document.getLong(sizeInMB),
             userId = document.getString(userID),
             author = document.getString(author),
-            visibility = document.getBoolean(visibility) ?: false
+            playable = document.getBoolean(playable) ?: false
 
         )
     }
@@ -60,7 +59,7 @@ class GameDao {
         map[sizeInMB] = (gameSize / 1e6).roundToInt()
         map[userID] = gameMetaData.userId
         map[author] = gameMetaData.author
-        map[visibility] = gameMetaData.visibility
+        map[playable] = gameMetaData.playable
         return map
     }
 
@@ -70,7 +69,6 @@ class GameDao {
     ) {
         val games = mutableListOf<GameMetaData>()
         db.collection(collectionName)
-            .whereEqualTo(visibility, true)
             .get()
             .addOnSuccessListener { result ->
                 result.forEach { games.add(mapToGame(it)) }

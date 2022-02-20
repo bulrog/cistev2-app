@@ -103,5 +103,11 @@
     <string name="cannot_delete_scene_back_button">Vous ne pouvez pas effacer la scène pointée par le bouton de retour.</string>
     <string name="back_button_text">"Sélectionnez la scène du backbutton "</string>
     <string name="file_different_extension_error">Vous ne pouvez pas avoir un fichier avec le même nom mais une autre extension. Fichier en conflit:</string>
+    <string name="game_description">Description</string>
+    <string name="game_location">Location</string>
+    <string name="game_language">Langue</string>
+    <string name="game_size">Taille</string>
+    <string name="game_author">Auteur</string>
+    <string name="game_under_review">Jeu sous approbation, ne peut pas encore être joué!!</string>
 
 </resources>

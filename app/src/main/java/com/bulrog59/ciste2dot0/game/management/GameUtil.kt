@@ -54,7 +54,7 @@ class GameUtil(private val activity: Activity) {
             sizeInMB = null,
             userId = FirebaseAuth.getInstance().currentUser?.uid,
             author = FirebaseAuth.getInstance().currentUser?.displayName,
-            visibility = false
+            playable = false
 
         )
     }
