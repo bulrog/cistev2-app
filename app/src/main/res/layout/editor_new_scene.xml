@@ -54,13 +54,16 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/scene_type_selection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/scene_type_selection_title"
-/>
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/create_scene_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scene_type_selection_title" />
 
     <Button
         android:id="@+id/create_scene_button"
