@@ -38,13 +38,13 @@ class GameUtil(private val activity: Activity) {
         return error
     }
 
-    fun createGameMetaDataForMetaDataEditScreen(gameID: UUID?): GameMetaData {
+    fun createGameMetaDataForMetaDataEditScreen(gameMetaData: GameMetaData?): GameMetaData {
         val name = activity.findViewById<EditText>(R.id.menu_title_input).text.toString()
         val language = activity.findViewById<TextView>(R.id.game_language_input).text.toString()
         val description =
             activity.findViewById<TextView>(R.id.description_text).text.toString()
         val location = activity.findViewById<TextView>(R.id.game_location_input).text.toString()
-        val id = gameID ?: UUID.randomUUID()
+        val id = gameMetaData?.id ?: UUID.randomUUID()
         return GameMetaData(
             name = name,
             language = language,
@@ -52,8 +52,8 @@ class GameUtil(private val activity: Activity) {
             location = location,
             id = id,
             sizeInMB = null,
-            userId = FirebaseAuth.getInstance().currentUser?.uid,
-            author = FirebaseAuth.getInstance().currentUser?.displayName,
+            userId = gameMetaData?.userId ?: FirebaseAuth.getInstance().currentUser?.uid,
+            author = gameMetaData?.author ?: FirebaseAuth.getInstance().currentUser?.displayName,
             playable = false
 
         )

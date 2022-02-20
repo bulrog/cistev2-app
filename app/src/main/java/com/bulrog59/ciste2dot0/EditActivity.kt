@@ -219,7 +219,7 @@ class EditActivity : AppCompatActivity() {
             if (!gameMetaUtil.errorInGameMetaFields()) {
                 gameDataWriter.updateGameMetaData(
                     gameMetaUtil.createGameMetaDataForMetaDataEditScreen(
-                        gameDataWriter.gameData.gameMetaData?.id
+                        gameDataWriter.gameData.gameMetaData
                     )
                 )
                 sceneSelectionScreen()
