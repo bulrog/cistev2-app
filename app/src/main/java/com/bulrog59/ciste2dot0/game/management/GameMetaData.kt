@@ -11,7 +11,8 @@ data class GameMetaData(
     val language: String?,
     val sizeInMB: Long?,
     val userId: String?,
-    val author:String?
+    val author: String?,
+    val visibility: Boolean
 ) {
     fun gameDetails(): String {
         val detailBuilder = StringBuilder()

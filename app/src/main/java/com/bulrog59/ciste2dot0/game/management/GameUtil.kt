@@ -53,7 +53,8 @@ class GameUtil(private val activity: Activity) {
             id = id,
             sizeInMB = null,
             userId = FirebaseAuth.getInstance().currentUser?.uid,
-            author = FirebaseAuth.getInstance().currentUser?.displayName
+            author = FirebaseAuth.getInstance().currentUser?.displayName,
+            visibility = false
 
         )
     }
