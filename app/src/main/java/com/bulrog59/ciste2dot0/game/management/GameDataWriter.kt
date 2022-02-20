@@ -235,8 +235,11 @@ class GameDataWriter(val activity: Activity) {
         return ""
     }
 
-    fun verifyIfSomeItemsAreUsed(sceneDataToDelete: SceneData): String {
+    private fun verifyIfSomeItemsAreUsed(sceneDataToDelete: SceneData): String {
         if (sceneDataToDelete.sceneType != SceneType.updateInventory) {
+            return ""
+        }
+        if (sceneDataToDelete.options.isEmpty){
             return ""
         }
         val updateInvOptions = retrieveOption<UpdateInventoryOptions>(sceneDataToDelete)

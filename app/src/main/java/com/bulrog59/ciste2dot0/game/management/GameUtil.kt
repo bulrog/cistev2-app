@@ -22,7 +22,7 @@ class GameUtil(private val activity: Activity) {
 
         inline fun <reified T> retrieveOption(sceneData: SceneData): T {
             return mapper.treeToValue<T>(sceneData.options)
-                ?: throw IllegalArgumentException("options is null and cannot for a video type for the scene: $sceneData")
+                ?: throw IllegalArgumentException("options is null and cannot for the scene: $sceneData")
         }
 
 
