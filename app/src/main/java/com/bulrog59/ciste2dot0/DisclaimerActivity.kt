@@ -33,7 +33,12 @@ class DisclaimerActivity : AppCompatActivity() {
         if (!pref.getBoolean(APPROVED_DISCLAIMER, false)) {
             setContentView(R.layout.disclaimer)
 
-            val resourceId = if (Locale.getDefault().equals(Locale.FRENCH)) {
+            val resourceId = if (listOf(
+                    Locale.CANADA_FRENCH,
+                    Locale.FRENCH,
+                    Locale.FRANCE
+                ).contains(Locale.getDefault())
+            ) {
                 R.raw.disclaimer_fr
             } else {
                 R.raw.disclaimer_en
