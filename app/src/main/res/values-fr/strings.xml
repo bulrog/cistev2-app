@@ -109,5 +109,7 @@
     <string name="game_size">Taille</string>
     <string name="game_author">Auteur</string>
     <string name="game_under_review">Jeu sous approbation, ne peut pas encore être joué!!</string>
+    <string name="decline">refuser</string>
+    <string name="accept">accepter</string>
 
 </resources>

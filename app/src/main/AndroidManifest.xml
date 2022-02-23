@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ciste2dot0">
         <activity
-            android:name=".SignInActivity"
+            android:name=".DisclaimerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +33,10 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".GameMgtActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
+        <activity
+            android:name=".SignInActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
     </application>
