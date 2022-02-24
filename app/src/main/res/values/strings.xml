@@ -110,5 +110,6 @@
     <string name="game_under_review">Game under review, not playable yet!!</string>
     <string name="accept">accept</string>
     <string name="decline">decline</string>
+    <string name="game_help">Download the tutorial game to get details on the way to create your own games</string>
 
 </resources>

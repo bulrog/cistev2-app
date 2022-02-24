@@ -3,19 +3,23 @@ package com.bulrog59.ciste2dot0
 import android.app.AlertDialog
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bulrog59.ciste2dot0.game.management.GamesDataManager
 import com.bulrog59.ciste2dot0.game.management.GameListAdapter
 import com.bulrog59.ciste2dot0.game.management.GameUtil
 import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
+import com.bulrog59.ciste2dot0.game.management.GamesDataManager
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.gamedata.SceneData
 import com.bulrog59.ciste2dot0.gamedata.SceneType
 import java.util.*
 import kotlin.system.exitProcess
+
 
 class GameMgtActivity : AppCompatActivity() {
 
@@ -64,6 +68,14 @@ class GameMgtActivity : AppCompatActivity() {
             }
 
         }
+        findViewById<ImageButton>(R.id.game_help).setOnClickListener {
+            AlertDialog.Builder(this)
+            .setMessage(R.string.game_help)
+                .setCancelable(false)
+                .setPositiveButton("OK") { _, _ ->  }.create().show()
+
+        }
+
         findViewById<ImageButton>(R.id.new_game).setOnClickListener {
             gameCreationScreen()
         }
