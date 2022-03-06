@@ -1,3 +1,8 @@
+# ciste 2.0
+
+This project allows to build the ciste 2.0 application. This was built with anrdoid studio 4.2.1 and tested on a samsung s7, a71 and a redmi 9.
+
+
 # How to use openCV 4 in android sdk
 
 Based on this article: https://learnopencv.com/image-classification-with-opencv-for-android/
@@ -33,9 +38,9 @@ When starting in debug mode the console will show:
 
     D/check: openCV ok
 
-#How to setup download of data from firestore:
+# How to setup download of data from firestore:
 
-Create a project in firebase and generate as mentioned the key to access the project and add it at the root of this project.
+Create a project in firebase and generate as mentioned the key to access the project and add it at the root of the app folder.
 
 Then change the security rule for the storage:
 
@@ -52,6 +57,7 @@ Then change the security rule for the storage:
         }
       }
     }
+    
  And in firestore DB, add a collection games and set the permission as follow:
  
     rules_version = '2';
