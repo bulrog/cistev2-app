@@ -35,7 +35,7 @@ When starting in debug mode the console will show:
 
 #How to setup download of data from firestore:
 
-Create a project in firebase and generate as mentioned the key to access the project.
+Create a project in firebase and generate as mentioned the key to access the project and add it at the root of this project.
 
 Then change the security rule for the storage:
 
