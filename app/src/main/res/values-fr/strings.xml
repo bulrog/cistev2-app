@@ -111,6 +111,6 @@
     <string name="game_under_review">Jeu sous approbation, ne peut pas encore être joué!!</string>
     <string name="decline">refuser</string>
     <string name="accept">accepter</string>
-    <string name="game_help">Téléchargez le jeu \'tutorial\' pour voir comment créer vos propres jeux.</string>
+    <string name="game_help">Téléchargez le jeu \'tutoriel (fr)\' pour voir comment créer vos propres jeux.</string>
 
 </resources>

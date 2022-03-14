@@ -1,28 +1,19 @@
 # ciste 2.0
 
-This project allows to build the ciste 2.0 application. This was built with anrdoid studio 4.2.1 and tested on a samsung s7, a71 and a redmi 9.
+## What is it?
+
+An open-source android application to create/play on your mobile treasure hunts where people have to find checkpoints in the real world and solve puzzles.
+
+If you look for high-res graphics, amazing soundtracks, videos, animations... you can turn around but if you want to unleash your creativity without coding skills then you came to the right place!
+
+If you want to add new capabilities to this game just clone this repo. It allows to build the ciste 2.0 application.
+
+This was built with android studio 4.2.1 and tested on a samsung s7, a71 and a redmi 9 (as of March 2022).
 
 
-# How to use openCV 4 in android sdk
+## developer area 
 
-Based on this article: https://learnopencv.com/image-classification-with-opencv-for-android/
-
-Made a new project with an empty activity
-
-Download openCV4Android: https://opencv.org/releases/ (version 4.5.2)
-
-Then import is as a module (File-> New-> Import module and name it openCV)
-Then open the build.gradle of openCV and change:
-
-    apply plugin: 'com.android.application'
-    
-To:
-
-    apply plugin: 'com.android.library'
-
-Also comment the 'applicationId' line of openCV so it is not seen as an app.
-
-Then in project structure, choose the dependencies tab and add openCV as a module dependency to the app.
+### Android ndk requirements
 
 To build you need then to install NDK (AndroidStudio-> preferences-> android SDK-> SDK tools-> NDK side by side) (1GB download starts)
 
@@ -38,7 +29,7 @@ When starting in debug mode the console will show:
 
     D/check: openCV ok
 
-# How to setup download of data from firestore:
+### How to setup download of data from firestore:
 
 Create a project in firebase and generate as mentioned the key to access the project and add it at the root of the app folder.
 
@@ -69,3 +60,24 @@ Then change the security rule for the storage:
         }
       }
     }
+    
+### How to use openCV 4 in android sdk (already done for this project)
+
+Based on this article: https://learnopencv.com/image-classification-with-opencv-for-android/
+
+Made a new project with an empty activity
+
+Download openCV4Android: https://opencv.org/releases/ (version 4.5.2)
+
+Then import is as a module (File-> New-> Import module and name it openCV)
+Then open the build.gradle of openCV and change:
+
+    apply plugin: 'com.android.application'
+    
+To:
+
+    apply plugin: 'com.android.library'
+
+Also comment the 'applicationId' line of openCV so it is not seen as an app.
+
+Then in project structure, choose the dependencies tab and add openCV as a module dependency to the app.
