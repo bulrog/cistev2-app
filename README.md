@@ -10,6 +10,16 @@ If you want to add new capabilities to this game just clone this repo. It allows
 
 This was built with android studio 4.2.1 and tested on a samsung s7, a71 and a redmi 9 (as of March 2022).
 
+## reporting an issue
+
+In case of issue, just look if it is a know issue or create a new one [here](https://github.com/bulrog/cistev2-app/issues)
+
+If the application crashes you should get such screen:
+
+![](crash_example.jpg)
+
+Providing such picture will help to debug and if big error good to get the top like on this picture and also the "caused by" in the text.
+
 
 ## developer area 
 
