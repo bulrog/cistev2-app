@@ -83,7 +83,7 @@ class InventoryAdapter(
 
 
             cisteActivity.findViewById<ImageView>(R.id.itemSelected)
-                .apply { visibility = View.GONE }
+                .setImageResource(R.drawable.bad_combination)
             inventoryCopy.addItem(firstObject!!)
             notifyDataSetChanged()
             firstObject = null
