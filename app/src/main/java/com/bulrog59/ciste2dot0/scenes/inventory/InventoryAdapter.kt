@@ -20,14 +20,24 @@ class InventoryAdapter(
     private var firstObject: Item? = null
     private val inventoryCopy: Inventory = cisteActivity.inventory.copy()
 
+    companion object {
+        val BAD_COMBINATIONS_MESSAGES = listOf(
+            R.string.invalid_combination,
+            R.string.invalid_combination,
+            R.string.invalid_combination2,
+            R.string.invalid_combination3,
+            R.string.invalid_combination4
+        )
+    }
+
     fun matchOneId(combination: Combination, id: Int): Boolean {
         return combination.id1 == id || combination.id2 == id
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
-        val itemName:TextView = itemView.findViewById(R.id.itemDescription)
-        val itemIcon:ImageView = itemView.findViewById(R.id.itemIcon)
+        val itemName: TextView = itemView.findViewById(R.id.itemDescription)
+        val itemIcon: ImageView = itemView.findViewById(R.id.itemIcon)
 
         init {
             itemView.setOnClickListener(this)
@@ -69,7 +79,7 @@ class InventoryAdapter(
             }
 
             cisteActivity.findViewById<TextView>(R.id.inventory_message)
-                .apply { setText(R.string.invalid_combination) }
+                .apply { setText(BAD_COMBINATIONS_MESSAGES.random()) }
 
 
             cisteActivity.findViewById<ImageView>(R.id.itemSelected)

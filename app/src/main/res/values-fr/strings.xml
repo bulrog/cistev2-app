@@ -112,5 +112,8 @@
     <string name="decline">refuser</string>
     <string name="accept">accepter</string>
     <string name="game_help">Téléchargez le jeu \'tutoriel (fr)\' pour voir comment créer vos propres jeux.</string>
+    <string name="invalid_combination2">Ça vous arrive de réfléchir avant d\'essayer de combiner des items?</string>
+    <string name="invalid_combination3">Vous êtes si désépéré pour essayer ça?</string>
+    <string name="invalid_combination4">Je pense que vous avez cliqué sur le mauvais item, c\'est pas possible autrement...</string>
 
 </resources>
