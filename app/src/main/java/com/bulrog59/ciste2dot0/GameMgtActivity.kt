@@ -3,10 +3,7 @@ package com.bulrog59.ciste2dot0
 import android.app.AlertDialog
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.ImageButton
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +19,8 @@ import kotlin.system.exitProcess
 
 
 class GameMgtActivity : AppCompatActivity() {
+
+
 
     private val gameMetaUtil = GameUtil(this)
 

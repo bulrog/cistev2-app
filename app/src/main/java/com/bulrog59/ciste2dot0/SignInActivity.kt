@@ -11,6 +11,7 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 
 class SignInActivity : AppCompatActivity() {
 
+
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
     ) { res ->
@@ -29,6 +30,7 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.AnonymousBuilder().build()

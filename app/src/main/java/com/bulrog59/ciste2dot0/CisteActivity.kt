@@ -1,14 +1,10 @@
 package com.bulrog59.ciste2dot0
 
-import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.bulrog59.ciste2dot0.game.management.GameDataLoader
 import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.mapper
 import com.bulrog59.ciste2dot0.game.management.GameUtil.Companion.retrieveOption
@@ -34,32 +30,6 @@ class CisteActivity : AppCompatActivity() {
     val inventory = Inventory()
     lateinit var gameDataLoader: GameDataLoader
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(
-            baseContext, it
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (!allPermissionsGranted()) {
-
-
-                Toast.makeText(
-                    this,
-                    "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                finish()
-            }
-        }
-    }
-
-
     fun gameDataToString(): String {
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(gameData)
     }
@@ -77,19 +47,9 @@ class CisteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this))
         gameDataLoader = GameDataLoader(this)
-        reviewPermissions()
         gameData = gameDataLoader.loadGameDataFromIntent()
-
         if (currentScene == null) {
             setScene(gameData.starting)
-        }
-    }
-
-    private fun reviewPermissions() {
-        if (!allPermissionsGranted()) {
-            ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
-            )
         }
     }
 
@@ -168,8 +128,4 @@ class CisteActivity : AppCompatActivity() {
 
     }
 
-    companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-    }
 }
