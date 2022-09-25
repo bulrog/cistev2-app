@@ -1,11 +1,9 @@
 package com.bulrog59.ciste2dot0.editor.detector
 
-import android.graphics.Bitmap
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -13,8 +11,6 @@ import com.bulrog59.ciste2dot0.R
 import com.bulrog59.ciste2dot0.ResourceManager
 import com.bulrog59.ciste2dot0.camera.util.CameraManager
 import com.bulrog59.ciste2dot0.camera.util.ConvertPicture
-import org.opencv.android.Utils
-import org.opencv.core.Mat
 import org.opencv.imgcodecs.Imgcodecs
 
 class PictureTaker(

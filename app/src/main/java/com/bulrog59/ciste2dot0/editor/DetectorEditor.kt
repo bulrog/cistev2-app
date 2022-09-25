@@ -18,6 +18,7 @@ import com.bulrog59.ciste2dot0.editor.utils.*
 import com.bulrog59.ciste2dot0.editor.utils.GameOptionHelper.Companion.getSceneDescription
 import com.bulrog59.ciste2dot0.gamedata.GameData
 import com.bulrog59.ciste2dot0.scenes.detector.DetectorOption
+import com.bulrog59.ciste2dot0.scenes.pic.PicMusicOption
 import com.fasterxml.jackson.databind.JsonNode
 import java.util.AbstractMap
 
@@ -71,6 +72,24 @@ class DetectorEditor(
 
     }
 
+    private fun reSizePic(picName:String){
+
+    }
+
+    private fun getPic(
+        picName: String?,
+        previousNextScene: Int?,
+        done: (Map.Entry<String, Int>) -> Unit
+    ) {
+        filePicker.init(
+            R.string.select_picture_text_title,
+            FilePickerType.image,
+            picName
+        ) { p ->
+            selectNextScene(p, previousNextScene, done)
+        }
+    }
+
     private fun editMenuItem(
         previousItem: Map.Entry<String, Int>?,
         done: (Map.Entry<String, Int>) -> Unit
@@ -87,6 +106,12 @@ class DetectorEditor(
             }
         } ?: run {
             keepSamePicButton.visibility = View.INVISIBLE
+        }
+
+        activity.findViewById<Button>(R.id.reuse_pic).setOnClickListener {
+            //TODO: need to check if previous pic exists like below (but extension might differ
+            //TODO: review if then detector works fine with resolution of the picture
+            getPic(previousItem?.key, previousItem?.value, done)
         }
         activity.findViewById<Button>(R.id.replace_pic).setOnClickListener {
 

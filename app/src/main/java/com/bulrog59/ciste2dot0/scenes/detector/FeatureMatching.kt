@@ -4,6 +4,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.bulrog59.ciste2dot0.CisteActivity
 import com.bulrog59.ciste2dot0.R
+import com.bulrog59.ciste2dot0.ResourceManager
+import com.bulrog59.ciste2dot0.editor.detector.PictureTaker
 import org.opencv.core.*
 import org.opencv.features2d.DescriptorMatcher
 import org.opencv.features2d.Features2d
@@ -33,9 +35,11 @@ class FeatureMatching(detectorOption: DetectorOption, private val cisteActivity:
             ios.close()
             val originalImg = Imgcodecs.imdecode(MatOfByte(*targetArray), Imgcodecs.IMREAD_UNCHANGED)
             val img = Mat()
-
             val sz = Size(CAPTURE_DEFAULT_WIDTH, CAPTURE_DEFAULT_HEIGHT)
             Imgproc.resize( originalImg, img, sz );
+            //TODO: debug
+//            Imgcodecs.imwrite(ResourceManager(cisteActivity).getLocationForFile("jem.jpg"),img)
+//            Imgcodecs.imwrite(ResourceManager(cisteActivity).getLocationForFile("original.jpg"),originalImg)
 
             val keypointsObject = MatOfKeyPoint()
             val descriptorsObject = Mat()
