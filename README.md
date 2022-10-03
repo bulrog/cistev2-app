@@ -91,3 +91,9 @@ To:
 Also comment the 'applicationId' line of openCV so it is not seen as an app.
 
 Then in project structure, choose the dependencies tab and add openCV as a module dependency to the app.
+
+### how to publish on google play
+
+You of course need a developer account on google play.
+
+Then you need to create a signed bundle (not an APK) with android studio and the first time you need to create a keystore and a key so google play can see that next releases are all signed by the same entity. See more details [here](https://developer.android.com/studio/publish/app-signing#generate-key).
