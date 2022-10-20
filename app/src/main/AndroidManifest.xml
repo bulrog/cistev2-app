@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ciste2dot0">
         <activity
+            android:exported="false"
             android:name=".SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
@@ -26,19 +27,24 @@
 
         <activity android:name=".CrashActivity" />
         <activity
+            android:exported="false"
             android:name=".CisteActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:exported="false"
             android:name=".DisclaimerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:exported="false"
             android:name=".EditActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:exported="false"
             android:name=".GameMgtActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity
+            android:exported="false"
             android:name=".SignInActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
