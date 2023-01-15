@@ -115,5 +115,7 @@
     <string name="invalid_combination2">Ça vous arrive de réfléchir avant d\'essayer de combiner des items?</string>
     <string name="invalid_combination3">Vous êtes si désépéré pour essayer ça?</string>
     <string name="invalid_combination4">Je pense que vous avez cliqué sur le mauvais item, c\'est pas possible autrement...</string>
+    <string name="take_pic">capturer</string>
+    <string name="skip_scan">Passer</string>
 
 </resources>

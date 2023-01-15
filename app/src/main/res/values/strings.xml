@@ -114,5 +114,7 @@
     <string name="invalid_combination2">Do you think before combining objects?</string>
     <string name="invalid_combination3">Are you so desperate to try this?</string>
     <string name="invalid_combination4">I think you click by mistake on the wrong item to combine...</string>
+    <string name="take_pic">take photo</string>
+    <string name="skip_scan">Skip</string>
 
 </resources>

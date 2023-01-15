@@ -1,6 +1,5 @@
 package com.bulrog59.ciste2dot0.editor
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.pm.ActivityInfo
 import android.net.Uri
@@ -123,7 +122,7 @@ class DetectorEditor(
             } else {
                 done(GameOptionHelper.convertToJsonNode(DetectorOption(entries.associate {
                     Pair(it.key, it.value)
-                })))
+                },null)))
             }
 
         }.init()
