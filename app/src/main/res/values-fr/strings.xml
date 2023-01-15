@@ -117,5 +117,7 @@
     <string name="invalid_combination4">Je pense que vous avez cliqué sur le mauvais item, c\'est pas possible autrement...</string>
     <string name="take_pic">capturer</string>
     <string name="skip_scan">Passer</string>
+    <string name="skip_scanner_button">Selectioner scene pour passer</string>
+    <string name="scanner_list">Editer la liste du detecteur</string>
 
 </resources>

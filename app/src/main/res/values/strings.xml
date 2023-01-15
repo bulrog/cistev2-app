@@ -116,5 +116,7 @@
     <string name="invalid_combination4">I think you click by mistake on the wrong item to combine...</string>
     <string name="take_pic">take photo</string>
     <string name="skip_scan">Skip</string>
+    <string name="scanner_list">Edit detector list</string>
+    <string name="skip_scanner_button">Select scene to skip the scan</string>
 
 </resources>

@@ -22,16 +22,16 @@ class DetectorScene(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun setup() {
         super.init()
-        val skipButton = activity.findViewById<Button>(R.id.camera_capture_button)
+
         detectorOption.skipScene?.let { n ->
-            {
-                skipButton.visibility = View.VISIBLE
-                skipButton.setText(R.string.skip_scan)
-                skipButton.setOnClickListener {
-                    cisteActivity.setScene(n)
-                }
+            val skipButton = activity.findViewById<Button>(R.id.camera_capture_button)
+            skipButton.visibility = View.VISIBLE
+            skipButton.setText(R.string.skip_scan)
+            skipButton.setOnClickListener {
+                cisteActivity.setScene(n)
             }
         }
+
 
     }
 
