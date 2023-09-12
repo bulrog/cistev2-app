@@ -12,10 +12,10 @@ android {
 
     defaultConfig {
         applicationId "com.bulrog59.ciste2dot0"
-        minSdkVersion 26
+        minSdkVersion 33
         targetSdkVersion 33
-        versionCode 4
-        versionName "1.1.2"
+        versionCode 6
+        versionName "1.2.1"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
