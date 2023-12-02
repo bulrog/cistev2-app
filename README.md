@@ -20,6 +20,10 @@ If the application crashes you should get such screen:
 
 Providing such picture will help to debug and if big error good to get the top like on this picture and also the "caused by" in the text.
 
+## deleting an account
+
+In case you want some games you have created or your account to be deleted, please contact the developer of the game.
+
 
 ## developer area 
 
