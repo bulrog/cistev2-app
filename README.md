@@ -22,7 +22,7 @@ Providing such picture will help to debug and if big error good to get the top l
 
 ## deleting some game or/and an account
 
-In case you want some games you have created or your account to be deleted, please contact the developer of the game.
+In case you want some games you have created or your account to be deleted, please contact the developer of the game. The account and data will be removed in maximum 90 days.
 
 
 ## developer area 
