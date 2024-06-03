@@ -14,8 +14,8 @@ android {
         applicationId "com.bulrog59.ciste2dot0"
         minSdkVersion 33
         targetSdkVersion 33
-        versionCode 7
-        versionName "1.2.2"
+        versionCode 8
+        versionName "1.2.3"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
