@@ -1,14 +1,12 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'com.google.gms.google-services'
 }
 
 android {
     compileSdkVersion 33
-    buildToolsVersion "30.0.3"
-    ndkVersion '22.1.7171670'
+    namespace "com.bulrog59.ciste2dot0"
 
     defaultConfig {
         applicationId "com.bulrog59.ciste2dot0"
