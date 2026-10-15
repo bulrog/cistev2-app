@@ -10,6 +10,8 @@ If you want to add new capabilities to this game just clone this repo. It allows
 
 This was built with android studio 4.2.1 and tested on a samsung s7, a71 and a redmi 9 (as of March 2022).
 
+Since October 2026 the project targets Android 16 (API 36) and was tested on a Fairphone 4 (Android 15) and on an Android 15 emulator.
+
 ## reporting an issue
 
 In case of issue, just look if it is a know issue or create a new one [here](https://github.com/bulrog/cistev2-app/issues)
@@ -27,17 +29,24 @@ In case you want some games you have created or your account to be deleted, plea
 
 ## developer area 
 
-### Android ndk requirements
+### Build requirements
 
-To build you need then to install NDK (AndroidStudio-> preferences-> android SDK-> SDK tools-> NDK side by side) (1GB download starts)
+- JDK 17 (in Android Studio: Settings -> Build Tools -> Gradle -> Gradle JDK; do not use a JDK newer than 21)
+- Gradle 8.11.1 (wrapper) and Android Gradle Plugin 8.10.1
+- Android SDK platform 36 (`compileSdk` and `targetSdk` are 36, `minSdk` is 33)
 
-Then add in the build.gradle of the app (version matches the one installed):
+### Native libraries (openCV)
 
-    ndkVersion '22.1.7171670'
+The openCV native libraries are committed in `app/src/main/jnilibs/`, only for the ABIs `arm64-v8a` and `armeabi-v7a` (see `abiFilters` in `app/build.gradle`). x86/x86_64 were dropped because the prebuilt openCV 4.5.2 libs for those ABIs are not 16 KB aligned, which Google Play requires for 64-bit libs.
 
-Copy the OpenCV-android-sdk/sdk/native/libs in app/src/main/jnilibs
+No NDK is needed to build the project.
 
-Then take from ndk folder the shared lib and put it in the same folder (merge with previous copy) (where Android installed it: ~/Library/Android/sdk/ndk/<version>/sources/cxx-stl/llvm-libc++/libs/)
+`libc++_shared.so` comes from NDK r27c (16 KB aligned). To refresh it, copy from a recent NDK:
+
+- `<ndk>/toolchains/llvm/prebuilt/<host>/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so` to `jnilibs/arm64-v8a/`
+- `<ndk>/toolchains/llvm/prebuilt/<host>/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so` to `jnilibs/armeabi-v7a/`
+
+`libopencv_java4.so` for `arm64-v8a` is already 64 KB aligned. If you add x86_64 back, you need an openCV build (4.11 or later, or a rebuild) that is 16 KB aligned.
 
 When starting in debug mode the console will show:
 
@@ -101,3 +110,10 @@ Then in project structure, choose the dependencies tab and add openCV as a modul
 You of course need a developer account on google play.
 
 Then you need to create a signed bundle (not an APK) with android studio and the first time you need to create a keystore and a key so google play can see that next releases are all signed by the same entity. See more details [here](https://developer.android.com/studio/publish/app-signing#generate-key).
+
+Before building the bundle:
+
+- Increase `versionCode` (and `versionName`) in `app/build.gradle`.
+- Google Play requires a recent target API level (API 36 since August 2026) and 16 KB page size support for native libs (see above).
+
+The signed bundle is generated in `app/release/app-release.aab`. Upload it first as an internal test release in the Play Console, check the report (errors must be fixed, warnings about missing deobfuscation file / native debug symbols can be ignored), then promote it to production. Never commit the keystore or its passwords.
