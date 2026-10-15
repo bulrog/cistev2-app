@@ -1,9 +1,9 @@
 package com.bulrog59.ciste2dot0.game.management
 
 import android.util.Log
+import org.apache.commons.compress.archivers.zip.ZipFile
 import java.io.*
 import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
 
@@ -21,29 +21,28 @@ object ZipUtils {
     @Throws(IOException::class)
     fun unzip(zipFilePath: File, destDirectory: String) {
         val destDir = File(destDirectory)
-        if (!destDir.exists()) {
-            destDir.mkdir()
-        }
+        destDir.mkdirs()
+        val canonicalDest = destDir.canonicalPath + File.separator
+        // commons-compress is used instead of java.util.zip.ZipFile because Android 14+ rejects
+        // entries whose name starts with "/" (published games contain such entries).
         ZipFile(zipFilePath).use { zip ->
-
-            zip.entries().asSequence().forEach { entry ->
-
-                zip.getInputStream(entry).use { input ->
-
-
-                    val filePath = destDirectory + File.separator + entry.name
-
-                    if (!entry.isDirectory) {
-                        // if the entry is a file, extracts it
-                        extractFile(input, filePath)
-                    } else {
-                        // if the entry is a directory, make the directory
-                        val dir = File(filePath)
-                        dir.mkdir()
-                    }
-
+            zip.entries.asSequence().forEach { entry ->
+                val relativeName = entry.name.trimStart('/')
+                if (relativeName.isEmpty()) {
+                    return@forEach
                 }
-
+                val target = File(destDir, relativeName)
+                if (!target.canonicalPath.startsWith(canonicalDest)) {
+                    throw IOException("Invalid zip entry path: ${entry.name}")
+                }
+                if (entry.isDirectory) {
+                    target.mkdirs()
+                } else {
+                    target.parentFile?.mkdirs()
+                    zip.getInputStream(entry).use { input ->
+                        extractFile(input, target.path)
+                    }
+                }
             }
         }
     }
@@ -99,7 +98,7 @@ object ZipUtils {
                     if (!f.name.contains(".zip")) { //If folder contains a file with extension ".zip", skip it
                         FileInputStream(f).use { fi ->
                             BufferedInputStream(fi).use { origin ->
-                                val path = parentDirPath + File.separator + f.name
+                                val path = if (parentDirPath.isEmpty()) f.name else parentDirPath + File.separator + f.name
                                 Log.i("zip", "Adding file: $path")
                                 val entry = ZipEntry(path)
                                 entry.time = f.lastModified()
