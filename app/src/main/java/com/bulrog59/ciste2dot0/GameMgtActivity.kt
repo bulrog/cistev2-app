@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0
 
+import androidx.activity.OnBackPressedCallback
 import android.app.AlertDialog
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -119,14 +120,15 @@ class GameMgtActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        gameSelectionScreen()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this))
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                gameSelectionScreen()
+            }
+        })
         gameSelectionScreen()
 
     }

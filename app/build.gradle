@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 36
     namespace "com.bulrog59.ciste2dot0"
 
     defaultConfig {
         applicationId "com.bulrog59.ciste2dot0"
         minSdkVersion 33
-        targetSdkVersion 33
+        targetSdkVersion 36
         versionCode 8
         versionName "1.2.3"
         multiDexEnabled true

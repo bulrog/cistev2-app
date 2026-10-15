@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0
 
+import androidx.activity.OnBackPressedCallback
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -39,13 +40,14 @@ class CisteActivity : AppCompatActivity() {
     }
 
 
-    override fun onBackPressed() {
-        setScene(gameData.backButtonScene)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this))
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                setScene(gameData.backButtonScene)
+            }
+        })
         gameDataLoader = GameDataLoader(this)
         gameData = gameDataLoader.loadGameDataFromIntent()
         if (currentScene == null) {

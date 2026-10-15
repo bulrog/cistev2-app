@@ -1,5 +1,6 @@
 package com.bulrog59.ciste2dot0
 
+import androidx.activity.OnBackPressedCallback
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -245,20 +246,21 @@ class EditActivity : AppCompatActivity() {
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(this))
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         gameDataWriter = GameDataWriter(this)
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                AlertDialog.Builder(this@EditActivity)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setMessage(R.string.quit)
+                    .setPositiveButton(R.string.confirmation) { _, _ ->
+                        isEnabled = false
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                    .setNegativeButton(R.string.denial, null)
+                    .show()
+            }
+        })
         sceneSelectionScreen()
 
-    }
-
-    override fun onBackPressed() {
-        AlertDialog.Builder(this)
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .setMessage(R.string.quit)
-            .setPositiveButton(R.string.confirmation) { _, _ ->
-                super.onBackPressed()
-
-            }
-            .setNegativeButton(R.string.denial, null)
-            .show()
     }
 
 
