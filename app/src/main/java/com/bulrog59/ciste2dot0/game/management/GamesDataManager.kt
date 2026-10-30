@@ -197,6 +197,6 @@ class GamesDataManager(val context: Context) {
         const val FOLDER_FOR_GAME_DATA = "/gameData/"
         const val MAX_SIZE_IN_MB = 100
         private const val URL_FIRESTORE =
-            "https://firebasestorage.googleapis.com/v0/b/cistes2dot0.appspot.com/o/"
+            "https://firebasestorage.googleapis.com/v0/b/cistes2.firebasestorage.app/o/"
     }
 }

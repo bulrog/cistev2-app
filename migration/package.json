@@ -1,0 +1,8 @@
+{
+  "name": "ciste-migration",
+  "private": true,
+  "description": "One-off copy of the games from the cistes2dot0 project to cistes2",
+  "dependencies": {
+    "firebase-admin": "^12.6.0"
+  }
+}
